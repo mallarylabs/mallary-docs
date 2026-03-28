@@ -1,0 +1,56 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Mallary API Docs",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "API Reference",
+        "openapi": "/openapi.yaml"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/mallary-light.png",
+    "dark": "/logo/mallary-dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@mallary.ai"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://mallary.ai/dashboard"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/MallaryAI",
+      "facebook": "https://www.facebook.com/profile.php?id=61585923815927",
+      "linkedin": "https://linkedin.com/company/mallary",
+      "youtube": "https://www.youtube.com/@MallaryAI"
+    }
+  }
+}

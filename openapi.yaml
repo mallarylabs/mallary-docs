@@ -1,0 +1,843 @@
+openapi: 3.0.3
+info:
+  title: Mallary API
+  version: "1.1.1"
+  description: |
+    Public API for multi-platform publishing, analytics, media upload, and webhooks.
+
+    Authentication:
+    - Use header `Authorization: Bearer {api_key}`.
+    - API key identity is authoritative. Do not use `user_id` to identify a caller.
+
+    Rate limits (per user, per minute) depend on subscription plan:
+    - plan_id 1: 75 req/min
+    - plan_id 2: 150 req/min
+    - plan_id 3: 750 req/min
+    - plan_id 4: 1500 req/min
+servers:
+  - url: https://mallary.ai
+    description: Production
+security:
+  - apiKeyAuth: []
+paths:
+  /api/v1/upload:
+    post:
+      operationId: createUploadUrl
+      summary: Create presigned upload URL
+      description: Returns a temporary PUT URL and a public media URL for use in `POST /api/v1/post`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUploadRequest'
+      responses:
+        '200':
+          description: Upload metadata created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUploadResponse'
+        '400':
+          description: Invalid request (missing filename/size, unsupported MIME type, or size exceeded)
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Supplied `user_id` (if any) does not match API key owner
+        '429':
+          description: Rate limit exceeded
+
+  /api/v1/post:
+    post:
+      operationId: createPost
+      summary: Create or schedule a post across platforms
+      description: Enqueues one job per selected platform and returns job IDs plus `batch_id`.
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate submissions.
+        - in: header
+          name: X-Mallary-Client
+          required: false
+          schema:
+            type: string
+          description: Optional caller label.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+      responses:
+        '200':
+          description: Jobs enqueued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePostResponse'
+        '400':
+          description: Validation error (platform/media constraints, unsupported platform, etc.)
+        '401':
+          description: Missing or invalid API key
+        '402':
+          description: Posting limit reached for current plan
+        '403':
+          description: Feature not available on current plan, or supplied `user_id` does not match API key owner
+        '429':
+          description: Rate limit exceeded
+
+  /api/v1/jobs/{id}:
+    get:
+      operationId: getJob
+      summary: Get job status
+      description: Returns queue/database job status, result, and user warnings.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Job ID returned by `POST /api/v1/post`.
+      responses:
+        '200':
+          description: Job found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobResponse'
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Supplied `user_id` (if any) does not match API key owner
+        '404':
+          description: Job not found
+
+  /api/v1/posts:
+    get:
+      operationId: listPosts
+      summary: List grouped posts
+      description: Returns grouped multi-platform posts with per-platform outcomes, retries, warnings, and capabilities.
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Posts retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPostsResponse'
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Supplied `user_id` (if any) does not match API key owner
+
+  /api/v1/posts/{id}:
+    delete:
+      operationId: deletePendingPost
+      summary: Delete pending/scheduled post
+      description: Deletes queued/scheduled jobs for a grouped post that has not started publishing.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePostResponse'
+        '400':
+          description: Invalid post id
+        '401':
+          description: Missing or invalid API key
+        '404':
+          description: Post not found
+        '409':
+          description: Post already started publishing and can no longer be deleted
+
+  /api/v1/analytics:
+    get:
+      operationId: listAnalytics
+      summary: Get latest analytics snapshots
+      description: Returns latest per-platform metrics for recent posts, or for one post via `post_id`.
+      parameters:
+        - in: query
+          name: post_id
+          required: false
+          schema:
+            type: integer
+          description: Filter to a single post/job ID owned by the authenticated user.
+      responses:
+        '200':
+          description: Analytics retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+                  data:
+                    type: object
+                    properties:
+                      analytics:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AnalyticsItem'
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Analytics are not available for current plan, or supplied `user_id` does not match API key owner
+        '404':
+          description: Post not found
+
+  /api/v1/disconnect:
+    post:
+      operationId: disconnectPlatform
+      summary: Disconnect a platform
+      description: Removes the authenticated user's connection row for a platform.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisconnectRequest'
+      responses:
+        '200':
+          description: Platform disconnected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisconnectResponse'
+        '400':
+          description: Missing or invalid platform
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Supplied `user_id` (if any) does not match API key owner
+
+  /api/v1/webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhooks
+      responses:
+        '200':
+          description: Webhooks for authenticated user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+        '401':
+          description: Missing or invalid API key
+    post:
+      operationId: createWebhook
+      summary: Create webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url:
+                  type: string
+                  format: uri
+                events:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WebhookEvent'
+                secret:
+                  type: string
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  url:
+                    type: string
+                    format: uri
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WebhookEvent'
+        '400':
+          description: Invalid request
+        '401':
+          description: Missing or invalid API key
+
+  /api/v1/webhooks/{id}:
+    delete:
+      operationId: deleteWebhook
+      summary: Delete webhook
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+        '400':
+          description: Invalid id
+        '401':
+          description: Missing or invalid API key
+
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Use `Authorization: Bearer {api_key}`"
+
+  schemas:
+    Platform:
+      type: string
+      enum:
+        - twitter
+        - x
+        - facebook
+        - instagram
+        - linkedin
+        - youtube
+        - tiktok
+        - pinterest
+        - reddit
+        - google_business
+        - snapchat
+
+    CapabilityTier:
+      type: string
+      enum: [free, starter, pro, business]
+
+    Capabilities:
+      type: object
+      properties:
+        can_schedule:
+          type: boolean
+        can_analytics:
+          type: boolean
+        can_auto_reply:
+          type: boolean
+        tier:
+          $ref: '#/components/schemas/CapabilityTier'
+
+    MediaItem:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Public media URL (usually `mediaUrl` from `/api/v1/upload`).
+        type:
+          type: string
+          description: Optional MIME type hint.
+
+    CreateUploadRequest:
+      type: object
+      required: [filename, size]
+      properties:
+        filename:
+          type: string
+          example: launch-video.mp4
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        type:
+          type: string
+          description: MIME type. Defaults to application/octet-stream if omitted.
+
+    CreateUploadResponse:
+      type: object
+      required: [uploadUrl, mediaUrl, contentType, size]
+      properties:
+        uploadUrl:
+          type: string
+          format: uri
+        mediaUrl:
+          type: string
+          format: uri
+        storageKey:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+
+    PlatformOptions:
+      type: object
+      description: Per-platform options keyed by platform id.
+      additionalProperties: true
+      properties:
+        facebook:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [feed, story]
+        instagram:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [feed, story, reel, carousel]
+        youtube:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [regular, shorts]
+            title:
+              type: string
+              maxLength: 100
+            visibility:
+              type: string
+              enum: [public, unlisted, private]
+            categoryId:
+              type: string
+            madeForKids:
+              type: boolean
+        pinterest:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [image, video]
+            title:
+              type: string
+              maxLength: 100
+            boardId:
+              type: string
+              description: Board to post into.
+            link:
+              type: string
+              format: uri
+        reddit:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [text, link, image]
+        google_business:
+          type: object
+          properties:
+            callToAction:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [LEARN_MORE, BOOK, ORDER, SHOP, SIGN_UP, CALL]
+                url:
+                  type: string
+                  format: uri
+        snapchat:
+          type: object
+          properties:
+            contentType:
+              type: string
+              enum: [story, saved_story, spotlight]
+
+    CreatePostRequest:
+      type: object
+      required: [message, platforms]
+      properties:
+        message:
+          type: string
+          minLength: 1
+        platforms:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Platform'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaItem'
+        comments_under_post:
+          type: array
+          maxItems: 3
+          items:
+            type: string
+          description: Up to 3 follow-up comments/replies under the main post.
+        scheduled_at:
+          type: string
+          format: date-time
+          description: Optional scheduled publish timestamp.
+        auto_reply_enabled:
+          type: boolean
+          description: Optional per-post override for AI auto-replies.
+        platform_options:
+          $ref: '#/components/schemas/PlatformOptions'
+        webhook_url:
+          type: string
+          format: uri
+          description: Optional callback URL for completion notifications.
+
+    CreatePostResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [queued]
+        batch_id:
+          type: string
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              platform:
+                $ref: '#/components/schemas/Platform'
+              jobId:
+                type: string
+
+    AutoReplyWarning:
+      type: object
+      properties:
+        scope:
+          type: string
+        platform:
+          type: string
+        code:
+          type: string
+        severity:
+          type: string
+          enum: [warning, error, info]
+        message:
+          type: string
+        details:
+          nullable: true
+        retry_at:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          nullable: true
+
+    JobData:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [queued, waiting, delayed, active, processing, completed, failed, unknown]
+        attemptsMade:
+          type: integer
+          nullable: true
+        failedReason:
+          type: string
+          nullable: true
+        result:
+          type: object
+          nullable: true
+          additionalProperties: true
+        error:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          nullable: true
+        started_at:
+          type: string
+          nullable: true
+        finished_at:
+          type: string
+          nullable: true
+
+    GetJobResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            job:
+              $ref: '#/components/schemas/JobData'
+            warnings:
+              type: array
+              items:
+                $ref: '#/components/schemas/AutoReplyWarning'
+
+    PostResult:
+      type: object
+      properties:
+        platform:
+          $ref: '#/components/schemas/Platform'
+        success:
+          type: boolean
+          nullable: true
+        platform_post_id:
+          type: string
+          nullable: true
+        platform_post_url:
+          type: string
+          nullable: true
+        post_type:
+          type: string
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+        retry_exhausted:
+          type: boolean
+          nullable: true
+        next_retry_at:
+          type: string
+          nullable: true
+        attempt:
+          type: integer
+          nullable: true
+        attempts_allowed:
+          type: integer
+          nullable: true
+
+    RetryInfo:
+      type: object
+      properties:
+        exhausted:
+          type: boolean
+        next_retry_at:
+          type: string
+          nullable: true
+        attempt:
+          type: integer
+        attempts_allowed:
+          type: integer
+
+    AnalyticsMetrics:
+      type: object
+      properties:
+        captured_at:
+          type: string
+          nullable: true
+        impressions:
+          type: integer
+          nullable: true
+        reach:
+          type: integer
+          nullable: true
+        likes:
+          type: integer
+          nullable: true
+        comments:
+          type: integer
+          nullable: true
+        shares:
+          type: integer
+          nullable: true
+        clicks:
+          type: integer
+          nullable: true
+        views:
+          type: integer
+          nullable: true
+        engagementRate:
+          type: number
+          nullable: true
+
+    AnalyticsItem:
+      allOf:
+        - type: object
+          properties:
+            post_id:
+              type: integer
+            platform:
+              $ref: '#/components/schemas/Platform'
+        - $ref: '#/components/schemas/AnalyticsMetrics'
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        batch_id:
+          type: string
+          nullable: true
+        job_ids:
+          type: array
+          items:
+            type: integer
+        message:
+          type: string
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaItem'
+        status:
+          type: string
+          enum: [queued, scheduled, processing, partial, completed, failed]
+        source:
+          type: string
+          enum: [dashboard, api, internal]
+        created_at:
+          type: string
+        posted_at:
+          type: string
+          nullable: true
+        scheduled_at:
+          type: string
+          nullable: true
+        platforms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Platform'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostResult'
+        retry:
+          $ref: '#/components/schemas/RetryInfo'
+        analytics:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AnalyticsMetrics'
+
+    ListPostsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            posts:
+              type: array
+              items:
+                $ref: '#/components/schemas/Post'
+            warnings:
+              type: array
+              items:
+                $ref: '#/components/schemas/AutoReplyWarning'
+            capabilities:
+              $ref: '#/components/schemas/Capabilities'
+            meta:
+              type: object
+              properties:
+                page:
+                  type: integer
+                per_page:
+                  type: integer
+                total:
+                  type: integer
+
+    DeletePostResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            deleted_count:
+              type: integer
+            deleted_job_ids:
+              type: array
+              items:
+                type: integer
+            batch_id:
+              type: string
+              nullable: true
+
+    DisconnectRequest:
+      type: object
+      required: [platform]
+      properties:
+        platform:
+          type: string
+
+    DisconnectResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        platform:
+          type: string
+
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+          format: uri
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+        active:
+          type: boolean
+        created_at:
+          type: string
+          nullable: true
+
+    WebhookEvent:
+      type: string
+      description: "Use '*' to receive all events."
+      enum:
+        - '*'
+        - post.scheduled
+        - post.published
+        - post.failed
+        - post.partial
+        - auto_reply.posted
+
+externalDocs:
+  description: Full product docs
+  url: https://docs.mallary.ai/
