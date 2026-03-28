@@ -1,0 +1,82 @@
+---
+title: "Commands"
+description: "The main Mallary CLI commands for health, uploads, posts, jobs, analytics, webhooks, settings, and platforms."
+---
+
+## Health
+
+```bash
+mallary health
+mallary health --json
+```
+
+## Upload
+
+```bash
+mallary upload ./image.png
+mallary upload ./image.png ./video.mp4 --json
+```
+
+This command:
+
+1. calls Mallary to create a presigned upload URL
+2. uploads the local bytes for you
+3. returns the final Mallary media URL
+
+## Posts
+
+```bash
+mallary posts list
+mallary posts list --page 2 --per-page 25 --json
+mallary posts delete 123
+```
+
+## Jobs
+
+```bash
+mallary jobs get 123
+mallary jobs get 123 --json
+```
+
+## Analytics
+
+```bash
+mallary analytics list
+mallary analytics list --post-id 123
+```
+
+## Webhooks
+
+List:
+
+```bash
+mallary webhooks list
+```
+
+Create:
+
+```bash
+mallary webhooks create \
+  --url https://example.com/mallary \
+  --event post.published \
+  --event post.failed
+```
+
+Delete:
+
+```bash
+mallary webhooks delete 12
+```
+
+## Settings
+
+```bash
+mallary settings get
+mallary settings update --file ./settings.partial.json
+```
+
+## Platforms
+
+```bash
+mallary platforms disconnect facebook
+```

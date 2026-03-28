@@ -14,7 +14,7 @@
         "tab": "API",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": ["api-reference/introduction"]
           },
           {
@@ -23,19 +23,59 @@
               "api-reference/endpoint/upload",
               "api-reference/endpoint/create",
               "api-reference/endpoint/get",
+              "api-reference/endpoint/posts",
               "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/analytics",
+              "api-reference/endpoint/disconnect",
+              "api-reference/endpoint/webhooks-list",
+              "api-reference/endpoint/webhooks-create",
+              "api-reference/endpoint/webhooks-delete"
             ]
           }
         ]
       },
       {
         "tab": "MCP",
-        "pages": ["ai-tools/claude-code"]
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "mcp-reference/introduction",
+              "mcp-reference/authentication"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "mcp-reference/tools",
+              "mcp-reference/behavior",
+              "mcp-reference/configuration"
+            ]
+          }
+        ]
       },
       {
         "tab": "CLI",
-        "pages": ["snippets/snippet-intro"]
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "cli-reference/introduction",
+              "cli-reference/install",
+              "cli-reference/authentication",
+              "cli-reference/quickstart"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "cli-reference/commands",
+              "cli-reference/posts",
+              "cli-reference/settings",
+              "cli-reference/automation"
+            ]
+          }
+        ]
       },
       {
         "tab": "Guides",

@@ -1,0 +1,38 @@
+---
+title: "Quickstart"
+description: "Get started with health checks, uploads, posting, and job inspection."
+---
+
+## Health Check
+
+```bash
+mallary health
+```
+
+## Upload Local Media
+
+```bash
+mallary upload ./launch.mp4
+```
+
+## Create a Post
+
+```bash
+mallary posts create \
+  --message "Check out my new product video!" \
+  --platform facebook \
+  --platform instagram \
+  --media ./launch.mp4
+```
+
+## List Posts
+
+```bash
+mallary posts list
+```
+
+## Inspect a Job
+
+```bash
+mallary jobs get 123
+```

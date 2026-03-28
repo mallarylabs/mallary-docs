@@ -1,0 +1,69 @@
+---
+title: "Automation"
+description: "Use Mallary CLI in scripts, CI, and automated toolchains."
+---
+
+## JSON Output
+
+Human-readable output is the default.
+
+Use `--json` for scripting:
+
+```bash
+mallary posts list --json
+```
+
+Output rules:
+
+- direct API wrapper commands emit the API response body
+- convenience flows like `upload` emit CLI-specific JSON
+- `posts create` emits CLI-specific JSON when local file uploads occur before submission
+
+## Exit Codes
+
+- `0`: success
+- `1`: local CLI, config, or input failure
+- `2`: remote API or upload failure
+
+## Shell Automation Example
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+export MALLARY_API_KEY="${MALLARY_API_KEY:?missing}"
+
+UPLOAD_JSON="$(mallary upload ./hero.png --json)"
+MEDIA_URL="$(printf '%s' "$UPLOAD_JSON" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).uploads[0].media_url))')"
+
+mallary posts create \
+  --message "Deployed via CI" \
+  --platform facebook \
+  --platform linkedin \
+  --media "$MEDIA_URL" \
+  --json
+```
+
+## GitHub Actions Example
+
+```yaml
+- name: Install Mallary CLI
+  run: npm install -g @mallary/cli
+
+- name: Publish post
+  env:
+    MALLARY_API_KEY: ${{ secrets.MALLARY_API_KEY }}
+  run: |
+    mallary posts create \
+      --message "Release shipped." \
+      --platform facebook \
+      --platform linkedin
+```
+
+## AI Agent Notes
+
+If you are using the CLI in an automated agent workflow:
+
+- read `cli/llms.txt` first
+- prefer `--json`
+- prefer `mallary posts create --file payload.json` for complex payloads

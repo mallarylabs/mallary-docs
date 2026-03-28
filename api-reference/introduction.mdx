@@ -1,33 +1,102 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Mallary API supports uploads, multi-platform publishing, grouped post retrieval, analytics, webhooks, and platform disconnects."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
-
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Mallary API is the public API for multi-platform publishing, analytics, media upload, and webhooks.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Authenticate every request with your Mallary API key:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```http
+Authorization: Bearer <mallary_api_key>
 ```
+
+The API key owner is authoritative. Do not use `user_id` to identify the caller.
+
+## Base URL
+
+```text
+https://mallary.ai
+```
+
+## Core API Features
+
+The current OpenAPI spec documents:
+
+- presigned media uploads
+- post creation and scheduling
+- job status retrieval
+- grouped post listing
+- deletion of queued or scheduled posts
+- analytics snapshots
+- platform disconnects
+- webhook listing, creation, and deletion
+
+## Supported Platforms
+
+The current public platform enum includes:
+
+- `twitter`
+- `x`
+- `facebook`
+- `instagram`
+- `linkedin`
+- `youtube`
+- `tiktok`
+- `pinterest`
+- `reddit`
+- `google_business`
+- `snapchat`
+
+## Posting Features
+
+`POST /api/v1/post` supports:
+
+- one or more target platforms
+- media attachments
+- `comments_under_post`
+- optional scheduling via `scheduled_at`
+- optional per-post AI auto-reply override
+- per-platform `platform_options`
+- optional `webhook_url`
+- optional `Idempotency-Key`
+- optional `X-Mallary-Client`
+
+## Platform Options
+
+The OpenAPI spec currently documents platform-specific payload areas for:
+
+- Facebook
+- Instagram
+- YouTube
+- Pinterest
+- Reddit
+- Google Business
+- Snapchat
+
+## Rate Limits
+
+Rate limits are enforced per user, per minute, by plan:
+
+- plan `1`: `75 req/min`
+- plan `2`: `150 req/min`
+- plan `3`: `750 req/min`
+- plan `4`: `1500 req/min`
+
+## Plan-Gated Features
+
+Some endpoints and features are plan-gated.
+
+Examples called out in the spec include:
+
+- posting limits
+- analytics availability
+- AI auto-reply availability
+
+## OpenAPI Source
+
+This Mintlify API section is backed by:
+
+[`api-reference/openapi.yaml`](/Users/samt/Documents/Sites/mallary/docs/api-reference/openapi.yaml)

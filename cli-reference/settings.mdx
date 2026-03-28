@@ -1,0 +1,53 @@
+---
+title: "Settings"
+description: "Read and update brand and auto-reply settings from the CLI."
+---
+
+## Get Current Settings
+
+```bash
+mallary settings get
+```
+
+## Update Settings
+
+```bash
+mallary settings update --file ./settings.partial.json
+```
+
+Example partial payload:
+
+```json
+{
+  "auto_reply_enabled": true,
+  "brand_profile": "Mallary helps brands schedule, publish, and manage social media content with AI-assisted workflows.",
+  "business_name": "My Business",
+  "business_description": "Local HVAC company",
+  "website_url": "https://example.com",
+  "services": "HVAC installation, repair, and maintenance",
+  "features": "Same-day service, financing, weekend appointments",
+  "contact_info": "Call (555) 555-5555 or email hello@example.com",
+  "pricing": "Free estimates. Maintenance plans start at $29/month.",
+  "faq": "Q: Do you offer emergency service? A: Yes, 24/7."
+}
+```
+
+## Accepted Fields
+
+- `auto_reply_enabled`
+- `brand_profile`
+- `business_name`
+- `business_description`
+- `website_url`
+- `services`
+- `features`
+- `contact_info`
+- `pricing`
+- `faq`
+
+## Notes
+
+- `mallary settings update --file ...` accepts partial updates
+- `auto_reply_enabled` can only be turned on for plans that include AI auto reply
+- enabling `auto_reply_enabled` also requires:
+  `business_name`, `website_url`, `business_description`, `services`, and `contact_info`

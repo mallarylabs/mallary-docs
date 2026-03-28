@@ -1,0 +1,97 @@
+---
+title: "Creating Posts"
+description: "Create Mallary posts from flags or JSON files, including media handling and platform-specific payloads."
+---
+
+## Flag Mode
+
+```bash
+mallary posts create \
+  --message "Hello from Mallary CLI" \
+  --platform facebook \
+  --platform linkedin \
+  --media ./hero.png \
+  --comment "Follow-up comment 1" \
+  --comment "Follow-up comment 2" \
+  --auto-reply-enabled \
+  --scheduled-at 2026-03-30T15:00:00Z
+```
+
+## File Mode
+
+```bash
+mallary posts create --file ./post.json
+```
+
+Example:
+
+```json
+{
+  "message": "Launch update",
+  "platforms": ["facebook", "instagram", "linkedin"],
+  "media": [{ "url": "./launch.png" }],
+  "platform_options": {
+    "instagram": {
+      "post_type": "carousel"
+    }
+  }
+}
+```
+
+## File Mode Rules
+
+- `--file` is mutually exclusive with payload-building flags
+- local `media[].url` file paths are uploaded to the Mallary CDN first
+- existing remote media URLs must already be hosted on `https://files.mallary.ai/...`
+- external remote media URLs are rejected
+- platform-specific payloads are passed through to the API
+
+## Supported Platform-Specific Payload Areas
+
+Mallary CLI README currently documents platform-specific payload examples for:
+
+- Facebook
+- Instagram
+- LinkedIn
+- YouTube
+- TikTok
+- Pinterest
+- Reddit
+- Google Business
+- Snapchat
+- X
+
+## Comments Under Post
+
+- use repeatable `--comment` flags in flag mode
+- in file mode, send `comments_under_post` as an array
+- the current limit is 3 items
+
+Example:
+
+```json
+{
+  "message": "New launch today",
+  "platforms": ["facebook"],
+  "media": [{ "url": "./launch.png" }],
+  "comments_under_post": [
+    { "content": "What do you think?" },
+    { "content": "Questions? Ask below." }
+  ]
+}
+```
+
+## AI Auto Reply
+
+- available on Pro and Business plans only
+- can be enabled account-wide in `mallary settings update`
+- can be enabled per post with `--auto-reply-enabled`
+- depends on saved account settings, not just the current payload
+
+To enable it successfully, these settings must be populated:
+
+- `business_name`
+- `website_url`
+- `business_description`
+- `services`
+- `contact_info`

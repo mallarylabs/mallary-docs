@@ -1,0 +1,29 @@
+---
+title: "Configuration"
+description: "Environment variables used to control the Mallary MCP server."
+---
+
+## Environment Variables
+
+Mallary MCP can be configured with the following environment variables:
+
+- `MCP_ENABLED`
+- `MCP_PATH`
+- `MCP_MAX_BODY_BYTES`
+- `MCP_ALLOWED_ORIGINS`
+
+## Defaults and Values
+
+- `MCP_ENABLED`: `0` or `1`
+- `MCP_PATH`: defaults to `/mcp`
+- `MCP_ALLOWED_ORIGINS`: comma-separated list of allowed origins
+
+## Endpoint Methods
+
+Mallary MCP supports:
+
+- `POST /mcp`
+- `GET /mcp`
+- `DELETE /mcp`
+
+`GET /mcp` is used for session transport support and `DELETE /mcp` is used for session termination support.
