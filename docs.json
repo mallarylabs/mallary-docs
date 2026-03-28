@@ -11,14 +11,67 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "API Reference",
-        "openapi": "/openapi.yaml"
+        "tab": "API",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": ["api-reference/introduction"]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api-reference/endpoint/upload",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP",
+        "pages": ["ai-tools/claude-code"]
+      },
+      {
+        "tab": "CLI",
+        "pages": ["snippets/snippet-intro"]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": ["index", "quickstart", "development"]
+          },
+          {
+            "group": "Customization",
+            "pages": ["essentials/settings", "essentials/navigation"]
+          },
+          {
+            "group": "Writing content",
+            "pages": [
+              "essentials/markdown",
+              "essentials/code",
+              "essentials/images",
+              "essentials/reusable-snippets"
+            ]
+          },
+          {
+            "group": "AI tools",
+            "pages": [
+              "ai-tools/cursor",
+              "ai-tools/claude-code",
+              "ai-tools/windsurf"
+            ]
+          }
+        ]
       }
     ]
   },
   "logo": {
-    "light": "/logo/mallary-light.png",
-    "dark": "/logo/mallary-dark.png"
+    "light": "/logo/mallary-light-v2.png",
+    "dark": "/logo/mallary-dark-v2.png"
   },
   "navbar": {
     "links": [
@@ -50,7 +103,10 @@
       "x": "https://x.com/MallaryAI",
       "facebook": "https://www.facebook.com/profile.php?id=61585923815927",
       "linkedin": "https://linkedin.com/company/mallary",
-      "youtube": "https://www.youtube.com/@MallaryAI"
+      "youtube": "https://www.youtube.com/@MallaryAI",
+      "reddit": "https://www.reddit.com/r/MallaryAI/",
+      "instagram": "https://www.instagram.com/mallaryai/",
+      "github": "https://github.com/mallarylabs"
     }
   }
 }
