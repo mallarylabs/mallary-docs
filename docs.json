@@ -27,6 +27,15 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Welcome",
+        "groups": [
+          {
+            "group": "Developer docs",
+            "pages": ["index", "home/api", "home/mcp", "home/cli"]
+          }
+        ]
+      },
+      {
         "tab": "API",
         "groups": [
           {
