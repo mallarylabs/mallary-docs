@@ -1,23 +1,177 @@
 ---
-title: "Social Media MCP"
-description: "Use the Mallary MCP server for agent and assistant integrations over Streamable HTTP."
+title: "Social Media MCP Server"
+description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, fetch analytics, manage webhooks, and disconnect platforms through Model Context Protocol."
 ---
 
-Use Mallary MCP when you want AI assistants and agent workflows to operate on the Mallary platform through MCP tools.
+Mallary MCP is a remote social media MCP server for AI assistants, agent workflows, and developer tools that speak Model Context Protocol.
 
-## What It Covers
+If you want an AI agent to post to social media, upload media, check analytics, manage webhooks, or inspect publishing jobs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
 
-- authenticated MCP access
-- posting tools
-- upload tools
-- analytics tools
-- webhook tools
-- platform management tools
+## Start here
 
-<Card
-  title="Open MCP docs"
-  icon="message-square-code"
-  href="/mcp-reference/introduction"
->
-  Go to the full MCP reference.
-</Card>
+<CardGroup cols={2}>
+  <Card
+    title="MCP Overview"
+    icon="message-square-code"
+    href="/mcp-reference/introduction"
+  >
+    Start with the transport model, endpoint shape, and base MCP behavior.
+  </Card>
+  <Card
+    title="Authentication"
+    icon="key-round"
+    href="/mcp-reference/authentication"
+  >
+    Learn how to authenticate Mallary MCP with your Mallary API key.
+  </Card>
+  <Card title="Enabled Tools" icon="wrench" href="/mcp-reference/tools">
+    See the current Mallary MCP tool names for posting, uploads, analytics, and
+    webhooks.
+  </Card>
+  <Card title="Runtime Behavior" icon="workflow" href="/mcp-reference/behavior">
+    Review preflight, idempotency forwarding, API parity, and error handling
+    details.
+  </Card>
+</CardGroup>
+
+## What Mallary MCP does
+
+Mallary MCP exposes the same public publishing surface as the Mallary API through MCP tools.
+
+With Mallary MCP you can:
+
+- create upload URLs
+- create and schedule social media posts
+- inspect job status
+- list grouped posts
+- delete pending posts
+- fetch analytics
+- manage webhooks
+- disconnect platforms
+
+## Why teams use Mallary MCP
+
+Mallary MCP is useful when you want to connect social publishing directly into:
+
+- AI assistants
+- autonomous agent workflows
+- IDE agents
+- internal AI tooling
+- LLM-based operator workflows
+
+Instead of teaching a model how to compose raw HTTP requests for every task, you can give it a tool surface with clearer actions and safer inputs.
+
+## Base URL
+
+```text
+https://mallary.ai
+```
+
+## Endpoint
+
+Mallary serves MCP at:
+
+```text
+/mcp
+```
+
+Supported methods:
+
+- `POST /mcp`
+- `GET /mcp`
+- `DELETE /mcp`
+
+## Authentication
+
+Authenticate with your Mallary API key:
+
+```http
+Authorization: Bearer <mallary_api_key>
+```
+
+Identity is resolved from the API key owner.
+
+## MCP transport and behavior
+
+Mallary exposes a remote MCP server over Streamable HTTP for public API parity.
+
+That means:
+
+- MCP tools route through the existing `/api/v1/*` handlers
+- posting logic is not duplicated in a separate MCP-only implementation
+- tool responses may be returned as event-stream payloads
+- `mallary_create_post` runs preflight first by default
+
+## Mallary MCP tools
+
+The current enabled tools are:
+
+- `mallary_create_upload_url`
+- `mallary_create_post`
+- `mallary_get_job`
+- `mallary_list_posts`
+- `mallary_delete_post`
+- `mallary_get_analytics`
+- `mallary_disconnect_platform`
+- `mallary_list_webhooks`
+- `mallary_create_webhook`
+- `mallary_delete_webhook`
+
+## What makes Mallary MCP useful
+
+Mallary MCP is a strong fit when you want an AI workflow to:
+
+- generate content and publish it
+- upload images or video before publishing
+- check whether a post succeeded or failed
+- list previous posts and grouped outcomes
+- inspect analytics snapshots after publishing
+- register or remove webhooks as part of automation
+
+It is especially useful when you want one social media tool surface instead of separate per-platform agent integrations.
+
+## Relationship to the Mallary API
+
+Mallary MCP is not a separate product surface with different business rules.
+
+It uses the same underlying platform as the dashboard, REST API, and CLI, which means:
+
+- plan gating still applies
+- platform rules still apply
+- account identity still comes from the same Mallary user account
+- job and analytics behavior stay aligned across product surfaces
+
+## Plans and feature access
+
+MCP access is available on paid plans only.
+
+Current product rules are:
+
+- Free: no MCP access
+- Starter: MCP enabled
+- Pro: MCP enabled
+- Business: MCP enabled
+
+Other related capabilities such as analytics or AI auto replies still follow the plan rules of the authenticated account.
+
+## Error handling
+
+Mallary MCP returns structured errors when the underlying API call is not successful.
+
+Non-2xx results are surfaced with fields such as:
+
+- `http_status`
+- `code`
+- `message`
+- `details` when available
+
+This makes it easier for agents and integrations to decide whether to retry, ask for missing data, or report a plan or validation issue.
+
+## Good fit for Mallary MCP
+
+Mallary MCP is a strong fit if you want:
+
+- social media tools inside an AI assistant
+- a clean MCP tool surface instead of raw HTTP orchestration
+- the same posting backend used by Mallary itself
+- uploads, posting, analytics, and webhooks in one MCP server

@@ -1,18 +1,178 @@
 ---
 title: "Social Media CLI"
-description: "Use the Mallary CLI for local workflows, scripting, CI, and operator-friendly automation."
+description: "Mallary CLI is a social media command line tool for developers, operators, CI pipelines, and AI agents. Use it to upload media, create and schedule posts, inspect jobs, fetch analytics, manage webhooks, update settings, and disconnect platforms."
 ---
 
-Use the Mallary CLI when you want a command-line interface for uploads, posting, analytics, settings, and automation.
+Mallary CLI is a social media command line interface for developers, operators, automation scripts, CI jobs, and AI agents that need fast access to the Mallary publishing platform.
 
-## What It Covers
+If you want a social media CLI for uploading media, creating posts, scheduling content, inspecting jobs, reading analytics, managing webhooks, or updating brand settings, Mallary CLI gives you a direct command-line client for the public Mallary platform.
 
-- installation and auth
-- quickstart commands
-- post creation
-- settings
-- automation and CI usage
+## Start here
 
-<Card title="Open CLI docs" icon="package" href="/cli-reference/introduction">
-  Go to the full CLI reference.
-</Card>
+<CardGroup cols={2}>
+  <Card title="CLI Overview" icon="package" href="/cli-reference/introduction">
+    Start with what the CLI covers, who it is for, and how it maps to the
+    Mallary platform.
+  </Card>
+  <Card title="Install" icon="download" href="/cli-reference/install">
+    Install, update, or remove the Mallary CLI with npm or npx.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/cli-reference/quickstart">
+    Run your first health check, upload, post creation, and job lookup commands.
+  </Card>
+  <Card title="Automation" icon="workflow" href="/cli-reference/automation">
+    Use the CLI in scripts, CI pipelines, and AI-driven automation flows.
+  </Card>
+</CardGroup>
+
+## What the Mallary CLI does
+
+With the CLI you can:
+
+- upload local media files
+- create and schedule posts
+- inspect publishing jobs
+- list grouped posts
+- fetch analytics
+- create, list, and delete webhooks
+- update settings for brand and auto-reply behavior
+- disconnect platforms
+
+## Who the Mallary CLI is for
+
+Mallary CLI is useful for:
+
+- developers who want quick local testing
+- operators who prefer shell workflows over dashboards
+- CI pipelines that need social publishing steps
+- scripts that automate content workflows
+- AI agents that need a stable command interface
+
+## How Mallary CLI works
+
+Mallary CLI is a direct client for the public Mallary API.
+
+It does not bypass:
+
+- plan limits
+- feature gates
+- platform rules
+
+The CLI is a convenient interface over the same underlying Mallary system used by the dashboard, REST API, and MCP server.
+
+## Authentication
+
+Mallary CLI uses environment-variable authentication only.
+
+```bash
+export MALLARY_API_KEY="your_mallary_api_key"
+```
+
+## Installation
+
+Install globally:
+
+```bash
+npm install -g @mallary/cli
+```
+
+Run without a global install:
+
+```bash
+npx @mallary/cli --help
+```
+
+## Common commands
+
+Examples:
+
+```bash
+mallary health
+mallary upload ./launch.mp4
+mallary posts create --message "Hello from Mallary" --platform facebook
+mallary posts list
+mallary jobs get 123
+mallary analytics list
+mallary webhooks list
+mallary settings get
+mallary platforms disconnect facebook
+```
+
+## Media handling
+
+Mallary CLI is designed to make media uploads easier in local and scripted workflows.
+
+Current behavior includes:
+
+- local files are uploaded to Mallary automatically
+- external remote media URLs are rejected
+- existing `https://files.mallary.ai/...` URLs are allowed
+
+This is useful because many downstream social platforms expect trusted hosted media URLs.
+
+## Posting and scheduling
+
+Mallary CLI supports both simple and advanced post creation flows.
+
+You can:
+
+- create posts from flags
+- create posts from JSON payload files
+- schedule posts
+- attach media
+- add follow-up comments
+- enable per-post AI auto reply
+- use platform-specific payloads in file mode
+
+The CLI is especially helpful when you want to test the same post payloads you plan to send from automation or backend systems.
+
+## Supported platform-specific payload areas
+
+The current CLI README documents platform-specific payload examples for:
+
+- Facebook
+- Instagram
+- LinkedIn
+- YouTube
+- TikTok
+- Pinterest
+- Reddit
+- Google Business
+- Snapchat
+- X
+
+## JSON output and automation
+
+Mallary CLI supports `--json` output for scripting and automated workflows.
+
+That makes it a good fit for:
+
+- shell scripts
+- GitHub Actions
+- CI jobs
+- agent toolchains
+- local testing before integrating with the raw API
+
+## Plans and access
+
+CLI access is available on paid plans only:
+
+- Starter
+- Pro
+- Business
+
+Current product rules also mean:
+
+- Free plans do not have CLI access
+- analytics access follows plan capabilities
+- AI auto-reply features follow plan capabilities
+
+## Good fit for the Mallary CLI
+
+Mallary CLI is a strong fit if you want:
+
+- the fastest way to test Mallary without building an API client
+- shell-first social media automation
+- a CI-friendly publishing interface
+- a command surface for AI agents or local scripts
+- easy local-media-to-post workflows

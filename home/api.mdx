@@ -1,20 +1,225 @@
 ---
 title: "Social Media API"
-description: "Start with the Mallary REST API for uploads, posting, analytics, webhooks, and platform management."
+description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across Facebook, Instagram, LinkedIn, YouTube, TikTok, Pinterest, Reddit, Google Business, Snapchat, and X."
 ---
 
-Use the Mallary REST API when you want direct HTTP access to the full publishing platform.
+Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, managing webhooks, and controlling connected publishing platforms from one integration.
 
-## What It Covers
+If you are looking for a social media posting API, a social media scheduling API, or a multi-platform publishing API for your app, backend, automation workflow, or AI agent, Mallary is the API layer behind the Mallary product.
 
-- presigned uploads
-- post creation and scheduling
-- job status
-- grouped posts
-- analytics
-- webhooks
-- platform disconnects
+## Start here
 
-<Card title="Open API docs" icon="terminal" href="/api-reference/introduction">
-  Go to the full API reference.
-</Card>
+<CardGroup cols={2}>
+  <Card title="API Overview" icon="terminal" href="/api-reference/introduction">
+    Read the API overview, authentication model, platform support, and posting
+    capabilities.
+  </Card>
+  <Card
+    title="Upload Media"
+    icon="upload"
+    href="/api-reference/endpoint/upload"
+  >
+    Start with presigned uploads if your workflow includes images or video.
+  </Card>
+  <Card
+    title="Create a Post"
+    icon="square-pen"
+    href="/api-reference/endpoint/create"
+  >
+    Publish or schedule a post across one or more connected social platforms.
+  </Card>
+  <Card
+    title="Track Jobs and Posts"
+    icon="list-checks"
+    href="/api-reference/endpoint/get"
+  >
+    Check job progress, grouped posts, analytics, retries, and final publish
+    results.
+  </Card>
+</CardGroup>
+
+## What the Mallary API does
+
+With the Mallary API you can:
+
+- upload local or generated media for publishing
+- create posts across multiple social platforms in one request
+- schedule posts for future publishing
+- track per-platform job status and publish results
+- list grouped posts and retries
+- fetch analytics snapshots for published content
+- create, list, and delete webhooks
+- disconnect a platform from the authenticated account
+
+## Why developers use the Mallary API
+
+The Mallary API is designed for teams that want one integration instead of maintaining separate posting logic for every platform.
+
+It is useful for:
+
+- SaaS products that need built-in social publishing
+- internal tools for marketing and operations teams
+- automation pipelines
+- AI agents that need to publish or inspect social content
+- scripts and server-side workflows that need reliable API-based posting
+
+## Base URL
+
+```text
+https://mallary.ai
+```
+
+## Authentication
+
+Authenticate with your Mallary API key:
+
+```http
+Authorization: Bearer <mallary_api_key>
+```
+
+The API key owner is always authoritative. Identity is resolved from the API key, not from a supplied `user_id`.
+
+## Core API features
+
+The current public API supports:
+
+- presigned media uploads through `POST /api/v1/upload`
+- post creation and scheduling through `POST /api/v1/post`
+- job status lookup through `GET /api/v1/jobs/{id}`
+- grouped post listing through `GET /api/v1/posts`
+- deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
+- analytics snapshots through `GET /api/v1/analytics`
+- platform disconnect through `POST /api/v1/disconnect`
+- webhook listing, creation, and deletion through `/api/v1/webhooks`
+
+## Supported social media platforms
+
+Mallary currently publishes through a single API to:
+
+- X
+- Facebook
+- Instagram
+- LinkedIn
+- YouTube
+- TikTok
+- Pinterest
+- Reddit
+- Google Business
+- Snapchat
+
+The OpenAPI enum also includes both `x` and `twitter` identifiers for compatibility with older data.
+
+## Common Mallary API workflow
+
+Most integrations follow this path:
+
+1. Upload media and get a public Mallary file URL.
+2. Create a post with one or more target platforms.
+3. Poll the job endpoint for per-platform status.
+4. Use grouped post listing and analytics endpoints for downstream reporting.
+5. Optionally subscribe to webhooks instead of polling everything yourself.
+
+## Media upload and publishing model
+
+Mallary stores media on Cloudflare R2 and serves it from the Mallary files domain.
+
+The normal flow is:
+
+1. call the upload endpoint to get a presigned upload URL and final media URL
+2. upload bytes to the returned URL
+3. pass the returned public `mediaUrl` into the post request
+
+This keeps posting requests simple and gives downstream platforms a stable hosted media URL.
+
+## Posting and scheduling features
+
+`POST /api/v1/post` supports more than basic single-platform publishing.
+
+The request can include:
+
+- one or more target platforms
+- media attachments
+- follow-up comments with `comments_under_post`
+- scheduled publishing with `scheduled_at`
+- per-post AI auto-reply override with `auto_reply_enabled`
+- per-platform configuration in `platform_options`
+- optional completion callback with `webhook_url`
+- optional `Idempotency-Key` header
+- optional `X-Mallary-Client` header
+
+Mallary enqueues one job per platform and returns job IDs plus a `batch_id` so you can track multi-platform work as one logical post.
+
+## Platform-specific options
+
+The current OpenAPI specification documents platform-specific payload areas for:
+
+- Facebook
+- Instagram
+- YouTube
+- Pinterest
+- Reddit
+- Google Business
+- Snapchat
+
+Examples include post type selection, Pinterest board selection, YouTube visibility, and Google Business call-to-action data.
+
+## Analytics, job tracking, and grouped posts
+
+The Mallary API is not just for submission.
+
+You can also use it to:
+
+- read job state while a post is queued, delayed, processing, completed, or failed
+- inspect per-platform post results
+- list grouped posts with retry information
+- retrieve analytics snapshots for recent content or one specific post
+
+This is useful when you need a real publishing workflow instead of a fire-and-forget endpoint.
+
+## Webhooks
+
+Mallary webhooks let your integration react to publishing lifecycle events without constant polling.
+
+The current documented webhook events include:
+
+- `post.scheduled`
+- `post.published`
+- `post.failed`
+- `post.partial`
+- `auto_reply.posted`
+- `*` to receive all supported events
+
+## Plans and feature gating
+
+Some features are gated by plan.
+
+Current platform behavior and product rules include:
+
+- Free plans do not have scheduling
+- Free plans do not have analytics access
+- Free plans do not have AI auto replies
+- Free plans do not have MCP access
+- Free plans do not have CLI access
+- Starter plans include scheduling, analytics, MCP, and CLI
+- Pro and Business plans include AI auto replies in addition to scheduling and analytics
+
+For API users, this means some requests may return plan-related errors if the authenticated account does not have access to a requested capability.
+
+## Rate limits
+
+Rate limits are enforced per user, per minute, based on subscription plan:
+
+- plan `1`: `75` requests per minute
+- plan `2`: `150` requests per minute
+- plan `3`: `750` requests per minute
+- plan `4`: `1500` requests per minute
+
+## Good fit for the Mallary API
+
+Mallary API is a strong fit if you want:
+
+- one social media API instead of many platform integrations
+- direct REST access instead of a CLI
+- a publishing backend for your product
+- reliable job status and grouped result tracking
+- analytics and webhook support in the same platform
