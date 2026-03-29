@@ -145,7 +145,6 @@ The request can include:
 - per-platform configuration in `platform_options`
 - optional completion callback with `webhook_url`
 - optional `Idempotency-Key` header
-- optional `X-Mallary-Client` header
 
 Mallary enqueues one job per platform and returns job IDs plus a `batch_id` so you can track multi-platform work as one logical post.
 

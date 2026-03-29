@@ -60,11 +60,6 @@ paths:
             type: string
           description: Optional idempotency key to prevent duplicate submissions.
         - in: header
-          name: X-Mallary-Client
-          required: false
-          schema:
-            type: string
-          description: Optional caller label.
       requestBody:
         required: true
         content:
@@ -323,9 +318,9 @@ paths:
 components:
   securitySchemes:
     apiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
+      type: http
+      scheme: bearer
+      bearerFormat: API key
       description: "Use `Authorization: Bearer {api_key}`"
 
   schemas:
