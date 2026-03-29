@@ -87,6 +87,26 @@ The OpenAPI spec currently documents platform-specific payload areas for:
 - Google Business
 - Snapchat
 
+When you need the exact supported `platform_options` shape, field names, and examples, use the canonical reference here:
+
+[Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+## Platform-Specific Media Rules
+
+Mallary also enforces platform-specific media rules before jobs are queued.
+
+Examples:
+
+- YouTube requires exactly one video.
+- Pinterest requires exactly one image or GIF, or exactly one video, and also requires `boardId`.
+- Reddit image posts require one image or GIF, while Reddit video upload is not supported by the current public API path.
+- Google Business currently requires one JPEG or PNG image.
+- X allows up to 4 images or 1 video or 1 GIF.
+
+For the full per-platform matrix and current runtime caveats, see:
+
+[Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
 ## Rate Limits
 
 Rate limits are enforced per user, per minute, by plan:

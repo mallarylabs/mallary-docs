@@ -32,3 +32,28 @@ These tools cover:
 - webhook listing
 - webhook creation
 - webhook deletion
+
+## Platform-specific options
+
+`mallary_create_post` uses the same underlying post payload as the Mallary API, including `platform_options` for platform-specific behavior.
+
+For the exact supported `platform_options` fields and examples, use the API reference here:
+
+[Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+## Platform-specific media rules
+
+`mallary_create_post` also uses the same platform media validation rules as the Mallary API.
+
+Examples:
+
+- YouTube requires exactly one video.
+- TikTok currently requires one video file.
+- Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
+- Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
+- Google Business currently requires one JPEG or PNG image.
+- X allows up to 4 images, or 1 video, or 1 GIF.
+
+For the full per-platform matrix and current runtime caveats, see:
+
+[Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)

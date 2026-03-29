@@ -141,6 +141,25 @@ It uses the same underlying platform as the dashboard, REST API, and CLI, which 
 - account identity still comes from the same Mallary user account
 - job and analytics behavior stay aligned across product surfaces
 
+When an MCP tool creates posts, any platform-specific posting behavior still comes from the API request model, especially `platform_options`.
+
+For the exact supported fields and examples by platform, see:
+
+[Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+The same is true for media validation.
+
+Examples:
+
+- YouTube requires exactly one video.
+- TikTok currently requires one video file.
+- Pinterest requires exactly one image or GIF, or exactly one video.
+- Google Business currently requires one JPEG or PNG image.
+
+For the full matrix of platform-specific media rules, see:
+
+[Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
 ## Plans and feature access
 
 MCP access is available on paid plans only.

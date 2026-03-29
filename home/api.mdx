@@ -162,6 +162,27 @@ The current OpenAPI specification documents platform-specific payload areas for:
 
 Examples include post type selection, Pinterest board selection, YouTube visibility, and Google Business call-to-action data.
 
+For the exact `platform_options` structure and currently documented fields by platform, see:
+
+[Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+## Platform-specific media rules
+
+Mallary also applies platform-specific media validation before a post is queued.
+
+Important examples:
+
+- YouTube requires exactly one video.
+- Instagram currently works best with one image or one video in the public publisher implementation.
+- TikTok currently requires one video file.
+- Pinterest requires exactly one image or GIF, or exactly one video.
+- Google Business currently requires one JPEG or PNG image.
+- X allows up to 4 images, or 1 video, or 1 GIF.
+
+For the full matrix, including LinkedIn, Reddit, Snapchat, and current runtime caveats, see:
+
+[Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
 ## Analytics, job tracking, and grouped posts
 
 The Mallary API is not just for submission.

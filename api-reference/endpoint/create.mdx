@@ -3,3 +3,83 @@ title: "Create Post"
 description: "Create or schedule a post across one or more connected platforms."
 openapi: "POST /api/v1/post"
 ---
+
+## Platform-Specific Media Rules
+
+Mallary validates media before queueing a platform job. These are the media rules currently enforced by the public API and current publisher implementations.
+
+### Facebook
+
+- Feed posts can be text-only, link-only, up to 10 images, or 1 video.
+- Facebook does not allow mixing images and video in the same post.
+- Feed images accept `jpg`, `jpeg`, `png`, `gif`, and `webp`. Feed video accepts `mp4` and `mov`.
+- Facebook stories support 1 image or 1 video.
+
+### Instagram
+
+- Instagram requires media.
+- The validator currently defines:
+  feed = 1 image or 1 video,
+  story = 1 image or 1 video,
+  reel = 1 video,
+  carousel = up to 10 mixed image/video items.
+- The current public publisher implementation is stricter: it currently works with one image URL or one video URL, not a full multi-item carousel payload.
+- Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
+
+### LinkedIn
+
+- The generic validation rules allow image posts or a single video with no image/video mixing.
+- The current LinkedIn publisher implementation is stricter: text-only posts work, and media posts currently support one image attachment only.
+- Non-image LinkedIn media is currently rejected by the publisher.
+
+### YouTube
+
+- YouTube requires exactly one video.
+- `regular` video supports one video up to 12 hours and up to 256 GB.
+- `shorts` supports one video up to 3 minutes; vertical video is recommended.
+- Images are not supported for YouTube posting.
+
+### TikTok
+
+- The current public TikTok publisher requires one video file in `mp4`, `mov`, or `webm`.
+- The current runtime is video-only.
+- The rules file also defines a future photo-carousel variant with up to 35 images, but the current public publisher implementation does not publish photo carousels yet.
+
+### Pinterest
+
+- Pinterest requires exactly one image or GIF, or exactly one video.
+- Pinterest does not allow mixing image and video in the same Pin.
+- Image Pins accept one `jpg`, `jpeg`, `png`, `webp`, or `gif` file up to 32 MB.
+- Video Pins accept one `mp4` or `mov` file, 4 seconds to 15 minutes, up to 2 GB.
+- `boardId` is required for Pinterest posting.
+
+### Reddit
+
+- `text` and `link` posts do not upload media through the Mallary API.
+- `image` posts require one image or GIF up to 20 MB.
+- Reddit video upload is not supported by the current public API path; use a link post instead if you need to point at externally hosted video.
+- `subreddit` or `subredditName` is required in platform options.
+
+### Google Business
+
+- The current public API requires one `jpg`, `jpeg`, or `png` image up to 5 MB.
+- Video uploads are not supported for Google Business posting in the current public API.
+- `accountId` and `locationId` are required.
+
+### Snapchat
+
+- Snapchat posting requires Snapchat Public Profile or Marketing API access plus Mallary server credentials before any post can succeed.
+- The validation target is:
+  `story` or `saved_story` = one image or one `mp4` video,
+  `spotlight` = one `mp4` video.
+- Snapchat supports only one media item per post.
+- Snapchat video must be 5 to 60 seconds.
+- The current publisher implementation fails fast until Snapchat partner access and credentials are enabled.
+
+### X
+
+- X allows up to 4 images, or 1 video, or 1 GIF.
+- X does not allow mixing images and video in the same post.
+- GIFs cannot be combined with other attachments.
+- X images accept `jpg`, `jpeg`, `png`, `webp`, and `gif`. Video accepts `mp4` or `mov`.
+- X video supports up to 140 seconds and up to 512 MB.

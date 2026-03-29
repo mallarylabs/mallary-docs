@@ -61,6 +61,30 @@ Mallary CLI README currently documents platform-specific payload examples for:
 - Snapchat
 - X
 
+For the exact `platform_options` fields currently supported by the posting API, see:
+
+[Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+## Platform-Specific Media Rules
+
+Mallary CLI uses the same platform media validation as the Mallary API.
+
+Important current rules:
+
+- YouTube requires exactly one video.
+- Instagram currently works best with one image or one video in the public publisher implementation.
+- LinkedIn currently supports text-only posts or one image attachment only.
+- TikTok currently requires one video file.
+- Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
+- Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
+- Google Business currently requires one JPEG or PNG image.
+- X allows up to 4 images, or 1 video, or 1 GIF.
+- Snapchat requires partner/API access before posting can succeed, even though validation rules also exist for its media shapes.
+
+For the full per-platform matrix and current runtime caveats, see:
+
+[Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
 ## Comments Under Post
 
 - use repeatable `--comment` flags in flag mode
