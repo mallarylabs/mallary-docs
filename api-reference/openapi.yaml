@@ -18,7 +18,7 @@ servers:
   - url: https://mallary.ai
     description: Production
 security:
-  - apiKeyAuth: []
+  - bearerAuth: []
 paths:
   /api/v1/upload:
     post:
@@ -59,7 +59,6 @@ paths:
           schema:
             type: string
           description: Optional idempotency key to prevent duplicate submissions.
-        - in: header
       requestBody:
         required: true
         content:
@@ -317,10 +316,9 @@ paths:
 
 components:
   securitySchemes:
-    apiKeyAuth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: API key
       description: "Use `Authorization: Bearer {api_key}`"
 
   schemas:
