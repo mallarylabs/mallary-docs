@@ -30,21 +30,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUploadRequest'
+              $ref: "#/components/schemas/CreateUploadRequest"
       responses:
-        '200':
+        "200":
           description: Upload metadata created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateUploadResponse'
-        '400':
+                $ref: "#/components/schemas/CreateUploadResponse"
+        "400":
           description: Invalid request (missing filename/size, unsupported MIME type, or size exceeded)
-        '401':
+        "401":
           description: Missing or invalid API key
-        '403':
+        "403":
           description: Supplied `user_id` (if any) does not match API key owner
-        '429':
+        "429":
           description: Rate limit exceeded
 
   /api/v1/post:
@@ -64,23 +64,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePostRequest'
+              $ref: "#/components/schemas/CreatePostRequest"
       responses:
-        '200':
+        "200":
           description: Jobs enqueued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreatePostResponse'
-        '400':
+                $ref: "#/components/schemas/CreatePostResponse"
+        "400":
           description: Validation error (platform/media constraints, unsupported platform, etc.)
-        '401':
+        "401":
           description: Missing or invalid API key
-        '402':
+        "402":
           description: Posting limit reached for current plan
-        '403':
+        "403":
           description: Feature not available on current plan, or supplied `user_id` does not match API key owner
-        '429':
+        "429":
           description: Rate limit exceeded
 
   /api/v1/jobs/{id}:
@@ -96,17 +96,17 @@ paths:
             type: string
           description: Job ID returned by `POST /api/v1/post`.
       responses:
-        '200':
+        "200":
           description: Job found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetJobResponse'
-        '401':
+                $ref: "#/components/schemas/GetJobResponse"
+        "401":
           description: Missing or invalid API key
-        '403':
+        "403":
           description: Supplied `user_id` (if any) does not match API key owner
-        '404':
+        "404":
           description: Job not found
 
   /api/v1/posts:
@@ -131,15 +131,15 @@ paths:
             maximum: 100
             default: 10
       responses:
-        '200':
+        "200":
           description: Posts retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListPostsResponse'
-        '401':
+                $ref: "#/components/schemas/ListPostsResponse"
+        "401":
           description: Missing or invalid API key
-        '403':
+        "403":
           description: Supplied `user_id` (if any) does not match API key owner
 
   /api/v1/posts/{id}:
@@ -154,19 +154,19 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeletePostResponse'
-        '400':
+                $ref: "#/components/schemas/DeletePostResponse"
+        "400":
           description: Invalid post id
-        '401':
+        "401":
           description: Missing or invalid API key
-        '404':
+        "404":
           description: Post not found
-        '409':
+        "409":
           description: Post already started publishing and can no longer be deleted
 
   /api/v1/analytics:
@@ -182,7 +182,7 @@ paths:
             type: integer
           description: Filter to a single post/job ID owned by the authenticated user.
       responses:
-        '200':
+        "200":
           description: Analytics retrieved
           content:
             application/json:
@@ -198,12 +198,12 @@ paths:
                       analytics:
                         type: array
                         items:
-                          $ref: '#/components/schemas/AnalyticsItem'
-        '401':
+                          $ref: "#/components/schemas/AnalyticsItem"
+        "401":
           description: Missing or invalid API key
-        '403':
+        "403":
           description: Analytics are not available for current plan, or supplied `user_id` does not match API key owner
-        '404':
+        "404":
           description: Post not found
 
   /api/v1/disconnect:
@@ -216,19 +216,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DisconnectRequest'
+              $ref: "#/components/schemas/DisconnectRequest"
       responses:
-        '200':
+        "200":
           description: Platform disconnected
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DisconnectResponse'
-        '400':
+                $ref: "#/components/schemas/DisconnectResponse"
+        "400":
           description: Missing or invalid platform
-        '401':
+        "401":
           description: Missing or invalid API key
-        '403':
+        "403":
           description: Supplied `user_id` (if any) does not match API key owner
 
   /api/v1/webhooks:
@@ -236,15 +236,15 @@ paths:
       operationId: listWebhooks
       summary: List webhooks
       responses:
-        '200':
+        "200":
           description: Webhooks for authenticated user
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Webhook'
-        '401':
+                  $ref: "#/components/schemas/Webhook"
+        "401":
           description: Missing or invalid API key
     post:
       operationId: createWebhook
@@ -263,11 +263,11 @@ paths:
                 events:
                   type: array
                   items:
-                    $ref: '#/components/schemas/WebhookEvent'
+                    $ref: "#/components/schemas/WebhookEvent"
                 secret:
                   type: string
       responses:
-        '200':
+        "200":
           description: Created
           content:
             application/json:
@@ -282,10 +282,10 @@ paths:
                   events:
                     type: array
                     items:
-                      $ref: '#/components/schemas/WebhookEvent'
-        '400':
+                      $ref: "#/components/schemas/WebhookEvent"
+        "400":
           description: Invalid request
-        '401':
+        "401":
           description: Missing or invalid API key
 
   /api/v1/webhooks/{id}:
@@ -299,7 +299,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Deleted
           content:
             application/json:
@@ -309,9 +309,9 @@ paths:
                   status:
                     type: string
                     enum: [ok]
-        '400':
+        "400":
           description: Invalid id
-        '401':
+        "401":
           description: Missing or invalid API key
 
 components:
@@ -351,7 +351,7 @@ components:
         can_auto_reply:
           type: boolean
         tier:
-          $ref: '#/components/schemas/CapabilityTier'
+          $ref: "#/components/schemas/CapabilityTier"
 
     MediaItem:
       type: object
@@ -418,6 +418,61 @@ components:
             post_type:
               type: string
               enum: [feed, story, reel, carousel]
+        tiktok:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [video, photo]
+            media_type:
+              type: string
+              enum: [PHOTO]
+              description: Optional alias for selecting the TikTok photo variant.
+            post_mode:
+              type: string
+              enum: [DIRECT_POST, MEDIA_UPLOAD]
+              description: Use DIRECT_POST to post content directly to TikTok. Use DIRECT_POST to post content directly to TikTok. Use MEDIA_UPLOAD if you want to review and edit your content within TikTok's app before publishing. This gives you access to TikTok's built-in editing tools and lets you make final adjustments before posting.
+            source:
+              type: string
+              enum: [FILE_UPLOAD, PULL_FROM_URL]
+              description: For TikTok video posts only. Photo posts always use PULL_FROM_URL. Mallary only accepts PULL_FROM_URL media from its own CDN.
+            title:
+              type: string
+              maxLength: 2200
+              description: TikTok caption/title override. For photo posts, TikTok applies a shorter platform limit.
+            description:
+              type: string
+              maxLength: 4000
+              description: TikTok photo description override.
+            privacy_level:
+              type: string
+              enum:
+                [
+                  PUBLIC_TO_EVERYONE,
+                  MUTUAL_FOLLOW_FRIENDS,
+                  FOLLOWER_OF_CREATOR,
+                  SELF_ONLY,
+                ]
+            disable_comment:
+              type: boolean
+            disable_duet:
+              type: boolean
+            disable_stitch:
+              type: boolean
+            video_cover_timestamp_ms:
+              type: integer
+              minimum: 0
+            auto_add_music:
+              type: boolean
+            brand_content_toggle:
+              type: boolean
+            brand_organic_toggle:
+              type: boolean
+            is_aigc:
+              type: boolean
+            photo_cover_index:
+              type: integer
+              minimum: 0
         youtube:
           type: object
           properties:
@@ -485,11 +540,11 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/Platform'
+            $ref: "#/components/schemas/Platform"
         media:
           type: array
           items:
-            $ref: '#/components/schemas/MediaItem'
+            $ref: "#/components/schemas/MediaItem"
         comments_under_post:
           type: array
           maxItems: 3
@@ -504,7 +559,7 @@ components:
           type: boolean
           description: Optional per-post override for AI auto-replies.
         platform_options:
-          $ref: '#/components/schemas/PlatformOptions'
+          $ref: "#/components/schemas/PlatformOptions"
         webhook_url:
           type: string
           format: uri
@@ -524,7 +579,7 @@ components:
             type: object
             properties:
               platform:
-                $ref: '#/components/schemas/Platform'
+                $ref: "#/components/schemas/Platform"
               jobId:
                 type: string
 
@@ -561,7 +616,17 @@ components:
           type: string
         status:
           type: string
-          enum: [queued, waiting, delayed, active, processing, completed, failed, unknown]
+          enum:
+            [
+              queued,
+              waiting,
+              delayed,
+              active,
+              processing,
+              completed,
+              failed,
+              unknown,
+            ]
         attemptsMade:
           type: integer
           nullable: true
@@ -598,17 +663,17 @@ components:
           type: object
           properties:
             job:
-              $ref: '#/components/schemas/JobData'
+              $ref: "#/components/schemas/JobData"
             warnings:
               type: array
               items:
-                $ref: '#/components/schemas/AutoReplyWarning'
+                $ref: "#/components/schemas/AutoReplyWarning"
 
     PostResult:
       type: object
       properties:
         platform:
-          $ref: '#/components/schemas/Platform'
+          $ref: "#/components/schemas/Platform"
         success:
           type: boolean
           nullable: true
@@ -688,8 +753,8 @@ components:
             post_id:
               type: integer
             platform:
-              $ref: '#/components/schemas/Platform'
-        - $ref: '#/components/schemas/AnalyticsMetrics'
+              $ref: "#/components/schemas/Platform"
+        - $ref: "#/components/schemas/AnalyticsMetrics"
 
     Post:
       type: object
@@ -708,7 +773,7 @@ components:
         media:
           type: array
           items:
-            $ref: '#/components/schemas/MediaItem'
+            $ref: "#/components/schemas/MediaItem"
         status:
           type: string
           enum: [queued, scheduled, processing, partial, completed, failed]
@@ -726,17 +791,17 @@ components:
         platforms:
           type: array
           items:
-            $ref: '#/components/schemas/Platform'
+            $ref: "#/components/schemas/Platform"
         results:
           type: array
           items:
-            $ref: '#/components/schemas/PostResult'
+            $ref: "#/components/schemas/PostResult"
         retry:
-          $ref: '#/components/schemas/RetryInfo'
+          $ref: "#/components/schemas/RetryInfo"
         analytics:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/AnalyticsMetrics'
+            $ref: "#/components/schemas/AnalyticsMetrics"
 
     ListPostsResponse:
       type: object
@@ -750,13 +815,13 @@ components:
             posts:
               type: array
               items:
-                $ref: '#/components/schemas/Post'
+                $ref: "#/components/schemas/Post"
             warnings:
               type: array
               items:
-                $ref: '#/components/schemas/AutoReplyWarning'
+                $ref: "#/components/schemas/AutoReplyWarning"
             capabilities:
-              $ref: '#/components/schemas/Capabilities'
+              $ref: "#/components/schemas/Capabilities"
             meta:
               type: object
               properties:
@@ -813,7 +878,7 @@ components:
         events:
           type: array
           items:
-            $ref: '#/components/schemas/WebhookEvent'
+            $ref: "#/components/schemas/WebhookEvent"
         active:
           type: boolean
         created_at:
@@ -824,7 +889,7 @@ components:
       type: string
       description: "Use '*' to receive all events."
       enum:
-        - '*'
+        - "*"
         - post.scheduled
         - post.published
         - post.failed

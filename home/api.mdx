@@ -154,13 +154,14 @@ The current OpenAPI specification documents platform-specific payload areas for:
 
 - Facebook
 - Instagram
+- TikTok
 - YouTube
 - Pinterest
 - Reddit
 - Google Business
 - Snapchat
 
-Examples include post type selection, Pinterest board selection, YouTube visibility, and Google Business call-to-action data.
+Examples include post type selection, TikTok direct-vs-upload mode, Pinterest board selection, YouTube visibility, and Google Business call-to-action data.
 
 For the exact `platform_options` structure and currently documented fields by platform, see:
 
@@ -174,7 +175,7 @@ Important examples:
 
 - YouTube requires exactly one video.
 - Instagram currently works best with one image or one video in the public publisher implementation.
-- TikTok currently requires one video file.
+- TikTok video posts require one video, and TikTok photo posts support up to 35 images.
 - Pinterest requires exactly one image or GIF, or exactly one video.
 - Google Business currently requires one JPEG or PNG image.
 - X allows up to 4 images, or 1 video, or 1 GIF.
