@@ -378,7 +378,8 @@ components:
           description: File size in bytes.
         type:
           type: string
-          description: MIME type. Defaults to application/octet-stream if omitted.
+          default: application/octet-stream
+          description: MIME type. Defaults to `application/octet-stream` if omitted.
 
     CreateUploadResponse:
       type: object
@@ -412,38 +413,44 @@ components:
             post_type:
               type: string
               enum: [feed, story]
+              default: feed
+              description: Defaults to `feed` when omitted.
         instagram:
           type: object
           properties:
             post_type:
               type: string
               enum: [feed, story, reel, carousel]
+              default: feed
+              description: Defaults to `feed` when omitted.
         tiktok:
           type: object
           properties:
             post_type:
               type: string
               enum: [video, photo]
+              description: Defaults dynamically. Mallary picks `photo` when the media list contains only images and no videos; otherwise it uses `video`.
             media_type:
               type: string
               enum: [PHOTO]
-              description: Optional alias for selecting the TikTok photo variant.
+              description: Optional alias for selecting the TikTok photo variant. No default; use this only when you want to force photo mode via the alias.
             post_mode:
               type: string
               enum: [DIRECT_POST, MEDIA_UPLOAD]
-              description: Use DIRECT_POST to post content directly to TikTok. Use DIRECT_POST to post content directly to TikTok. Use MEDIA_UPLOAD if you want to review and edit your content within TikTok's app before publishing. This gives you access to TikTok's built-in editing tools and lets you make final adjustments before posting.
+              default: DIRECT_POST
+              description: Defaults to `DIRECT_POST`. Use `MEDIA_UPLOAD` if you want to review and edit your content within TikTok's app before publishing.
             source:
               type: string
               enum: [FILE_UPLOAD, PULL_FROM_URL]
-              description: For TikTok video posts only. Photo posts always use PULL_FROM_URL. Mallary only accepts PULL_FROM_URL media from its own CDN.
+              description: Defaults by variant. Video posts default to `FILE_UPLOAD`. Photo posts always use `PULL_FROM_URL`. Mallary only accepts `PULL_FROM_URL` media from its own CDN.
             title:
               type: string
               maxLength: 2200
-              description: TikTok caption/title override. For photo posts, TikTok applies a shorter platform limit.
+              description: TikTok caption/title override. Defaults to `message` (trimmed to TikTok's limit). For photo posts, TikTok applies a shorter platform limit.
             description:
               type: string
               maxLength: 4000
-              description: TikTok photo description override.
+              description: TikTok photo description override. No default; omitted unless supplied.
             privacy_level:
               type: string
               enum:
@@ -453,54 +460,74 @@ components:
                   FOLLOWER_OF_CREATOR,
                   SELF_ONLY,
                 ]
+              description: Defaults to the first allowed privacy level returned by TikTok creator info, preferring `SELF_ONLY`, then `FOLLOWER_OF_CREATOR`, then `MUTUAL_FOLLOW_FRIENDS`, then `PUBLIC_TO_EVERYONE`.
             disable_comment:
               type: boolean
+              description: Controls whether comments are disabled on the TikTok post. Applies to direct posts. When omitted, Mallary falls back to the creator's current TikTok comment setting.
             disable_duet:
               type: boolean
+              description: Controls whether other TikTok users can create Duets from the video. Applies to direct-post video only. When omitted, Mallary falls back to the creator's current TikTok duet setting.
             disable_stitch:
               type: boolean
+              description: Controls whether other TikTok users can create Stitches from the video. Applies to direct-post video only. When omitted, Mallary falls back to the creator's current TikTok stitch setting.
             video_cover_timestamp_ms:
               type: integer
               minimum: 0
+              description: Millisecond timestamp used to choose the video cover frame for a direct-post TikTok video. Omitted unless supplied.
             auto_add_music:
               type: boolean
+              description: For direct-post photo posts, asks TikTok to automatically add music to the photo carousel. Omitted unless supplied.
             brand_content_toggle:
               type: boolean
+              description: TikTok branded-content disclosure flag. When true, marks the post as branded content. Omitted unless supplied.
             brand_organic_toggle:
               type: boolean
+              description: TikTok brand-organic disclosure flag. Omitted unless supplied.
             is_aigc:
               type: boolean
+              description: TikTok AI-generated-content disclosure flag for direct-post video. Omitted unless supplied.
             photo_cover_index:
               type: integer
               minimum: 0
+              default: 0
+              description: Zero-based index of the image TikTok should use as the photo carousel cover. Values beyond the image count are clamped to the last image. Defaults to `0` when omitted.
         youtube:
           type: object
           properties:
             post_type:
               type: string
               enum: [regular, shorts]
+              description: Defaults dynamically. Mallary uses `shorts` when the video is short-form (<= 180s) and vertical, or when dimensions are unavailable for a short candidate; otherwise it uses `regular`.
             title:
               type: string
               maxLength: 100
+              description: Defaults to the first non-empty value of `platform_options.youtube.title`, the first line of `message`, or `Untitled Video`.
             visibility:
               type: string
               enum: [public, unlisted, private]
+              default: public
+              description: Defaults to `public`.
             categoryId:
               type: string
+              default: "22"
+              description: Defaults to YouTube category id `22`.
             madeForKids:
               type: boolean
+              default: false
+              description: Defaults to `false`.
         pinterest:
           type: object
           properties:
             post_type:
               type: string
               enum: [image, video]
+              description: Defaults dynamically. Mallary uses `video` when the media list contains a video; otherwise it uses `image`.
             title:
               type: string
               maxLength: 100
             boardId:
               type: string
-              description: Board to post into.
+              description: Board to post into. Defaults to the connected Pinterest board id from the saved token when omitted.
             link:
               type: string
               format: uri
@@ -510,6 +537,7 @@ components:
             post_type:
               type: string
               enum: [text, link, image]
+              description: Defaults dynamically. Mallary uses `image` when the media list contains an image; otherwise it uses `text`.
         google_business:
           type: object
           properties:
@@ -528,6 +556,7 @@ components:
             contentType:
               type: string
               enum: [story, saved_story, spotlight]
+              description: Defaults dynamically. Mallary uses `spotlight` when the media list contains a video; otherwise it uses `story`.
 
     CreatePostRequest:
       type: object
