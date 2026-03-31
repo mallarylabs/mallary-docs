@@ -39,7 +39,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/CreateUploadResponse"
         "400":
-          description: Invalid request (missing filename/size, unsupported MIME type, or size exceeded)
+          description: Invalid request (missing filename, invalid size when provided, unsupported MIME type, or size exceeded)
         "401":
           description: Missing or invalid API key
         "403":
@@ -367,7 +367,7 @@ components:
 
     CreateUploadRequest:
       type: object
-      required: [filename, size]
+      required: [filename]
       properties:
         filename:
           type: string
@@ -375,7 +375,7 @@ components:
         size:
           type: integer
           minimum: 1
-          description: File size in bytes.
+          description: Optional file size in bytes for early validation against the 5GB limit.
         type:
           type: string
           default: application/octet-stream
@@ -383,7 +383,7 @@ components:
 
     CreateUploadResponse:
       type: object
-      required: [uploadUrl, mediaUrl, contentType, size]
+      required: [uploadUrl, mediaUrl, contentType]
       properties:
         uploadUrl:
           type: string
@@ -397,6 +397,7 @@ components:
           type: string
         size:
           type: integer
+          description: Echoed back when a `size` value was supplied in the request.
         headers:
           type: object
           additionalProperties:
