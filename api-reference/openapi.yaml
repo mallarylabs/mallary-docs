@@ -460,7 +460,7 @@ components:
                   FOLLOWER_OF_CREATOR,
                   SELF_ONLY,
                 ]
-              description: Defaults to the first allowed privacy level returned by TikTok creator info, preferring `SELF_ONLY`, then `FOLLOWER_OF_CREATOR`, then `MUTUAL_FOLLOW_FRIENDS`, then `PUBLIC_TO_EVERYONE`.
+              description: Defaults to the first allowed privacy level returned by TikTok creator info, preferring `PUBLIC_TO_EVERYONE`, then `MUTUAL_FOLLOW_FRIENDS`, then `FOLLOWER_OF_CREATOR`, then `SELF_ONLY`.
             disable_comment:
               type: boolean
               description: Controls whether comments are disabled on the TikTok post. Applies to direct posts. When omitted, Mallary falls back to the creator's current TikTok comment setting.
