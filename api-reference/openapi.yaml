@@ -334,7 +334,6 @@ components:
         - tiktok
         - pinterest
         - reddit
-        - google_business
         - snapchat
 
     CapabilityTier:
@@ -539,18 +538,6 @@ components:
               type: string
               enum: [text, link, image]
               description: Defaults dynamically. Mallary uses `image` when the media list contains an image; otherwise it uses `text`.
-        google_business:
-          type: object
-          properties:
-            callToAction:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum: [LEARN_MORE, BOOK, ORDER, SHOP, SIGN_UP, CALL]
-                url:
-                  type: string
-                  format: uri
         snapchat:
           type: object
           properties:

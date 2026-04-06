@@ -1,6 +1,6 @@
 ---
 title: "Social Media API"
-description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across Facebook, Instagram, LinkedIn, YouTube, TikTok, Pinterest, Reddit, Google Business, Snapchat, and X."
+description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across Facebook, Instagram, LinkedIn, YouTube, TikTok, Pinterest, Reddit, Snapchat, and X."
 ---
 
 Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, managing webhooks, and controlling connected publishing platforms from one integration.
@@ -104,7 +104,6 @@ Mallary currently publishes through a single API to:
 - TikTok
 - Pinterest
 - Reddit
-- Google Business
 - Snapchat
 
 The OpenAPI enum also includes both `x` and `twitter` identifiers for compatibility with older data.
@@ -158,10 +157,9 @@ The current OpenAPI specification documents platform-specific payload areas for:
 - YouTube
 - Pinterest
 - Reddit
-- Google Business
 - Snapchat
 
-Examples include post type selection, TikTok direct-vs-upload mode, Pinterest board selection, YouTube visibility, and Google Business call-to-action data.
+Examples include post type selection, TikTok direct-vs-upload mode, Pinterest board selection, and YouTube visibility.
 
 For the exact `platform_options` structure and currently documented fields by platform, see:
 
@@ -177,7 +175,6 @@ Important examples:
 - Instagram currently works best with one image or one video in the public publisher implementation.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - Pinterest requires exactly one image or GIF, or exactly one video.
-- Google Business currently requires one JPEG or PNG image.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 
 For the full matrix, including LinkedIn, Reddit, Snapchat, and current runtime caveats, see:

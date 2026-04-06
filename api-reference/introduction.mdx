@@ -59,7 +59,6 @@ The current public platform enum includes:
 - `tiktok`
 - `pinterest`
 - `reddit`
-- `google_business`
 - `snapchat`
 
 ## Posting Features
@@ -85,7 +84,6 @@ The OpenAPI spec currently documents platform-specific payload areas for:
 - YouTube
 - Pinterest
 - Reddit
-- Google Business
 - Snapchat
 
 When you need the exact supported `platform_options` shape, field names, and examples, use the canonical reference here:
@@ -101,7 +99,6 @@ Examples:
 - YouTube requires exactly one video.
 - Pinterest requires exactly one image or GIF, or exactly one video, and also requires `boardId`.
 - Reddit image posts require one image or GIF, while Reddit video upload is not supported by the current public API path.
-- Google Business currently requires one JPEG or PNG image.
 - TikTok supports one video for video posts, or up to 35 images for photo posts.
 - X allows up to 4 images or 1 video or 1 GIF.
 
@@ -127,9 +124,3 @@ Examples called out in the spec include:
 - posting limits
 - analytics availability
 - AI auto-reply availability
-
-## OpenAPI Source
-
-This Mintlify API section is backed by:
-
-[`api-reference/openapi.yaml`](/Users/samt/Documents/Sites/mallary/docs/api-reference/openapi.yaml)
