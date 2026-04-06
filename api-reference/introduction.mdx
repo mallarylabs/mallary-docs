@@ -59,6 +59,7 @@ The current public platform enum includes:
 - `tiktok`
 - `pinterest`
 - `reddit`
+- `threads`
 - `snapchat`
 
 ## Posting Features
@@ -69,6 +70,7 @@ The current public platform enum includes:
 - media attachments
 - `comments_under_post`
 - optional scheduling via `scheduled_at`
+- timezone-aware scheduling via `scheduled_timezone` with IANA values like `America/New_York`
 - optional per-post AI auto-reply override
 - per-platform `platform_options`
 - optional `webhook_url`
@@ -84,6 +86,7 @@ The OpenAPI spec currently documents platform-specific payload areas for:
 - YouTube
 - Pinterest
 - Reddit
+- Threads
 - Snapchat
 
 When you need the exact supported `platform_options` shape, field names, and examples, use the canonical reference here:
@@ -96,6 +99,8 @@ Mallary also enforces platform-specific media rules before jobs are queued.
 
 Examples:
 
+- Threads supports `text`, `image`, `video`, and `carousel` post types. Carousel posts support 2 to 20 supported media items.
+- Scheduling supports absolute timestamps such as `2026-04-06T18:30:00Z`, or local wall-clock times such as `2026-04-06T14:30` when paired with `scheduled_timezone: "America/New_York"`.
 - YouTube requires exactly one video.
 - Pinterest requires exactly one image or GIF, or exactly one video, and also requires `boardId`.
 - Reddit image posts require one image or GIF, while Reddit video upload is not supported by the current public API path.

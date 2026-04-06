@@ -33,6 +33,14 @@ These tools cover:
 - webhook creation
 - webhook deletion
 
+## Scheduling
+
+`mallary_create_post` uses the same scheduling contract as the Mallary API:
+
+- send an absolute `scheduled_at` like `2026-04-06T18:30:00Z`
+- or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`
+- `scheduled_timezone` must be a valid IANA timezone
+
 ## Platform-specific options
 
 `mallary_create_post` uses the same underlying post payload as the Mallary API, including `platform_options` for platform-specific behavior.
@@ -47,11 +55,11 @@ For the exact supported `platform_options` fields and examples, use the API refe
 
 Examples:
 
+- Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`, and its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
 - Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
-- Google Business currently requires one JPEG or PNG image.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 
 For the full per-platform matrix and current runtime caveats, see:

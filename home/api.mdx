@@ -1,6 +1,6 @@
 ---
 title: "Social Media API"
-description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across Facebook, Instagram, LinkedIn, YouTube, TikTok, Pinterest, Reddit, Snapchat, and X."
+description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
 ---
 
 Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, managing webhooks, and controlling connected publishing platforms from one integration.
@@ -104,6 +104,7 @@ Mallary currently publishes through a single API to:
 - TikTok
 - Pinterest
 - Reddit
+- Threads
 - Snapchat
 
 The OpenAPI enum also includes both `x` and `twitter` identifiers for compatibility with older data.
@@ -140,6 +141,7 @@ The request can include:
 - media attachments
 - follow-up comments with `comments_under_post` on supported platform/format combinations
 - scheduled publishing with `scheduled_at`
+- timezone-aware wall-clock scheduling with `scheduled_timezone`
 - per-post AI auto-reply override with `auto_reply_enabled`
 - per-platform configuration in `platform_options`
 - optional completion callback with `webhook_url`
@@ -147,19 +149,22 @@ The request can include:
 
 Mallary enqueues one job per platform and returns job IDs plus a `batch_id` so you can track multi-platform work as one logical post.
 
+For scheduling, you can either send an absolute timestamp like `2026-04-06T18:30:00Z`, or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`.
+
 ## Platform-specific options
 
 The current OpenAPI specification documents platform-specific payload areas for:
 
 - Facebook
 - Instagram
+- Threads
 - TikTok
 - YouTube
 - Pinterest
 - Reddit
 - Snapchat
 
-Examples include post type selection, TikTok direct-vs-upload mode, Pinterest board selection, and YouTube visibility.
+Examples include Threads post type selection, TikTok direct-vs-upload mode, Pinterest board selection, and YouTube visibility.
 
 For the exact `platform_options` structure and currently documented fields by platform, see:
 
@@ -171,6 +176,7 @@ Mallary also applies platform-specific media validation before a post is queued.
 
 Important examples:
 
+- Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel using JPG/JPEG/PNG/WEBP/MP4/MOV media.
 - YouTube requires exactly one video.
 - Instagram currently works best with one image or one video in the public publisher implementation.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.

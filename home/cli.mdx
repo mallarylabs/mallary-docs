@@ -119,6 +119,7 @@ You can:
 - create posts from flags
 - create posts from JSON payload files
 - schedule posts
+- schedule local wall-clock times with `--scheduled-timezone`
 - attach media
 - add follow-up comments on supported platform/format combinations
 - enable per-post AI auto reply
@@ -126,12 +127,15 @@ You can:
 
 The CLI is especially helpful when you want to test the same post payloads you plan to send from automation or backend systems.
 
+For scheduling, you can either send an absolute timestamp with `--scheduled-at 2026-04-06T18:30:00Z`, or pair a local `--scheduled-at 2026-04-06T14:30` with `--scheduled-timezone America/New_York`.
+
 ## Supported platform-specific payload areas
 
 The current CLI README documents platform-specific payload examples for:
 
 - Facebook
 - Instagram
+- Threads
 - LinkedIn
 - YouTube
 - TikTok
@@ -148,8 +152,10 @@ Mallary CLI also inherits the same per-platform media rules as the API.
 
 Examples:
 
+- Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
+- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. Use `platform_options.tiktok.post_mode = DIRECT_POST` only when you want Mallary to publish directly.
 - Pinterest requires exactly one image or GIF, or exactly one video.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 

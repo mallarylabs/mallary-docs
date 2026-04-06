@@ -17,6 +17,16 @@ mallary posts create \
   --scheduled-at 2026-03-30T15:00:00Z
 ```
 
+Schedule a local wall-clock time in a specific timezone:
+
+```bash
+mallary posts create \
+  --message "Timezone-aware launch" \
+  --platform threads \
+  --scheduled-at 2026-04-06T09:30 \
+  --scheduled-timezone America/Los_Angeles
+```
+
 ## File Mode
 
 ```bash
@@ -28,11 +38,11 @@ Example:
 ```json
 {
   "message": "Launch update",
-  "platforms": ["facebook", "instagram", "linkedin"],
+  "platforms": ["threads", "linkedin"],
   "media": [{ "url": "./launch.png" }],
   "platform_options": {
-    "instagram": {
-      "post_type": "carousel"
+    "threads": {
+      "post_type": "image"
     }
   }
 }
@@ -46,6 +56,13 @@ Example:
 - external remote media URLs are rejected
 - platform-specific payloads are passed through to the API
 
+## Scheduling Rules
+
+- use `--scheduled-at 2026-04-06T18:30:00Z` when you already know the absolute publish timestamp
+- use `--scheduled-at 2026-04-06T14:30 --scheduled-timezone America/New_York` when you want a local wall-clock time in a specific timezone
+- in file mode, send `scheduled_at` and optional `scheduled_timezone`
+- `scheduled_timezone` must be an IANA timezone such as `America/New_York`
+
 ## Supported Platform-Specific Payload Areas
 
 Mallary CLI README currently documents platform-specific payload examples for:
@@ -57,6 +74,7 @@ Mallary CLI README currently documents platform-specific payload examples for:
 - TikTok
 - Pinterest
 - Reddit
+- Threads
 - Snapchat
 - X
 
@@ -64,16 +82,33 @@ For the exact `platform_options` fields currently supported by the posting API, 
 
 [Platform options reference](/api-reference/endpoint/create#body-platform-options)
 
+## Threads Notes
+
+- `platform_options.threads.post_type` can be `text`, `image`, `video`, or `carousel`.
+- When `platform_options.threads.post_type` is omitted, Mallary chooses from the media payload:
+  no media = `text`,
+  one image = `image`,
+  one video = `video`,
+  multiple supported media items = `carousel`.
+- Threads media constraints are:
+  `text` = no media,
+  `image` = 1 image,
+  `video` = 1 video,
+  `carousel` = 2 to 20 media items.
+- Threads-supported media formats are `jpg`, `jpeg`, `png`, `webp`, `mp4`, and `mov`.
+
 ## Platform-Specific Media Rules
 
 Mallary CLI uses the same platform media validation as the Mallary API.
 
 Important current rules:
 
+- Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
 - Instagram currently works best with one image or one video in the public publisher implementation.
 - LinkedIn currently supports text-only posts or one image attachment only.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
+- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. Use `platform_options.tiktok.post_mode = DIRECT_POST` only when you want Mallary to publish directly.
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
 - Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
 - X allows up to 4 images, or 1 video, or 1 GIF.
@@ -88,7 +123,7 @@ For the full per-platform matrix and current runtime caveats, see:
 - use repeatable `--comment` flags in flag mode
 - in file mode, send `comments_under_post` as an array
 - the current limit is 3 items
-- TikTok does not currently support `comments_under_post`
+- TikTok and Snapchat do not currently support `comments_under_post`
 
 Example:
 

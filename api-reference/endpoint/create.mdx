@@ -4,6 +4,12 @@ description: "Create or schedule a post across one or more connected platforms."
 openapi: "POST /api/v1/post"
 ---
 
+## Scheduling
+
+- Use `scheduled_at` with an absolute timestamp like `2026-04-06T18:30:00Z` if you already know the exact UTC or offset time you want.
+- Use `scheduled_at` with a local wall-clock time like `2026-04-06T14:30` plus `scheduled_timezone` with an IANA timezone like `America/New_York` when you want Mallary to resolve the post in a specific timezone.
+- Mallary stores the resolved publish time in UTC and returns the original `scheduled_timezone` on grouped post reads.
+
 ## Platform-Specific Media Rules
 
 Mallary validates media before queueing a platform job. These are the media rules currently enforced by the public API and current publisher implementations.
@@ -32,6 +38,25 @@ Mallary validates media before queueing a platform job. These are the media rule
 - The current LinkedIn publisher implementation is stricter: text-only posts work, and media posts currently support one image attachment only.
 - Non-image LinkedIn media is currently rejected by the publisher.
 
+### Threads
+
+- Threads supports four posting shapes:
+  `text`,
+  `image`,
+  `video`,
+  and `carousel`.
+- Text posts are text-only and cannot include media.
+- Image posts support exactly 1 image in `jpg`, `jpeg`, `png`, or `webp`.
+- Video posts support exactly 1 video in `mp4` or `mov`.
+- Carousel posts support 2 to 20 supported media items total.
+- `platform_options.threads.post_type` can be `text`, `image`, `video`, or `carousel`.
+- When `platform_options.threads.post_type` is omitted, Mallary chooses dynamically from the payload:
+  no media = `text`,
+  one image = `image`,
+  one video = `video`,
+  multiple supported media items = `carousel`.
+- `comments_under_post` is currently supported for Threads.
+
 ### YouTube
 
 - YouTube requires exactly one video.
@@ -44,7 +69,9 @@ Mallary validates media before queueing a platform job. These are the media rule
 - TikTok video posts support one video file in `mp4`, `mov`, or `webm`.
 - TikTok photo posts support up to 35 images in `jpg`, `jpeg`, or `webp`.
 - `platform_options.tiktok.post_type` can be `video` or `photo`.
-- `platform_options.tiktok.post_mode` can be `DIRECT_POST` or `MEDIA_UPLOAD`. Use DIRECT_POST to post content directly to TikTok. Use MEDIA_UPLOAD if you want to review and edit your content within TikTok's app before publishing. This gives you access to TikTok's built-in editing tools and lets you make final adjustments before posting.
+- `platform_options.tiktok.post_mode` can be `DIRECT_POST` or `MEDIA_UPLOAD`.
+- TikTok defaults to `MEDIA_UPLOAD`, which sends the upload to the creator inbox for final review and publishing inside TikTok.
+- Use `DIRECT_POST` only when you want Mallary to publish directly to TikTok without that inbox review step.
 - For TikTok video posts, `platform_options.tiktok.source` can be `FILE_UPLOAD` or `PULL_FROM_URL`.
 - For TikTok photo posts, TikTok only allows `PULL_FROM_URL`.
 - For TikTok `PULL_FROM_URL`, Mallary only accepts media already hosted on the Mallary CDN (`https://files.mallary.ai/...`).

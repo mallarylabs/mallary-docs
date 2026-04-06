@@ -143,6 +143,8 @@ It uses the same underlying platform as the dashboard, REST API, and CLI, which 
 
 When an MCP tool creates posts, any platform-specific posting behavior still comes from the API request model, especially `platform_options`.
 
+The same applies to scheduling: `mallary_create_post` accepts an absolute `scheduled_at`, or a local `scheduled_at` paired with `scheduled_timezone` using an IANA timezone such as `America/New_York`.
+
 For the exact supported fields and examples by platform, see:
 
 [Platform options reference](/api-reference/endpoint/create#body-platform-options)
@@ -151,6 +153,7 @@ The same is true for media validation.
 
 Examples:
 
+- Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel using supported JPG/JPEG/PNG/WEBP/MP4/MOV media.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - Pinterest requires exactly one image or GIF, or exactly one video.

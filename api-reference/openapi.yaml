@@ -324,6 +324,7 @@ components:
   schemas:
     Platform:
       type: string
+      description: Supported publishing platform identifier.
       enum:
         - twitter
         - x
@@ -334,6 +335,7 @@ components:
         - tiktok
         - pinterest
         - reddit
+        - threads
         - snapchat
 
     CapabilityTier:
@@ -423,6 +425,13 @@ components:
               enum: [feed, story, reel, carousel]
               default: feed
               description: Defaults to `feed` when omitted.
+        threads:
+          type: object
+          properties:
+            post_type:
+              type: string
+              enum: [text, image, video, carousel]
+              description: Defaults dynamically. Mallary uses `text` when no media is supplied, `carousel` when more than one supported media item is supplied, `video` for a single MP4/MOV item, and `image` for a single JPG/JPEG/PNG/WEBP item.
         tiktok:
           type: object
           properties:
@@ -437,8 +446,8 @@ components:
             post_mode:
               type: string
               enum: [DIRECT_POST, MEDIA_UPLOAD]
-              default: DIRECT_POST
-              description: Defaults to `DIRECT_POST`. Use `MEDIA_UPLOAD` if you want to review and edit your content within TikTok's app before publishing.
+              default: MEDIA_UPLOAD
+              description: Defaults to `MEDIA_UPLOAD`. Use `DIRECT_POST` only when you want Mallary to publish directly to TikTok instead of sending the upload to the creator inbox for final review in TikTok.
             source:
               type: string
               enum: [FILE_UPLOAD, PULL_FROM_URL]
@@ -460,7 +469,7 @@ components:
                   FOLLOWER_OF_CREATOR,
                   SELF_ONLY,
                 ]
-              description: Defaults to the first allowed privacy level returned by TikTok creator info, preferring `PUBLIC_TO_EVERYONE`, then `MUTUAL_FOLLOW_FRIENDS`, then `FOLLOWER_OF_CREATOR`, then `SELF_ONLY`. If TikTok rejects that with the unaudited-app private-account restriction, Mallary retries once with the most private allowed level.
+              description: Applies to `DIRECT_POST`. Defaults to the first allowed privacy level returned by TikTok creator info, preferring `PUBLIC_TO_EVERYONE`, then `MUTUAL_FOLLOW_FRIENDS`, then `FOLLOWER_OF_CREATOR`, then `SELF_ONLY`. If TikTok returns the private-account-only direct-post restriction, Mallary retries once with the most private allowed level.
             disable_comment:
               type: boolean
               description: Controls whether comments are disabled on the TikTok post. Applies to direct posts. When omitted, Mallary falls back to the creator's current TikTok comment setting.
@@ -560,6 +569,7 @@ components:
             $ref: "#/components/schemas/Platform"
         media:
           type: array
+          description: Optional public media URLs. For Threads, supported shapes are text-only, one image, one video, or a carousel of 2 to 20 supported media items. Threads media must be JPG, JPEG, PNG, WEBP, MP4, or MOV.
           items:
             $ref: "#/components/schemas/MediaItem"
         comments_under_post:
@@ -567,16 +577,19 @@ components:
           maxItems: 3
           items:
             type: string
-          description: Up to 3 follow-up comments/replies under the main post when supported by the target platform/format. TikTok is not currently supported.
+          description: Up to 3 follow-up comments/replies under the main post when supported by the target platform/format. TikTok and Snapchat are not currently supported.
         scheduled_at:
           type: string
-          format: date-time
-          description: Optional scheduled publish timestamp.
+          description: Optional scheduled publish timestamp. Send an absolute timestamp like `2026-04-06T18:30:00Z`, or send a local datetime like `2026-04-06T14:30` together with `scheduled_timezone`.
+        scheduled_timezone:
+          type: string
+          description: Optional IANA timezone such as `America/New_York`. When provided with a local `scheduled_at` that omits an offset, Mallary resolves the wall-clock time in this timezone and stores the resulting UTC publish time.
         auto_reply_enabled:
           type: boolean
           description: Optional per-post override for AI auto-replies.
         platform_options:
           $ref: "#/components/schemas/PlatformOptions"
+          description: Optional per-platform overrides. For Threads, use `platform_options.threads.post_type` to force `text`, `image`, `video`, or `carousel` when the media payload alone would be ambiguous.
         webhook_url:
           type: string
           format: uri
@@ -803,6 +816,9 @@ components:
           type: string
           nullable: true
         scheduled_at:
+          type: string
+          nullable: true
+        scheduled_timezone:
           type: string
           nullable: true
         platforms:
