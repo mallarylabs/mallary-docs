@@ -361,7 +361,7 @@ components:
         url:
           type: string
           format: uri
-          description: Public media URL (usually `mediaUrl` from `/api/v1/upload`).
+          description: Media URL (`mediaUrl` must be obtained from `/api/v1/upload`).
         type:
           type: string
           description: Optional MIME type hint.
@@ -569,7 +569,7 @@ components:
             $ref: "#/components/schemas/Platform"
         media:
           type: array
-          description: Optional public media URLs. For Threads, supported shapes are text-only, one image, one video, or a carousel of 2 to 20 supported media items. Threads media must be JPG, JPEG, PNG, WEBP, MP4, or MOV.
+          description: Media URLs obtained from using the /api/v1/upload endpoint.
           items:
             $ref: "#/components/schemas/MediaItem"
         comments_under_post:
@@ -577,7 +577,7 @@ components:
           maxItems: 3
           items:
             type: string
-          description: Up to 3 follow-up comments/replies under the main post when supported by the target platform/format. TikTok and Snapchat are not currently supported.
+          description: Up to 3 follow-up comments/replies under the main post when supported by the target platform/format.
         scheduled_at:
           type: string
           description: Optional scheduled publish timestamp. Send an absolute timestamp like `2026-04-06T18:30:00Z`, or send a local datetime like `2026-04-06T14:30` together with `scheduled_timezone`.
@@ -589,7 +589,7 @@ components:
           description: Optional per-post override for AI auto-replies.
         platform_options:
           $ref: "#/components/schemas/PlatformOptions"
-          description: Optional per-platform overrides. For Threads, use `platform_options.threads.post_type` to force `text`, `image`, `video`, or `carousel` when the media payload alone would be ambiguous.
+          description: Optional per-platform overrides.
         webhook_url:
           type: string
           format: uri
