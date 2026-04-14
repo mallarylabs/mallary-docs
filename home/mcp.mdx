@@ -1,11 +1,11 @@
 ---
 title: "Social Media MCP Server"
-description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, fetch analytics, manage webhooks, and disconnect platforms through Model Context Protocol."
+description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms through Model Context Protocol."
 ---
 
 Mallary MCP is a remote social media MCP server for AI assistants, agent workflows, and developer tools that speak Model Context Protocol.
 
-If you want an AI agent to post to social media, upload media, check analytics, manage webhooks, or inspect publishing jobs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
+If you want an AI agent to post to social media, upload media, check analytics, list connected platforms, manage webhooks, or inspect publishing jobs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
 
 ## Start here
 
@@ -25,8 +25,8 @@ If you want an AI agent to post to social media, upload media, check analytics, 
     Learn how to authenticate Mallary MCP with your Mallary API key.
   </Card>
   <Card title="Enabled Tools" icon="wrench" href="/mcp-reference/tools">
-    See the current Mallary MCP tool names for posting, uploads, analytics, and
-    webhooks.
+    See the current Mallary MCP tool names for posting, uploads, analytics,
+    connected platform listing, and webhooks.
   </Card>
   <Card title="Runtime Behavior" icon="workflow" href="/mcp-reference/behavior">
     Review preflight, idempotency forwarding, API parity, and error handling
@@ -46,6 +46,7 @@ With Mallary MCP you can:
 - list grouped posts
 - delete pending posts
 - fetch analytics
+- list connected platforms across Mallary's supported platform set
 - manage webhooks
 - disconnect platforms
 
@@ -112,6 +113,7 @@ The current enabled tools are:
 - `mallary_list_posts`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_platforms`
 - `mallary_disconnect_platform`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`

@@ -26,6 +26,7 @@ Identity is always resolved from the API key owner.
 - `mallary_list_posts`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_platforms`
 - `mallary_disconnect_platform`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`

@@ -13,6 +13,7 @@ Mallary MCP currently exposes these tool names:
 - `mallary_list_posts`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_platforms`
 - `mallary_disconnect_platform`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`
@@ -28,10 +29,22 @@ These tools cover:
 - post listing
 - post deletion
 - analytics retrieval
+- connected platform listing
 - platform disconnects
 - webhook listing
 - webhook creation
 - webhook deletion
+
+## Connected Platforms
+
+`mallary_list_platforms` returns Mallary's supported public platform set and marks which of those platforms are currently connected for the authenticated account.
+
+The response includes:
+
+- `platforms`: every supported public platform with a `connected` boolean
+- `connected`: the connected subset
+- `disconnected`: the remaining supported platforms
+- `counts`: connected and supported totals
 
 ## Scheduling
 

@@ -1,9 +1,9 @@
 ---
 title: "Social Media API"
-description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
+description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
 ---
 
-Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, managing webhooks, and controlling connected publishing platforms from one integration.
+Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, listing connected platforms, managing webhooks, and controlling connected publishing platforms from one integration.
 
 If you are looking for a social media posting API, a social media scheduling API, or a multi-platform publishing API for your app, backend, automation workflow, or AI agent, Mallary is the API layer behind the Mallary product.
 
@@ -48,6 +48,7 @@ With the Mallary API you can:
 - track per-platform job status and publish results
 - list grouped posts and retries
 - fetch analytics snapshots for published content
+- list which supported platforms are currently connected for the authenticated account
 - create, list, and delete webhooks
 - disconnect a platform from the authenticated account
 
@@ -89,6 +90,7 @@ The current public API supports:
 - grouped post listing through `GET /api/v1/posts`
 - deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
 - analytics snapshots through `GET /api/v1/analytics`
+- connected platform listing through `GET /api/v1/platforms`
 - platform disconnect through `POST /api/v1/disconnect`
 - webhook listing, creation, and deletion through `/api/v1/webhooks`
 

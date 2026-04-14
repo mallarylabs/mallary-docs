@@ -206,6 +206,23 @@ paths:
         "404":
           description: Post not found
 
+  /api/v1/platforms:
+    get:
+      operationId: listPlatforms
+      summary: List connected platforms
+      description: Returns Mallary's supported public platform set and marks which platforms are currently connected for the authenticated account.
+      responses:
+        "200":
+          description: Platform connection summary retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectedPlatformsResponse"
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Supplied `user_id` (if any) does not match API key owner
+
   /api/v1/disconnect:
     post:
       operationId: disconnectPlatform
@@ -322,6 +339,21 @@ components:
       description: "Use `Authorization: Bearer {api_key}`"
 
   schemas:
+    PublicPlatform:
+      type: string
+      description: Canonical public platform identifier used in connected-platform listings.
+      enum:
+        - x
+        - facebook
+        - instagram
+        - linkedin
+        - youtube
+        - tiktok
+        - pinterest
+        - reddit
+        - threads
+        - snapchat
+
     Platform:
       type: string
       description: Supported publishing platform identifier.
@@ -890,6 +922,46 @@ components:
       properties:
         platform:
           type: string
+
+    ConnectedPlatformItem:
+      type: object
+      properties:
+        platform:
+          $ref: "#/components/schemas/PublicPlatform"
+        connected:
+          type: boolean
+
+    ConnectedPlatformsCounts:
+      type: object
+      properties:
+        connected:
+          type: integer
+        supported:
+          type: integer
+
+    ConnectedPlatformsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            platforms:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectedPlatformItem"
+            connected:
+              type: array
+              items:
+                $ref: "#/components/schemas/PublicPlatform"
+            disconnected:
+              type: array
+              items:
+                $ref: "#/components/schemas/PublicPlatform"
+            counts:
+              $ref: "#/components/schemas/ConnectedPlatformsCounts"
 
     DisconnectResponse:
       type: object

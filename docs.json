@@ -51,6 +51,7 @@
               "api-reference/endpoint/posts",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/analytics",
+              "api-reference/endpoint/platforms",
               "api-reference/endpoint/disconnect",
               "api-reference/endpoint/webhooks-list",
               "api-reference/endpoint/webhooks-create",
