@@ -34,6 +34,84 @@ If you want an AI agent to post to social media, upload media, check analytics, 
   </Card>
 </CardGroup>
 
+## Add to Cursor
+
+1. Open Cursor Settings
+2. Go to Tools & MCP
+3. Click + Add new MCP server
+4. Paste the following configuration:
+```json
+{
+  "mcpServers": {
+    "mallary": {
+      "url": "https://mallary.ai/mcp"
+    }
+  }
+}
+```
+5. Save and go back to Tools & MCP
+6. When prompted, click Connect to complete the OAuth flow — you'll enter your Mallary API key in the browser
+
+## Add to Claude Code
+
+1. For Claude Code, run:
+```bash
+claude mcp add --transport http mallary https://mallary.ai/mcp
+```
+2. Then run `/mcp` and select Authenticate for Mallary to complete the OAuth flow.
+
+## Add to Claude
+
+Connect directly from Claude without manually configuring an API key:
+
+1. Go to Settings → Connectors
+2. Click Add custom connector, enter Mallary as the name and https://mallary.ai/mcp as the URL
+3. Click Authorize when prompted to complete the OAuth flow
+
+## Add to Codex
+```bash
+codex mcp add sentry --url https://mallary.ai/mcp
+```
+Launch Codex with `codex`. You'll be prompted to authenticate via OAuth.
+
+## Add to VSCode
+
+Open the Command Palette (`CMD+Shift+P`) → `MCP: Add Server` and enter:
+```
+https://mallary.ai/mcp
+```
+or, add the following to your VSCode dedicated MCP configuration file `mcp.json`:
+```json mcp.json
+{
+	"servers": {
+		"mallary": {
+			"url": "https://mallary.ai/mcp"
+		}
+	}
+}
+```
+
+## Add to OpenCode
+
+Add to your `opencode.jsonc`:
+
+```json opencode.jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "mallary": {
+      "type": "remote",
+      "url": "https://mallary.ai/mcp",
+      "oauth": {}
+    }
+  }
+}
+```
+Then authenticate:
+```bash
+opencode mcp auth mallary
+```
+
 ## What Mallary MCP does
 
 Mallary MCP exposes the same public publishing surface as the Mallary API through MCP tools.

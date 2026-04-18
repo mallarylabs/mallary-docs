@@ -25,13 +25,105 @@ Authenticate every request with your Mallary API key:
 Authorization: Bearer <mallary_api_key>
 ```
 
-The API key owner is authoritative. Do not use `user_id` to identify the caller.
-
 ## Base URL
 
 ```text
 https://mallary.ai
 ```
+
+## Flow Example: video post to multiple platforms
+
+<Steps>
+<Step title="Get a presigned URL for your video">
+
+```typescript post-a-video.ts
+const uploadMetaRes = await fetch("https://mallary.ai/api/v1/upload", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    filename: file.name, // launch.mp4
+  }),
+});
+
+const uploadMeta = await uploadMetaRes.json();
+
+// Example output:
+// {
+//   uploadUrl: "https://...",
+//   mediaUrl: "https://files.mallary.ai/uploads/launch.mp4",
+//   headers: { "Content-Type": "application/octet-stream" }
+// }
+```
+
+</Step>
+<Step title="Upload the video">
+
+```typescript post-a-video.ts
+await fetch(uploadMeta.uploadUrl, {
+  method: "PUT",
+  headers: uploadMeta.headers ?? {},
+  body: file,
+});
+
+// Example output: HTTP 200/204 from uploadMeta.uploadUrl.
+```
+
+</Step>
+<Step title="Create a post with the video attached">
+
+```typescript post-a-video.ts
+const postRes = await fetch("https://mallary.ai/api/v1/post", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    message: "Check out our new product!",
+    platforms: ["tiktok", "youtube", "facebook", "instagram"],
+    media: [{ url: uploadMeta.mediaUrl }],
+    comments_under_post: ["Find out more at https://example.com today"],
+    auto_reply_enabled: true,
+  }),
+});
+
+const post = await postRes.json();
+const jobId = post.jobs[0].jobId;
+
+// Example output:
+// {
+//   status: "queued",
+//   batch_id: "a1b2c3d4",
+//   jobs: [{ platform: "facebook", jobId: "123" }]
+// }
+```
+
+</Step>
+<Step title="Check the job status">
+
+```typescript post-a-video.ts
+const jobRes = await fetch(`https://mallary.ai/api/v1/jobs/${jobId}`, {
+  headers: { Authorization: `Bearer ${API_KEY}` },
+});
+
+const { data } = await jobRes.json();
+
+console.log(data.job);
+
+// Example output:
+// {
+//   id: "123",
+//   platform: "facebook",
+//   status: "completed",
+//   result: { postUrl: "https://..." }
+// }
+```
+
+</Step>
+</Steps>
 
 ## Core API Features
 
