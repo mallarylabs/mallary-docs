@@ -1,0 +1,50 @@
+---
+title: "Agent Skill"
+description: "Give AI agents deep knowledge of Mallary's social media scheduling APIs across 10 platforms."
+---
+
+## Install
+
+```bash
+npx skills add mallarylabs/mallary-agent
+```
+
+Or download <a href="https://github.com/mallarylabs/mallary-agent/blob/main/SKILL.md">SKILL.md</a> to upload to Claude or any AI tool manually.
+
+## What's included
+
+The skill teaches your AI agent how to use the Mallary API effectively — endpoint selection, parameter usage, pagination, uploads, and platform-specific quirks for TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, Facebook, and more.
+
+| When you say | What the skill does                           |
+| -------- | ------------------------------------- |
+| "post this video to all my accounts"     | Hands the video and publishing intent to Mallary CLI, which handles upload, queuing, platform-specific posting, retries, status tracking, and reporting. |
+| "Schedule these 2 video posts for tomorrow at 9am and 3pm."      | Understand the scheduling request, resolves “tomorrow at 9am and 3pm” into exact timestamps, uploads the two videos to the Mallary CDN, creates two scheduled post jobs through Mallary’s API or MCP, and Mallary’s worker later publishes them to the user’s connected accounts while tracking status, retries, and failures. |
+| "How did yesterday's post do?" | Recognize an analytics request. Resolves “yesterday” to the correct date range, authenticates through Mallary’s API or MCP, finds the user’s posts from that day, and retrieves available performance data such as views, likes, comments, shares, clicks, or platform-specific metrics. |
+
+## Authentication
+
+Authenticate with your Mallary API key:
+
+```http
+Authorization: Bearer <mallary_api_key>
+```
+
+<Card
+  title="Get your API Key"
+  href="https://mallary.ai"
+  horizontal
+>
+  <ol>
+    <li>Sign up at https://mallary.ai</li>
+    <li>Connect your social media accounts in the Mallary dashboard</li>
+    <li>Get your Mallary API key</li>
+  </ol>
+</Card>
+
+
+## Skill vs MCP
+The MCP server gives your AI agent direct API access — it can call Mallary endpoints on your behalf. The skill teaches the agent best practices for using those APIs: which endpoint to pick, how to upload files, and platform-specific gotchas. Use them together for the best experience, or independently.
+
+## Links
+- <a href="https://github.com/mallarylabs/mallary-agent" target="_blank">GitHub Repository</a>
+- <a href="/home/mcp">MCP Integration</a> — for direct API access from your agent

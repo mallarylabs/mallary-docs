@@ -31,7 +31,7 @@
         "groups": [
           {
             "group": "Developer docs",
-            "pages": ["index", "home/api", "home/mcp", "home/cli"]
+            "pages": ["index", "home/api", "home/mcp", "home/cli", "home/agent-skill"]
           }
         ]
       },
