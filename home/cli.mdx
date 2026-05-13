@@ -91,9 +91,11 @@ Examples:
 mallary health
 mallary upload ./launch.mp4
 mallary posts create --message "Hello from Mallary" --platform facebook
+mallary posts create --message "Hello from another profile" --platform facebook --profile-id AbC123xYz90
 mallary posts list
 mallary jobs get 123
 mallary analytics list
+mallary profiles list
 mallary webhooks list
 mallary settings get
 mallary platforms list
@@ -189,6 +191,8 @@ Current product rules also mean:
 
 - Free plans do not have CLI access
 - analytics access follows plan capabilities
+- use `mallary profiles list` to find the random public profile ID for non-default profiles
+- use `--profile-id` for non-default profiles when posting, listing posts, reading analytics/settings, listing platforms, or disconnecting a platform
 - AI auto-reply features follow plan capabilities
 
 ## Good fit for the Mallary CLI

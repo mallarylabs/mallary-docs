@@ -4,6 +4,12 @@ description: "Create or schedule a post across one or more connected platforms."
 openapi: "POST /api/v1/post"
 ---
 
+## Connection Profiles
+
+Use `profile_id` to publish from a non-default connection profile. Omit it to use the default profile.
+
+Connection profiles let one Mallary user connect multiple accounts on the same platform. Plan caps per platform are: Free 1, Starter 4, Pro 10, Business 50.
+
 ## Scheduling
 
 - Use `scheduled_at` with an absolute timestamp like `2026-04-06T18:30:00Z` if you already know the exact UTC or offset time you want.

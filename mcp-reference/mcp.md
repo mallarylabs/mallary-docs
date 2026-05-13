@@ -37,6 +37,8 @@ Identity is always resolved from the API key owner.
 - MCP tools route through existing `/api/v1/*` handlers (no duplicated posting logic).
 - `mallary_create_post` runs preflight first by default (`run_preflight=true`).
 - `Idempotency-Key` is forwarded when `idempotency_key` is provided.
+- Use `mallary_list_profiles` to list random public profile IDs.
+- Publishing, post listing, analytics, platform listing, and disconnect tools accept `profile_id` for non-default connection profiles.
 - Non-2xx API results are returned as structured MCP errors with:
   - `http_status`
   - `code`

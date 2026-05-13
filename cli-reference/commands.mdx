@@ -27,6 +27,7 @@ This command:
 
 ```bash
 mallary posts list
+mallary posts list --profile-id AbC123xYz90
 mallary posts list --page 2 --per-page 25 --json
 mallary posts delete 123
 ```
@@ -42,7 +43,15 @@ mallary jobs get 123 --json
 
 ```bash
 mallary analytics list
+mallary analytics list --profile-id AbC123xYz90
 mallary analytics list --post-id 123
+```
+
+## Profiles
+
+```bash
+mallary profiles list
+mallary profiles list --json
 ```
 
 ## Webhooks
@@ -72,12 +81,16 @@ mallary webhooks delete 12
 
 ```bash
 mallary settings get
+mallary settings get --profile-id AbC123xYz90
 mallary settings update --file ./settings.partial.json
+mallary settings update --file ./settings.partial.json --profile-id AbC123xYz90
 ```
 
 ## Platforms
 
 ```bash
 mallary platforms list
+mallary platforms list --profile-id AbC123xYz90
 mallary platforms disconnect facebook
+mallary platforms disconnect facebook --profile-id AbC123xYz90
 ```

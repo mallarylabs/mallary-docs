@@ -136,6 +136,8 @@ The current OpenAPI spec documents:
 - deletion of queued or scheduled posts
 - analytics snapshots
 - connected platform listing
+- connection profile management
+- profile-scoped brand and AI auto-reply settings
 - platform disconnects
 - webhook listing, creation, and deletion
 
@@ -160,6 +162,7 @@ The current public platform enum includes:
 `POST /api/v1/post` supports:
 
 - one or more target platforms
+- optional `profile_id` for non-default connection profiles
 - media attachments
 - `comments_under_post`
 - optional scheduling via `scheduled_at`
@@ -203,6 +206,21 @@ Examples:
 For the full per-platform matrix and current runtime caveats, see:
 
 [Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
+## Connection Profiles
+
+Mallary supports multiple connected accounts per platform by grouping connections into named profiles. Existing accounts use the default profile.
+
+Use `GET /api/v1/profiles` to list each profile's random public ID, such as `AbC123xYz90`.
+
+Pass `profile_id` to publish, list posts, read analytics, list connected platforms, update settings, or disconnect a platform for a non-default profile.
+
+Per-platform account caps by plan are:
+
+- Free: `1`
+- Starter: `4`
+- Pro: `10`
+- Business: `50`
 
 ## Rate Limits
 

@@ -7,12 +7,14 @@ description: "Read and update brand and auto-reply settings from the CLI."
 
 ```bash
 mallary settings get
+mallary settings get --profile-id AbC123xYz90
 ```
 
 ## Update Settings
 
 ```bash
 mallary settings update --file ./settings.partial.json
+mallary settings update --file ./settings.partial.json --profile-id AbC123xYz90
 ```
 
 Example partial payload:
@@ -48,6 +50,8 @@ Example partial payload:
 ## Notes
 
 - `mallary settings update --file ...` accepts partial updates
+- settings are profile-scoped; omit `--profile-id` to use the default profile
+- use `mallary profiles list` to find profile IDs
 - `auto_reply_enabled` can only be turned on for plans that include AI auto reply
 - enabling `auto_reply_enabled` also requires:
   `business_name`, `website_url`, `business_description`, `services`, and `contact_info`

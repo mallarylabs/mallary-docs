@@ -10,6 +10,7 @@ mallary posts create \
   --message "Hello from Mallary CLI" \
   --platform facebook \
   --platform linkedin \
+  --profile-id AbC123xYz90 \
   --media ./hero.png \
   --comment "Follow-up comment 1" \
   --comment "Follow-up comment 2" \
@@ -38,6 +39,7 @@ Example:
 ```json
 {
   "message": "Launch update",
+  "profile_id": "AbC123xYz90",
   "platforms": ["threads", "linkedin"],
   "media": [{ "url": "./launch.png" }],
   "platform_options": {
@@ -47,6 +49,8 @@ Example:
   }
 }
 ```
+
+Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `mallary profiles list` to find the random public ID for each profile.
 
 ## File Mode Rules
 

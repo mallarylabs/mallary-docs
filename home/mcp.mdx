@@ -125,6 +125,8 @@ With Mallary MCP you can:
 - delete pending posts
 - fetch analytics
 - list connected platforms across Mallary's supported platform set
+- list profile IDs with `mallary_list_profiles`
+- target non-default connection profiles with `profile_id`
 - manage webhooks
 - disconnect platforms
 
@@ -191,11 +193,14 @@ The current enabled tools are:
 - `mallary_list_posts`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_profiles`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
+
+Use `mallary_list_profiles` to find random public profile IDs. Tools that publish, list posts, read analytics, list platforms, or disconnect platforms accept `profile_id` for non-default connection profiles. Omit it to use the default profile.
 
 ## What makes Mallary MCP useful
 

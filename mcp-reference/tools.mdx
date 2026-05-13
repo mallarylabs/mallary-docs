@@ -13,6 +13,7 @@ Mallary MCP currently exposes these tool names:
 - `mallary_list_posts`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_profiles`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
 - `mallary_list_webhooks`
@@ -29,6 +30,7 @@ These tools cover:
 - post listing
 - post deletion
 - analytics retrieval
+- profile listing
 - connected platform listing
 - platform disconnects
 - webhook listing
@@ -45,6 +47,21 @@ The response includes:
 - `connected`: the connected subset
 - `disconnected`: the remaining supported platforms
 - `counts`: connected and supported totals
+- `profiles`, `profile_id`, `default_profile_id`, and `limits` for connection profile context
+
+## Connection profiles
+
+MCP tools use the default Mallary profile unless `profile_id` is provided.
+
+Use `mallary_list_profiles` to list each profile's random public ID, then pass that string as `profile_id` when targeting a non-default profile.
+
+The following tools accept `profile_id`:
+
+- `mallary_create_post`
+- `mallary_list_posts`
+- `mallary_get_analytics`
+- `mallary_list_platforms`
+- `mallary_disconnect_platform`
 
 ## Scheduling
 

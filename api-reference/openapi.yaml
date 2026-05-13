@@ -1,13 +1,19 @@
 openapi: 3.0.3
 info:
   title: Mallary API
-  version: "1.1.1"
+  version: "1.2.0"
   description: |
     Public API for multi-platform publishing, analytics, media upload, and webhooks.
 
     Authentication:
     - Use header `Authorization: Bearer {api_key}`.
     - API key identity is authoritative. Do not use `user_id` to identify a caller.
+
+    Connection profiles:
+    - Omit `profile_id` to use the authenticated user's default profile.
+    - Send the profile's random public `profile_id` when you want to publish, list posts, read analytics, list platforms, update settings, or disconnect a platform for a non-default profile.
+    - Use `GET /api/v1/profiles` to list profile IDs.
+    - Per-platform account caps by plan: Free 1, Starter 4, Pro 10, Business 50.
 
     Rate limits (per user, per minute) depend on subscription plan:
     - plan_id 1: 75 req/min
@@ -130,6 +136,12 @@ paths:
             minimum: 1
             maximum: 100
             default: 10
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Filter grouped posts to one connection profile. Omit to use the default profile.
       responses:
         "200":
           description: Posts retrieved
@@ -181,6 +193,12 @@ paths:
           schema:
             type: integer
           description: Filter to a single post/job ID owned by the authenticated user.
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Filter analytics to one connection profile. Omit to use the default profile.
       responses:
         "200":
           description: Analytics retrieved
@@ -195,6 +213,10 @@ paths:
                   data:
                     type: object
                     properties:
+                      profile_id:
+                        type: string
+                        pattern: "^[A-Za-z0-9]{6,32}$"
+                        nullable: true
                       analytics:
                         type: array
                         items:
@@ -210,7 +232,14 @@ paths:
     get:
       operationId: listPlatforms
       summary: List connected platforms
-      description: Returns Mallary's supported public platform set and marks which platforms are currently connected for the authenticated account.
+      description: Returns Mallary's supported public platform set and marks which platforms are currently connected for the selected connection profile.
+      parameters:
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Connection profile to inspect. Omit to use the default profile.
       responses:
         "200":
           description: Platform connection summary retrieved
@@ -223,11 +252,129 @@ paths:
         "403":
           description: Supplied `user_id` (if any) does not match API key owner
 
+  /api/v1/profiles:
+    get:
+      operationId: listConnectionProfiles
+      summary: List connection profiles
+      description: Returns the authenticated user's connection profiles, connected platforms per profile, and per-platform account caps for the user's plan.
+      responses:
+        "200":
+          description: Connection profiles retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileListResponse"
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Supplied `user_id` (if any) does not match API key owner
+    post:
+      operationId: createConnectionProfile
+      summary: Create connection profile
+      description: Creates a named non-default connection profile for grouping platform accounts.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConnectionProfileRequest"
+      responses:
+        "201":
+          description: Connection profile created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileMutationResponse"
+        "400":
+          description: Invalid profile name
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Supplied `user_id` (if any) does not match API key owner
+
+  /api/v1/profiles/{id}:
+    post:
+      operationId: renameConnectionProfile
+      summary: Rename connection profile
+      description: Renames one of the authenticated user's connection profiles.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RenameConnectionProfileRequest"
+      responses:
+        "200":
+          description: Connection profile renamed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileMutationResponse"
+        "400":
+          description: Missing or invalid profile id/name
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Profile not found
+
+  /api/v1/settings:
+    get:
+      operationId: getSettings
+      summary: Get profile settings
+      description: Returns brand and AI auto-reply settings for the selected connection profile.
+      parameters:
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Connection profile settings to read. Omit to use the default profile.
+      responses:
+        "200":
+          description: Settings retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsResponse"
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Supplied `user_id` (if any) does not match API key owner
+    post:
+      operationId: updateSettings
+      summary: Update profile settings
+      description: Updates brand and AI auto-reply settings for the selected connection profile.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsUpdateRequest"
+      responses:
+        "200":
+          description: Settings updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsResponse"
+        "400":
+          description: Invalid settings or incomplete auto-reply profile
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: AI auto-replies are unavailable for the current plan, or supplied `user_id` does not match API key owner
+
   /api/v1/disconnect:
     post:
       operationId: disconnectPlatform
       summary: Disconnect a platform
-      description: Removes the authenticated user's connection row for a platform.
+      description: Removes the authenticated user's connection row for a platform from the selected connection profile.
       requestBody:
         required: true
         content:
@@ -354,6 +501,12 @@ components:
         - threads
         - snapchat
 
+    ProfileId:
+      type: string
+      pattern: "^[A-Za-z0-9]{6,32}$"
+      example: AbC123xYz90
+      description: Random public connection profile ID returned by `GET /api/v1/profiles`.
+
     Platform:
       type: string
       description: Supported publishing platform identifier.
@@ -385,6 +538,8 @@ components:
           type: boolean
         tier:
           $ref: "#/components/schemas/CapabilityTier"
+        max_accounts_per_platform:
+          type: integer
 
     MediaItem:
       type: object
@@ -599,6 +754,9 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/Platform"
+        profile_id:
+          $ref: "#/components/schemas/ProfileId"
+          description: Connection profile to publish from. Omit to use the default profile.
         media:
           type: array
           description: Media URLs obtained from using the /api/v1/upload endpoint.
@@ -635,6 +793,10 @@ components:
           enum: [queued]
         batch_id:
           type: string
+        profile_id:
+          type: string
+          pattern: "^[A-Za-z0-9]{6,32}$"
+          nullable: true
         jobs:
           type: array
           items:
@@ -826,6 +988,10 @@ components:
         batch_id:
           type: string
           nullable: true
+        profile_id:
+          type: string
+          pattern: "^[A-Za-z0-9]{6,32}$"
+          nullable: true
         job_ids:
           type: array
           items:
@@ -887,6 +1053,10 @@ components:
                 $ref: "#/components/schemas/AutoReplyWarning"
             capabilities:
               $ref: "#/components/schemas/Capabilities"
+            profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
             meta:
               type: object
               properties:
@@ -922,6 +1092,193 @@ components:
       properties:
         platform:
           type: string
+        profile_id:
+          $ref: "#/components/schemas/ProfileId"
+          description: Connection profile to disconnect from. Omit to use the default profile.
+
+    PlatformProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        scope:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          nullable: true
+
+    ConnectionProfile:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/ProfileId"
+        name:
+          type: string
+        is_default:
+          type: boolean
+        connected_platforms:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicPlatform"
+        platform_profiles:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/PlatformProfile"
+        created_at:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          nullable: true
+
+    ProfileLimits:
+      type: object
+      properties:
+        max_accounts_per_platform:
+          type: integer
+
+    ProfileListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            profiles:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectionProfile"
+            default_profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            limits:
+              $ref: "#/components/schemas/ProfileLimits"
+
+    CreateConnectionProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Profile display name. Defaults to `New profile`.
+
+    RenameConnectionProfileRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    ProfileMutationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            profiles:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectionProfile"
+
+    AutoReplyProfileState:
+      type: object
+      properties:
+        ready:
+          type: boolean
+        missing_fields:
+          type: array
+          items:
+            type: string
+
+    SettingsUpdateRequest:
+      type: object
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileId"
+          description: Connection profile settings to update. Omit to use the default profile.
+        auto_reply_enabled:
+          type: boolean
+          description: Enables AI auto-replies for this profile when the plan and profile fields allow it.
+        brand_profile:
+          type: string
+        business_name:
+          type: string
+        business_description:
+          type: string
+        website_url:
+          type: string
+        services:
+          type: string
+        features:
+          type: string
+        contact_info:
+          type: string
+        pricing:
+          type: string
+        faq:
+          type: string
+
+    SettingsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            auto_reply_enabled:
+              type: boolean
+            capabilities:
+              $ref: "#/components/schemas/Capabilities"
+            auto_reply_profile:
+              $ref: "#/components/schemas/AutoReplyProfileState"
+            warnings:
+              type: array
+              items:
+                $ref: "#/components/schemas/AutoReplyWarning"
+            brand_profile:
+              type: string
+            business_name:
+              type: string
+            business_description:
+              type: string
+            website_url:
+              type: string
+            services:
+              type: string
+            features:
+              type: string
+            contact_info:
+              type: string
+            pricing:
+              type: string
+            faq:
+              type: string
 
     ConnectedPlatformItem:
       type: object
@@ -952,6 +1309,18 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/ConnectedPlatformItem"
+            profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            default_profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            profiles:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectionProfile"
             connected:
               type: array
               items:
@@ -962,6 +1331,8 @@ components:
                 $ref: "#/components/schemas/PublicPlatform"
             counts:
               $ref: "#/components/schemas/ConnectedPlatformsCounts"
+            limits:
+              $ref: "#/components/schemas/ProfileLimits"
 
     DisconnectResponse:
       type: object
@@ -971,6 +1342,10 @@ components:
           enum: [ok]
         platform:
           type: string
+        profile_id:
+          type: string
+          pattern: "^[A-Za-z0-9]{6,32}$"
+          nullable: true
 
     Webhook:
       type: object

@@ -22,6 +22,7 @@ mallary posts create \
   --message "Check out my new product video!" \
   --platform facebook \
   --platform instagram \
+  --profile-id AbC123xYz90 \
   --media ./launch.mp4
 ```
 
@@ -41,4 +42,7 @@ mallary jobs get 123
 
 ```bash
 mallary platforms list
+mallary profiles list
 ```
+
+Use `mallary profiles list` to find the random public profile ID, then pass `--profile-id` when you want to post from, list, or disconnect a non-default Mallary profile.

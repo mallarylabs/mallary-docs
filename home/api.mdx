@@ -49,6 +49,8 @@ With the Mallary API you can:
 - list grouped posts and retries
 - fetch analytics snapshots for published content
 - list which supported platforms are currently connected for the authenticated account
+- manage connection profiles for multiple accounts on the same platform
+- read and update profile-scoped brand and AI auto-reply settings
 - create, list, and delete webhooks
 - disconnect a platform from the authenticated account
 
@@ -89,6 +91,8 @@ The current public API supports:
 - deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
 - analytics snapshots through `GET /api/v1/analytics`
 - connected platform listing through `GET /api/v1/platforms`
+- connection profile management through `GET /api/v1/profiles` and `POST /api/v1/profiles`
+- profile-scoped brand and auto-reply settings through `GET /api/v1/settings` and `POST /api/v1/settings`
 - platform disconnect through `POST /api/v1/disconnect`
 - webhook listing, creation, and deletion through `/api/v1/webhooks`
 
@@ -138,6 +142,7 @@ This keeps posting requests simple and gives downstream platforms a stable hoste
 The request can include:
 
 - one or more target platforms
+- optional `profile_id` for publishing from a non-default connection profile
 - media attachments
 - follow-up comments with `comments_under_post` on supported platform/format combinations
 - scheduled publishing with `scheduled_at`
@@ -150,6 +155,23 @@ The request can include:
 Mallary enqueues one job per platform and returns job IDs plus a `batch_id` so you can track multi-platform work as one logical post.
 
 For scheduling, you can either send an absolute timestamp like `2026-04-06T18:30:00Z`, or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`.
+
+## Connection profiles
+
+Connection profiles are used to group your social media accounts. You can create a profile for each of your businesses, and then connect your social media accounts for each business inside this profile. Your default profile will be used if you don't pass a `profile_id` when making requests.
+
+Call `GET /api/v1/profiles` to list each profile's random public ID. Profile IDs are short letter/number strings like `AbC123xYz90`, not sequential database IDs.
+
+Use `profile_id` when you want to:
+
+- publish from a non-default profile
+- list posts for a specific profile
+- read analytics for a specific profile
+- list connected platforms for a specific profile
+- update brand and AI auto-reply settings for a specific profile
+- disconnect a platform from a specific profile
+
+Profile caps per platform are Free: 1, Starter: 4, Pro: 10, and Business: 50.
 
 ## Platform-specific options
 
