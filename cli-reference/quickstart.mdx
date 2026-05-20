@@ -42,7 +42,16 @@ mallary jobs get 123
 
 ```bash
 mallary platforms list
-mallary profiles list
 ```
 
-Use `mallary profiles list` to find the random public profile ID, then pass `--profile-id` when you want to post from, list, or disconnect a non-default Mallary profile.
+## List Your Profiles within Mallary
+
+Profiles are used to group your social media accounts. You can create a profile for each of your businesses, and then connect your social media accounts for each business inside this profile. Your default profile will be used if you don’t pass a `profile_id` when making requests.
+
+Each profile has a random public ID, such as AbC123xYz90. Use that ID as `profile_id` in API, MCP, and CLI requests.
+
+Omit `profile_id` on publishing and reporting endpoints to use the default profile. Send `profile_id` when you want to target a non-default profile.
+
+```bash
+mallary profiles list
+```
