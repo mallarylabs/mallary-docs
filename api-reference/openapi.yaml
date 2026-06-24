@@ -552,6 +552,10 @@ components:
         type:
           type: string
           description: Optional MIME type hint.
+        thumbnail_url:
+          type: string
+          format: uri
+          description: Optional Mallary-hosted image URL to use as the custom thumbnail or cover for a video post when supported by the target platform.
 
     CreateUploadRequest:
       type: object

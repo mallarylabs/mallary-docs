@@ -16,6 +16,34 @@ Connection profiles let one Mallary user connect multiple accounts on the same p
 - Use `scheduled_at` with a local wall-clock time like `2026-04-06T14:30` plus `scheduled_timezone` with an IANA timezone like `America/New_York` when you want Mallary to resolve the post in a specific timezone.
 - Mallary stores the resolved publish time in UTC and returns the original `scheduled_timezone` on grouped post reads.
 
+## Video Thumbnails
+
+Attach a custom thumbnail or cover to a video media item with `thumbnail_url`.
+
+```json
+{
+  "message": "Launch walkthrough",
+  "platforms": ["youtube", "facebook", "instagram", "tiktok"],
+  "media": [
+    {
+      "url": "https://files.mallary.ai/uploads/launch-video.mp4",
+      "type": "video/mp4",
+      "thumbnail_url": "https://files.mallary.ai/uploads/launch-cover.jpg"
+    }
+  ]
+}
+```
+
+`thumbnail_url` must be a Mallary-hosted image URL, usually created with `POST /api/v1/upload`. If a thumbnail is unsupported for the platform, wrong for the post type, or rejected by the provider, Mallary skips it and continues publishing the post where possible.
+
+Current thumbnail behavior:
+
+- YouTube regular videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 2 MB, requires at least 640px width when dimensions are known, and skips images that are not close to 16:9. Recommended: `1280x720` 16:9. YouTube Shorts thumbnails are skipped.
+- Facebook videos: supported for video uploads. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
+- Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
+- TikTok video posts: TikTok currently exposes frame-based cover selection through `video_cover_timestamp_ms`, not arbitrary image thumbnails. If `thumbnail_url` is supplied, Mallary does not send `video_cover_timestamp_ms` and lets TikTok use its default cover behavior.
+- TikTok photo posts: `thumbnail_url` can choose the photo cover only when it exactly matches one of the image URLs in `media[]`; Mallary then uses that image index as `photo_cover_index`. It is not uploaded as an extra photo.
+
 ## Platform-Specific Media Rules
 
 Mallary validates media before queueing a platform job. These are the media rules currently enforced by the public API and current publisher implementations.

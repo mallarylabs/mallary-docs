@@ -133,6 +133,8 @@ The normal flow is:
 2. upload bytes to the returned URL
 3. pass the returned public `mediaUrl` into the post request
 
+Use the same upload flow for custom video thumbnails. Pass the returned thumbnail `mediaUrl` as `media[].thumbnail_url` when creating the post.
+
 This keeps posting requests simple and gives downstream platforms a stable hosted media URL.
 
 ## Posting and scheduling features
@@ -144,6 +146,7 @@ The request can include:
 - one or more target platforms
 - optional `profile_id` for publishing from a non-default connection profile
 - media attachments
+- optional video thumbnail or cover URLs with `media[].thumbnail_url`
 - follow-up comments with `comments_under_post` on supported platform/format combinations
 - scheduled publishing with `scheduled_at`
 - timezone-aware wall-clock scheduling with `scheduled_timezone`

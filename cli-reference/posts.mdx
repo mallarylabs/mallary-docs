@@ -11,7 +11,8 @@ mallary posts create \
   --platform facebook \
   --platform linkedin \
   --profile-id AbC123xYz90 \
-  --media ./hero.png \
+  --media ./launch-video.mp4 \
+  --thumbnail ./launch-cover.jpg \
   --comment "Follow-up comment 1" \
   --comment "Follow-up comment 2" \
   --auto-reply-enabled \
@@ -40,11 +41,11 @@ Example:
 {
   "message": "Launch update",
   "profile_id": "AbC123xYz90",
-  "platforms": ["threads", "linkedin"],
-  "media": [{ "url": "./launch.png" }],
+  "platforms": ["youtube", "facebook"],
+  "media": [{ "url": "./launch.mp4", "thumbnail_url": "./launch-cover.jpg" }],
   "platform_options": {
-    "threads": {
-      "post_type": "image"
+    "youtube": {
+      "title": "Launch update"
     }
   }
 }
@@ -56,9 +57,32 @@ Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `ma
 
 - `--file` is mutually exclusive with payload-building flags
 - local `media[].url` file paths are uploaded to the Mallary CDN first
+- local `media[].thumbnail_url` file paths are uploaded to the Mallary CDN first
 - existing remote media URLs must already be hosted on `https://files.mallary.ai/...`
 - external remote media URLs are rejected
 - platform-specific payloads are passed through to the API
+
+## Video Thumbnails
+
+In flag mode, use `--thumbnail` with exactly one `--media` item:
+
+```bash
+mallary posts create \
+  --message "Launch walkthrough" \
+  --platform youtube \
+  --media ./launch.mp4 \
+  --thumbnail ./launch-cover.jpg
+```
+
+In file mode, put `thumbnail_url` on the media item. Local thumbnail paths are uploaded automatically, and existing remote thumbnail URLs must already be hosted on `https://files.mallary.ai/...`.
+
+Current thumbnail support:
+
+- YouTube regular videos: supported. Use `jpg`, `jpeg`, or `png` up to 2 MB. Recommended: `1280x720` 16:9. YouTube Shorts thumbnails are skipped.
+- Facebook videos: supported with `jpg`, `jpeg`, or `png` up to 10 MB.
+- Instagram videos/Reels: supported with a Mallary-hosted cover URL; use an image that matches the video placement.
+- TikTok video posts: arbitrary thumbnail images are not sent to TikTok; supplying `thumbnail_url` overrides Mallary's `video_cover_timestamp_ms` behavior and lets TikTok use its default cover.
+- TikTok photo posts: `thumbnail_url` selects the cover only when it exactly matches one of the image URLs in the same `media[]` array.
 
 ## Scheduling Rules
 

@@ -95,3 +95,22 @@ Examples:
 For the full per-platform matrix and current runtime caveats, see:
 
 [Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
+
+## Video thumbnails
+
+`mallary_create_post` accepts `thumbnail_url` on media items, using the same contract as the REST API:
+
+```json
+{
+  "platforms": ["youtube", "facebook"],
+  "message": "Launch walkthrough",
+  "media": [
+    {
+      "url": "https://files.mallary.ai/uploads/launch.mp4",
+      "thumbnail_url": "https://files.mallary.ai/uploads/launch-cover.jpg"
+    }
+  ]
+}
+```
+
+The thumbnail URL must already be hosted on `https://files.mallary.ai/...`. YouTube regular videos, Facebook videos, and Instagram videos/Reels can use custom thumbnails/covers. TikTok video posts do not accept arbitrary image thumbnails through Mallary; TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs and should become the photo cover.
