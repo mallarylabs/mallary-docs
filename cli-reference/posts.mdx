@@ -133,7 +133,7 @@ Important current rules:
 
 - Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
-- Instagram currently works best with one image or one video in the public publisher implementation.
+- Instagram supports `feed`, `story`, `reel`, and `carousel` via `platform_options.instagram.post_type`; Stories use one image/video, Reels use one video, and carousels use 2 to 10 mixed image/video items.
 - LinkedIn currently supports text-only posts or one image attachment only.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. Use `platform_options.tiktok.post_mode = DIRECT_POST` only when you want Mallary to publish directly.

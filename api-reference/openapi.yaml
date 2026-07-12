@@ -615,7 +615,7 @@ components:
               type: string
               enum: [feed, story, reel, carousel]
               default: feed
-              description: Defaults to `feed` when omitted.
+              description: Defaults to `feed` when omitted. `story` publishes one image/video as an Instagram Story without caption/follow-up comments, `reel` requires one video, and `carousel` publishes 2 to 10 image/video items as one carousel post.
         threads:
           type: object
           properties:

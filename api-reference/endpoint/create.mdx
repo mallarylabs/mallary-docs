@@ -62,8 +62,9 @@ Mallary validates media before queueing a platform job. These are the media rule
   feed = 1 image or 1 video,
   story = 1 image or 1 video,
   reel = 1 video,
-  carousel = up to 10 mixed image/video items.
-- The current public publisher implementation is stricter: it currently works with one image URL or one video URL, not a full multi-item carousel payload.
+  carousel = 2 to 10 mixed image/video items.
+- The publisher uses the matching Instagram container flow for `feed`, `story`, `reel`, and `carousel` when selected through `platform_options.instagram.post_type`.
+- Story captions and follow-up comments are not supported by Instagram's publishing API; include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 
 ### LinkedIn
