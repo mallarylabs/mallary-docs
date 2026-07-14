@@ -20,6 +20,7 @@ The skill teaches your AI agent how to use the Mallary API effectively — endpo
 | "post this video to all my accounts"     | Hands the video and publishing intent to Mallary CLI, which handles upload, queuing, platform-specific posting, retries, status tracking, and reporting. |
 | "Schedule these 2 video posts for tomorrow at 9am and 3pm."      | Understand the scheduling request, resolves “tomorrow at 9am and 3pm” into exact timestamps, uploads the two videos to the Mallary CDN, creates two scheduled post jobs through Mallary’s API or MCP, and Mallary’s worker later publishes them to the user’s connected accounts while tracking status, retries, and failures. |
 | "How did yesterday's post do?" | Recognize an analytics request. Resolves “yesterday” to the correct date range, authenticates through Mallary’s API or MCP, finds the user’s posts from that day, and retrieves available performance data such as views, likes, comments, shares, clicks, or platform-specific metrics. |
+| "Reply to everyone who commented on my launch post." | Calls Mallary's comment-list endpoint/tool for the published post, writes each reply in the user's voice, then sends the exact reply text back through Mallary's comment-reply endpoint/tool. |
 
 ## Authentication
 
@@ -44,6 +45,17 @@ Authorization: Bearer <mallary_api_key>
 
 ## Skill vs MCP
 The MCP server gives your AI agent direct API access — it can call Mallary endpoints on your behalf. The skill teaches the agent best practices for using those APIs: which endpoint to pick, how to upload files, and platform-specific gotchas. Use them together for the best experience, or independently.
+
+## Comment engagement
+
+Agents can use Mallary for post-publication engagement without browser automation:
+
+1. Find the Mallary `post_id`/job ID from the post list or job lookup.
+2. Call `GET /api/v1/comments` or MCP `mallary_list_comments`.
+3. Write the reply in the user's voice.
+4. Call `POST /api/v1/comments/reply` or MCP `mallary_reply_to_comment` with the exact reply text.
+
+Comment listing and supplied replies are available on all plans for Facebook, Instagram, Threads, LinkedIn, X, and YouTube.
 
 ## Links
 - <a href="https://github.com/mallarylabs/mallary-agent" target="_blank">GitHub Repository</a>

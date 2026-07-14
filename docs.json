@@ -49,6 +49,8 @@
               "api-reference/endpoint/create",
               "api-reference/endpoint/get",
               "api-reference/endpoint/posts",
+              "api-reference/endpoint/comments",
+              "api-reference/endpoint/comments-reply",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/analytics",
               "api-reference/endpoint/platforms",
@@ -102,6 +104,7 @@
             "pages": [
               "cli-reference/commands",
               "cli-reference/posts",
+              "cli-reference/comments",
               "cli-reference/settings",
               "cli-reference/automation"
             ]

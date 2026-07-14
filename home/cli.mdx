@@ -31,6 +31,7 @@ With the CLI you can:
 
 - upload local media files
 - create and schedule posts
+- list comments and post supplied replies on published posts
 - inspect publishing jobs
 - list grouped posts
 - fetch analytics
@@ -93,6 +94,8 @@ mallary upload ./launch.mp4
 mallary posts create --message "Hello from Mallary" --platform facebook
 mallary posts create --message "Hello from another profile" --platform facebook --profile-id AbC123xYz90
 mallary posts list
+mallary comments list --post-id 123
+mallary comments reply --post-id 123 --comment-id "1789..." --message "Thanks for checking this out."
 mallary jobs get 123
 mallary analytics list
 mallary profiles list

@@ -154,6 +154,124 @@ paths:
         "403":
           description: Supplied `user_id` (if any) does not match API key owner
 
+  /api/v1/comments:
+    get:
+      operationId: listPostComments
+      summary: List comments on a published post
+      description: Returns comments/replies for one Mallary-published platform post so an external agent can draft responses in the user's voice. Available on all plans.
+      parameters:
+        - in: query
+          name: post_id
+          required: true
+          schema:
+            type: integer
+          description: Mallary job/post ID returned by `POST /api/v1/post` or `GET /api/v1/posts`.
+        - in: query
+          name: platform
+          required: false
+          schema:
+            $ref: "#/components/schemas/CommentPlatform"
+          description: Optional platform hint. Required only when a stored post cannot be disambiguated from the job record.
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Optional connection profile ID. Omit to use the profile that created the post.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        "200":
+          description: Comments retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCommentsResponse"
+        "400":
+          description: Invalid post ID or unsupported platform
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Post not found
+        "409":
+          description: Post not published yet or platform connection unavailable
+
+  /api/v1/comments/reply:
+    post:
+      operationId: replyToComment
+      summary: Reply to a comment
+      description: Posts the exact supplied `message` as a reply/comment through the connected platform account. Mallary does not generate the text. Available on all plans.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReplyToCommentRequest"
+      responses:
+        "200":
+          description: Reply posted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReplyToCommentResponse"
+        "400":
+          description: Invalid request or unsupported platform
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Post not found
+        "409":
+          description: Post not published yet or platform connection unavailable
+        "429":
+          description: Platform or API rate limit exceeded
+
+  /api/v1/posts/{id}/comments:
+    get:
+      operationId: listPostCommentsByPath
+      summary: List comments on a published post
+      description: Path-style alias for `GET /api/v1/comments?post_id={id}`.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: platform
+          required: false
+          schema:
+            $ref: "#/components/schemas/CommentPlatform"
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        "200":
+          description: Comments retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCommentsResponse"
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Post not found
+
   /api/v1/posts/{id}:
     delete:
       operationId: deletePendingPost
@@ -180,6 +298,51 @@ paths:
           description: Post not found
         "409":
           description: Post already started publishing and can no longer be deleted
+
+  /api/v1/posts/{id}/comments/{comment_id}/reply:
+    post:
+      operationId: replyToCommentByPath
+      summary: Reply to a comment
+      description: Path-style alias for `POST /api/v1/comments/reply`.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: comment_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+                  minLength: 1
+                platform:
+                  $ref: "#/components/schemas/CommentPlatform"
+                profile_id:
+                  $ref: "#/components/schemas/ProfileId"
+      responses:
+        "200":
+          description: Reply posted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReplyToCommentResponse"
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Post not found
+        "409":
+          description: Post not published yet or platform connection unavailable
 
   /api/v1/analytics:
     get:
@@ -522,6 +685,110 @@ components:
         - reddit
         - threads
         - snapchat
+
+    CommentPlatform:
+      type: string
+      description: Platforms that currently support comment listing and reply posting through Mallary.
+      enum:
+        - facebook
+        - instagram
+        - threads
+        - linkedin
+        - x
+        - twitter
+        - youtube
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        platform:
+          $ref: "#/components/schemas/CommentPlatform"
+        post_id:
+          type: integer
+        remote_post_id:
+          type: string
+        text:
+          type: string
+        author_name:
+          type: string
+          nullable: true
+        author_id:
+          type: string
+          nullable: true
+        author_username:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          nullable: true
+        can_reply:
+          type: boolean
+
+    ListCommentsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            post_id:
+              type: integer
+            platform:
+              $ref: "#/components/schemas/CommentPlatform"
+            remote_post_id:
+              type: string
+            comments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Comment"
+            supported_platforms:
+              type: array
+              items:
+                $ref: "#/components/schemas/CommentPlatform"
+
+    ReplyToCommentRequest:
+      type: object
+      required: [post_id, comment_id, message]
+      properties:
+        post_id:
+          type: integer
+        comment_id:
+          type: string
+        message:
+          type: string
+          minLength: 1
+          description: Exact reply text to post. Mallary does not generate or rewrite this text.
+        platform:
+          $ref: "#/components/schemas/CommentPlatform"
+        profile_id:
+          $ref: "#/components/schemas/ProfileId"
+
+    ReplyToCommentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            post_id:
+              type: integer
+            platform:
+              $ref: "#/components/schemas/CommentPlatform"
+            remote_post_id:
+              type: string
+            comment_id:
+              type: string
+            reply_id:
+              type: string
+              nullable: true
+            message:
+              type: string
 
     CapabilityTier:
       type: string

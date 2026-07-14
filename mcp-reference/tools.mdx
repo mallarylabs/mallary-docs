@@ -11,6 +11,8 @@ Mallary MCP currently exposes these tool names:
 - `mallary_create_post`
 - `mallary_get_job`
 - `mallary_list_posts`
+- `mallary_list_comments`
+- `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
 - `mallary_list_profiles`
@@ -28,6 +30,7 @@ These tools cover:
 - post creation
 - job lookup
 - post listing
+- comment listing and supplied comment replies
 - post deletion
 - analytics retrieval
 - profile listing
@@ -59,9 +62,19 @@ The following tools accept `profile_id`:
 
 - `mallary_create_post`
 - `mallary_list_posts`
+- `mallary_list_comments`
+- `mallary_reply_to_comment`
 - `mallary_get_analytics`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
+
+## Comment Engagement
+
+`mallary_list_comments` and `mallary_reply_to_comment` are available on all Mallary plans.
+
+Use `mallary_list_comments` with a Mallary `post_id`/job ID to retrieve comments on a published post. Then you or your AI Agent can write a reply and pass that exact text to `mallary_reply_to_comment`.
+
+Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, and YouTube. Mallary posts only the supplied text; the MCP tool does not generate the reply. If you want auto generated replies, try our AI-Auto Replies feature.
 
 ## Scheduling
 

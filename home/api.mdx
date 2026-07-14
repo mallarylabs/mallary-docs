@@ -1,9 +1,9 @@
 ---
 title: "Social Media API"
-description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
+description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, list comments, post supplied replies, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
 ---
 
-Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, reading analytics, listing connected platforms, managing webhooks, and controlling connected publishing platforms from one integration.
+Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, listing comments, posting supplied replies, reading analytics, listing connected platforms, managing webhooks, and controlling connected publishing platforms from one integration.
 
 If you are looking for a social media posting API, a social media scheduling API, or a multi-platform publishing API for your app, backend, automation workflow, or AI agent, Mallary is the API layer behind the Mallary product.
 
@@ -47,6 +47,7 @@ With the Mallary API you can:
 - schedule posts for future publishing
 - track per-platform job status and publish results
 - list grouped posts and retries
+- list comments and post supplied replies on published posts
 - fetch analytics snapshots for published content
 - list which supported platforms are currently connected for the authenticated account
 - manage connection profiles for multiple accounts on the same platform
@@ -88,6 +89,8 @@ The current public API supports:
 - post creation and scheduling through `POST /api/v1/post`
 - job status lookup through `GET /api/v1/jobs/{id}`
 - grouped post listing through `GET /api/v1/posts`
+- comment listing through `GET /api/v1/comments`
+- supplied comment replies through `POST /api/v1/comments/reply`
 - deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
 - analytics snapshots through `GET /api/v1/analytics`
 - connected platform listing through `GET /api/v1/platforms`

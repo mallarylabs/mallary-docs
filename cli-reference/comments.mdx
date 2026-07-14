@@ -1,0 +1,27 @@
+---
+title: "Comments"
+description: "List comments on your posts, and post replies to comments, all from the Mallary CLI."
+---
+
+## List comments
+
+```bash
+mallary comments list --post-id 123
+mallary comments list --post-id 123 --platform instagram --limit 50 --json
+```
+
+Use the Mallary job/post ID from `mallary posts list` or `mallary jobs get`.
+
+## Reply to a comment
+
+```bash
+mallary comments reply \
+  --post-id 123 \
+  --comment-id "1789..." \
+  --message "Thanks for checking this out."
+```
+
+Mallary posts the exact `--message` text. If an AI agent is using the CLI, the agent should write the reply in the user's voice before calling this command.
+
+Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, and YouTube.
+

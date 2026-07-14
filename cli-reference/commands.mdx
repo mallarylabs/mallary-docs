@@ -1,6 +1,6 @@
 ---
 title: "Commands"
-description: "The main Mallary CLI commands for health, uploads, posts, jobs, analytics, webhooks, settings, and platforms."
+description: "The main Mallary CLI commands for health, uploads, posts, comments, jobs, analytics, webhooks, settings, and platforms."
 ---
 
 ## Health
@@ -33,6 +33,16 @@ mallary posts list --profile-id AbC123xYz90
 mallary posts list --page 2 --per-page 25 --json
 mallary posts delete 123
 ```
+
+## Comments
+
+```bash
+mallary comments list --post-id 123
+mallary comments list --post-id 123 --platform instagram --limit 50 --json
+mallary comments reply --post-id 123 --comment-id "1789..." --message "Thanks for checking this out."
+```
+
+Comments commands are available on all plans. They list comments from Mallary-published posts and post the exact reply text you provide.
 
 ## Jobs
 
