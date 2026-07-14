@@ -6,5 +6,10 @@ openapi: "GET /api/v1/comments"
 
 Available on all plans.
 
-Use `post_id` with the Mallary job/post ID for the published platform post. Omit `profile_id` to use the profile that created the post.
+Use `post_id` with the Mallary job/post ID returned by the posts API.
 
+If that ID belongs to a grouped multi-platform post and you omit `platform`, Mallary checks every supported platform job in the group and returns a combined comment list. The response uses `platform: "multiple"`, each comment includes its concrete `platform` and `post_id`, and `platform_errors` may include read failures for platforms where comments could not be retrieved.
+
+If you want one platform from a grouped post, pass `platform`. Mallary will route the request to the matching sibling job in that group.
+
+Own/initial comments are included when the platform returns them. They are marked with `is_own: true` and `can_reply: false` when Mallary can identify the author as the connected account.

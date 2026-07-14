@@ -206,7 +206,7 @@ paths:
     post:
       operationId: replyToComment
       summary: Reply to a comment
-      description: Posts the exact supplied `message` as a reply/comment through the connected platform account. Mallary does not generate the text. Available on all plans.
+      description: Posts the exact supplied `message` as a reply/comment through the connected platform account. Mallary does not generate the text. 
       requestBody:
         required: true
         content:
@@ -221,7 +221,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ReplyToCommentResponse"
         "400":
-          description: Invalid request or unsupported platform
+          description: Invalid request
         "401":
           description: Missing or invalid API key
         "404":
@@ -725,6 +725,24 @@ components:
           nullable: true
         can_reply:
           type: boolean
+          description: False when Mallary can identify the comment as authored by the connected account.
+        is_own:
+          type: boolean
+          description: True when Mallary can identify the comment as authored by the connected account.
+
+    CommentPlatformError:
+      type: object
+      properties:
+        post_id:
+          type: integer
+        platform:
+          $ref: "#/components/schemas/CommentPlatform"
+        http_status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
 
     ListCommentsResponse:
       type: object
@@ -738,9 +756,20 @@ components:
             post_id:
               type: integer
             platform:
-              $ref: "#/components/schemas/CommentPlatform"
+              type: string
+              description: A concrete platform for platform-specific requests, or `multiple` when comments were aggregated across a grouped multi-platform post.
+              enum:
+                - facebook
+                - instagram
+                - threads
+                - linkedin
+                - x
+                - twitter
+                - youtube
+                - multiple
             remote_post_id:
               type: string
+              nullable: true
             comments:
               type: array
               items:
@@ -749,6 +778,21 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/CommentPlatform"
+            platforms:
+              type: array
+              description: Platforms checked when a grouped multi-platform post is queried without a platform filter.
+              items:
+                $ref: "#/components/schemas/CommentPlatform"
+            unsupported_platforms:
+              type: array
+              description: Platforms in the grouped post that do not currently support comment listing through Mallary.
+              items:
+                type: string
+            platform_errors:
+              type: array
+              description: Per-platform read errors for aggregate grouped-post requests. Other platform comments may still be returned.
+              items:
+                $ref: "#/components/schemas/CommentPlatformError"
 
     ReplyToCommentRequest:
       type: object
@@ -762,10 +806,6 @@ components:
           type: string
           minLength: 1
           description: Exact reply text to post. Mallary does not generate or rewrite this text.
-        platform:
-          $ref: "#/components/schemas/CommentPlatform"
-        profile_id:
-          $ref: "#/components/schemas/ProfileId"
 
     ReplyToCommentResponse:
       type: object
