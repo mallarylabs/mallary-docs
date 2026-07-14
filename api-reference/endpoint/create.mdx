@@ -69,9 +69,9 @@ Mallary validates media before queueing a platform job. These are the media rule
 
 ### LinkedIn
 
-- The generic validation rules allow image posts or a single video with no image/video mixing.
-- The current LinkedIn publisher implementation is stricter: text-only posts work, and media posts currently support one image attachment only.
-- Non-image LinkedIn media is currently rejected by the publisher.
+- LinkedIn supports text-only posts or one image attachment.
+- LinkedIn video attachments are rejected before queueing.
+- LinkedIn image attachments accept `jpg`, `jpeg`, `png`, or `gif`.
 
 ### Threads
 
