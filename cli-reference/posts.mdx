@@ -45,7 +45,11 @@ Example:
   "media": [{ "url": "./launch.mp4", "thumbnail_url": "./launch-cover.jpg" }],
   "platform_options": {
     "youtube": {
+      "message": "YouTube description for the launch video",
       "title": "Launch update"
+    },
+    "facebook": {
+      "message": "Facebook caption for this launch"
     }
   }
 }
@@ -61,6 +65,7 @@ Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `ma
 - existing remote media URLs must already be hosted on `https://files.mallary.ai/...`
 - external remote media URLs are rejected
 - platform-specific payloads are passed through to the API
+- use `platform_options.<platform>.message` for a platform-specific message or caption
 
 ## Video Thumbnails
 
@@ -109,6 +114,8 @@ Mallary CLI README currently documents platform-specific payload examples for:
 For the exact `platform_options` fields currently supported by the posting API, see:
 
 [Platform options reference](/api-reference/endpoint/create#body-platform-options)
+
+Every publishing platform accepts `platform_options.<platform>.message` as an optional platform-specific message. Leave it blank or omit it to use the top-level `message`.
 
 ## Threads Notes
 

@@ -54,6 +54,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Facebook does not allow mixing images and video in the same post.
 - Feed images accept `jpg`, `jpeg`, `png`, `gif`, and `webp`. Feed video accepts `mp4` and `mov`.
 - Facebook stories support 1 image or 1 video.
+- `platform_options.facebook.message` sets a Facebook-specific message; omit it to use the top-level `message`.
 
 ### Instagram
 
@@ -64,6 +65,7 @@ Mallary validates media before queueing a platform job. These are the media rule
   reel = 1 video,
   carousel = 2 to 10 mixed image/video items.
 - The publisher uses the matching Instagram container flow for `feed`, `story`, `reel`, and `carousel` when selected through `platform_options.instagram.post_type`.
+- `platform_options.instagram.message` sets an Instagram-specific caption; omit it to use the top-level `message`.
 - Story captions and follow-up comments are not supported by Instagram's publishing API; include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 
@@ -72,6 +74,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - LinkedIn supports text-only posts or one image attachment.
 - LinkedIn video attachments are rejected before queueing.
 - LinkedIn image attachments accept `jpg`, `jpeg`, `png`, or `gif`.
+- `platform_options.linkedin.message` sets a LinkedIn-specific message; omit it to use the top-level `message`.
 
 ### Threads
 
@@ -90,6 +93,7 @@ Mallary validates media before queueing a platform job. These are the media rule
   one image = `image`,
   one video = `video`,
   multiple supported media items = `carousel`.
+- `platform_options.threads.message` sets a Threads-specific message; omit it to use the top-level `message`.
 - `comments_under_post` is currently supported for Threads.
 
 ### YouTube
@@ -98,6 +102,8 @@ Mallary validates media before queueing a platform job. These are the media rule
 - `regular` video supports one video up to 12 hours and up to 256 GB.
 - `shorts` supports one video up to 3 minutes; vertical video is recommended.
 - Images are not supported for YouTube posting.
+- `platform_options.youtube.message` sets a YouTube-specific description/default-title source; omit it to use the top-level `message`.
+- `platform_options.youtube.title` sets the YouTube title and takes precedence over the first line of the effective message.
 
 ### TikTok
 
@@ -110,6 +116,9 @@ Mallary validates media before queueing a platform job. These are the media rule
 - For TikTok video posts, `platform_options.tiktok.source` can be `FILE_UPLOAD` or `PULL_FROM_URL`.
 - For TikTok photo posts, TikTok only allows `PULL_FROM_URL`.
 - For TikTok `PULL_FROM_URL`, Mallary only accepts media already hosted on the Mallary CDN (`https://files.mallary.ai/...`).
+- `platform_options.tiktok.message` sets a TikTok-specific caption/title fallback; omit it to use the top-level `message`.
+- `platform_options.tiktok.title` sets the TikTok title and takes precedence over the effective message where TikTok accepts a title.
+- `platform_options.tiktok.description` sets the TikTok photo description.
 - Direct-post TikTok options now include `privacy_level`, `disable_comment`, `disable_duet`, `disable_stitch`, `video_cover_timestamp_ms`, `auto_add_music`, `brand_content_toggle`, `brand_organic_toggle`, `is_aigc`, and `photo_cover_index` where applicable.
 - `comments_under_post` is not currently supported for TikTok posts.
 
@@ -120,6 +129,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Image Pins accept one `jpg`, `jpeg`, `png`, `webp`, or `gif` file up to 32 MB.
 - Video Pins accept one `mp4` or `mov` file, 4 seconds to 15 minutes, up to 2 GB.
 - `boardId` is required for Pinterest posting.
+- `platform_options.pinterest.message` sets a Pinterest-specific description/default title source; omit it to use the top-level `message`.
 
 ### Reddit
 
@@ -127,6 +137,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - `image` posts require one image or GIF up to 20 MB.
 - Reddit video upload is not supported by the current public API path; use a link post instead if you need to point at externally hosted video.
 - `subreddit` or `subredditName` is required in platform options.
+- `platform_options.reddit.message` sets a Reddit-specific title/text source; omit it to use the top-level `message`.
 
 ### Snapchat
 
@@ -137,6 +148,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Snapchat supports only one media item per post.
 - Snapchat video must be 5 to 60 seconds.
 - The current publisher implementation fails fast until Snapchat partner access and credentials are enabled.
+- `platform_options.snapchat.message` sets a Snapchat-specific message; omit it to use the top-level `message`.
 
 ### X
 
@@ -145,3 +157,4 @@ Mallary validates media before queueing a platform job. These are the media rule
 - GIFs cannot be combined with other attachments.
 - X images accept `jpg`, `jpeg`, `png`, `webp`, and `gif`. Video accepts `mp4` or `mov`.
 - X video supports up to 140 seconds and up to 512 MB.
+- `platform_options.x.message` or `platform_options.twitter.message` sets an X-specific message; omit it to use the top-level `message`.

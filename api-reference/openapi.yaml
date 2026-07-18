@@ -910,6 +910,9 @@ components:
         facebook:
           type: object
           properties:
+            message:
+              type: string
+              description: Facebook-specific message/caption. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [feed, story]
@@ -918,6 +921,9 @@ components:
         instagram:
           type: object
           properties:
+            message:
+              type: string
+              description: Instagram-specific caption. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [feed, story, reel, carousel]
@@ -926,13 +932,40 @@ components:
         threads:
           type: object
           properties:
+            message:
+              type: string
+              description: Threads-specific message. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [text, image, video, carousel]
               description: Defaults dynamically. Mallary uses `text` when no media is supplied, `carousel` when more than one supported media item is supplied, `video` for a single MP4/MOV item, and `image` for a single JPG/JPEG/PNG/WEBP item.
+        twitter:
+          type: object
+          properties:
+            message:
+              type: string
+              description: X-specific message. Defaults to the top-level `message`.
+        x:
+          type: object
+          properties:
+            message:
+              type: string
+              description: X-specific message. Defaults to the top-level `message`.
+        linkedin:
+          type: object
+          properties:
+            message:
+              type: string
+              description: LinkedIn-specific message. Defaults to the top-level `message`.
+            author_urn:
+              type: string
+              description: Optional author URN override.
         tiktok:
           type: object
           properties:
+            message:
+              type: string
+              description: TikTok-specific message/caption. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [video, photo]
@@ -1001,6 +1034,9 @@ components:
         youtube:
           type: object
           properties:
+            message:
+              type: string
+              description: YouTube-specific description/default-title source. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [regular, shorts]
@@ -1025,6 +1061,9 @@ components:
         pinterest:
           type: object
           properties:
+            message:
+              type: string
+              description: Pinterest-specific description/default title source. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [image, video]
@@ -1041,6 +1080,9 @@ components:
         reddit:
           type: object
           properties:
+            message:
+              type: string
+              description: Reddit-specific title/text source. Defaults to the top-level `message`.
             post_type:
               type: string
               enum: [text, link, image]
@@ -1048,6 +1090,9 @@ components:
         snapchat:
           type: object
           properties:
+            message:
+              type: string
+              description: Snapchat-specific message. Defaults to the top-level `message`.
             contentType:
               type: string
               enum: [story, saved_story, spotlight]
