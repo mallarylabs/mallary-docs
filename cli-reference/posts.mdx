@@ -57,6 +57,8 @@ Example:
 
 Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `mallary profiles list` to find the random public ID for each profile.
 
+`posts create` returns Mallary job IDs immediately. Once each job finishes publishing, `mallary jobs get <id>` and `mallary posts list --json` include `platform_post_id` and `platform_post_url` when the platform returns or exposes them.
+
 ## File Mode Rules
 
 - `--file` is mutually exclusive with payload-building flags

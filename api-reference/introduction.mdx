@@ -97,7 +97,7 @@ const jobId = post.jobs[0].jobId;
 // {
 //   status: "queued",
 //   batch_id: "a1b2c3d4",
-//   jobs: [{ platform: "facebook", jobId: "123" }]
+//   jobs: [{ platform: "facebook", jobId: "123", platform_post_id: null, platform_post_url: null }]
 // }
 ```
 
@@ -118,7 +118,8 @@ console.log(data.job);
 //   id: "123",
 //   platform: "facebook",
 //   status: "completed",
-//   result: { postUrl: "https://..." }
+//   platform_post_id: "1234567890",
+//   platform_post_url: "https://www.facebook.com/..."
 // }
 ```
 

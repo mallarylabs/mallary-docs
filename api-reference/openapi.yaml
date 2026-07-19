@@ -57,7 +57,7 @@ paths:
     post:
       operationId: createPost
       summary: Create or schedule a post across platforms
-      description: Enqueues one job per selected platform and returns job IDs plus `batch_id`.
+      description: Enqueues one job per selected platform and returns job IDs plus `batch_id`. Platform post IDs and URLs are `null` in the queued response until each platform finishes publishing; read `GET /api/v1/jobs/{id}` or `GET /api/v1/posts` for populated `platform_post_id` and `platform_post_url` values after completion.
       parameters:
         - in: header
           name: Idempotency-Key
@@ -1162,6 +1162,14 @@ components:
                 $ref: "#/components/schemas/Platform"
               jobId:
                 type: string
+              platform_post_id:
+                type: string
+                nullable: true
+                description: Platform-returned post ID. `null` until the queued job publishes successfully.
+              platform_post_url:
+                type: string
+                nullable: true
+                description: Public platform post URL when available. `null` until the queued job publishes successfully or when the platform does not expose a URL.
 
     AutoReplyWarning:
       type: object
@@ -1213,6 +1221,14 @@ components:
         failedReason:
           type: string
           nullable: true
+        platform_post_id:
+          type: string
+          nullable: true
+          description: Platform-returned post ID when the job has published successfully.
+        platform_post_url:
+          type: string
+          nullable: true
+          description: Public platform post URL when available.
         result:
           type: object
           nullable: true

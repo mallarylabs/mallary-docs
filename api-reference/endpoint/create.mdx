@@ -16,6 +16,10 @@ Connection profiles let one Mallary user connect multiple accounts on the same p
 - Use `scheduled_at` with a local wall-clock time like `2026-04-06T14:30` plus `scheduled_timezone` with an IANA timezone like `America/New_York` when you want Mallary to resolve the post in a specific timezone.
 - Mallary stores the resolved publish time in UTC and returns the original `scheduled_timezone` on grouped post reads.
 
+## Publish Results
+
+Post creation is asynchronous. The create response returns one Mallary job ID per platform immediately, with `platform_post_id` and `platform_post_url` set to `null` until that platform finishes publishing. After completion, use `GET /api/v1/jobs/{id}` or `GET /api/v1/posts` to read the platform-returned post ID and public post URL when the platform exposes one.
+
 ## Video Thumbnails
 
 Attach a custom thumbnail or cover to a video media item with `thumbnail_url`.

@@ -34,6 +34,8 @@ mallary posts list --page 2 --per-page 25 --json
 mallary posts delete 123
 ```
 
+Grouped post results include per-platform post IDs and public post URLs after publishing when the provider makes them available.
+
 ## Comments
 
 ```bash
@@ -50,6 +52,8 @@ Comments commands are available on all plans. They list comments from Mallary-pu
 mallary jobs get 123
 mallary jobs get 123 --json
 ```
+
+Completed jobs include `platform_post_id` and `platform_post_url` in JSON mode, and print `Post ID` / `Post URL` in normal output when available.
 
 ## Analytics
 

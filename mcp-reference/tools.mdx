@@ -83,6 +83,10 @@ Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, and YouTube. 
 - or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`
 - `scheduled_timezone` must be a valid IANA timezone
 
+## Publish Results
+
+`mallary_create_post` returns Mallary job IDs immediately. After each platform finishes publishing, `mallary_get_job` and `mallary_list_posts` include `platform_post_id` and `platform_post_url` when the platform returns or exposes them.
+
 ## Platform-specific options
 
 `mallary_create_post` uses the same underlying post payload as the Mallary API, including `platform_options` for platform-specific behavior.

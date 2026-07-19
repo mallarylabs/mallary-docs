@@ -3,3 +3,5 @@ title: "Get Job"
 description: "Retrieve job status, result payload, and user warnings."
 openapi: "GET /api/v1/jobs/{id}"
 ---
+
+Completed publishing jobs include normalized `platform_post_id` and `platform_post_url` fields when the platform returned or exposed them. The raw provider result remains available in `data.job.result`.
