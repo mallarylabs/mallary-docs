@@ -116,14 +116,18 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:support@mallary.ai"
+        "label": "Homepage",
+        "href": "https://mallary.ai/"
+      },
+      {
+        "label": "Dashboard",
+        "href": "https://mallary.ai/dashboard"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://mallary.ai/dashboard"
+      "label": "Support",
+      "href": "mailto:support@mallary.ai"
     }
   },
   "contextual": {
