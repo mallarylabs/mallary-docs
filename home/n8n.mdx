@@ -1,0 +1,97 @@
+---
+title: "n8n Community Node"
+description: "Use the official Mallary n8n community node to automate social media posts, comments, uploads, analytics, and webhooks from n8n."
+---
+
+The Mallary n8n community node helps you run social media workflows in n8n.
+
+Use it to post, schedule, upload media, list comments, send comment replies, read analytics, and start workflows from Mallary events.
+
+It is the official Mallary community node. It is maintained by Mallary and published as `@mallary/n8n-nodes-mallary`.
+
+## Install
+
+Self-hosted n8n users can install it from npm:
+
+```bash
+npm install @mallary/n8n-nodes-mallary
+```
+
+Restart n8n, then search for `Mallary` in the node picker.
+
+## Credentials
+
+Create a Mallary API key in your Mallary account. Add it to the Mallary API credential in n8n.
+
+Keep the API key private. It can publish posts, reply to comments, read account data, and manage webhooks. Store it only in n8n credentials.
+
+## What it can do
+
+- create and schedule social media posts
+- upload image and video files to Mallary
+- use platform-specific captions with `platform_options`
+- list grouped posts and publishing jobs
+- return platform post IDs and post URLs when Mallary has them
+- list comments on Mallary-published posts
+- post the exact comment reply your workflow provides
+- pull analytics into reports
+- list profiles and connected platforms
+- manage Mallary webhooks
+- start workflows from Mallary webhook events
+
+## Mallary node
+
+Use the Mallary action node when a workflow needs to do something in Mallary.
+
+Common workflows include:
+
+- publish one post to many platforms
+- upload a video and schedule it across YouTube, TikTok, Instagram, and LinkedIn
+- send new comments to Slack or a CRM
+- draft a reply with an AI step, then post that exact reply through Mallary
+- build a weekly social media analytics report
+
+Creating posts and replying to comments can publish real public content. Check the Mallary profile, platforms, message, media, and schedule before running a workflow.
+
+## Mallary Trigger
+
+Use the Mallary Trigger node when Mallary should start an n8n workflow.
+
+Supported events:
+
+- `post.scheduled`
+- `post.published`
+- `post.failed`
+- `post.partial`
+- `auto_reply.posted`
+- `*`
+
+When the workflow is activated, the trigger registers the n8n webhook URL with Mallary. When the workflow is deactivated, it removes that webhook.
+
+## Platform options
+
+The node includes common fields for platform-specific messages. It also supports advanced `platform_options` JSON for fields such as:
+
+- Instagram post type
+- TikTok direct post options
+- YouTube title and visibility
+- Pinterest board ID
+- Reddit subreddit
+- platform-specific captions
+
+Explicit n8n fields override matching values in the advanced JSON field.
+
+For the full API request shape, see [Create Post](/api-reference/endpoint/create).
+
+## Safe use
+
+- Do not use production profiles for test posts unless you want public posts.
+- Do not upload private or sensitive files unless Mallary should host them.
+- Do not print or log your Mallary API key.
+- Review workflows that delete posts, disconnect platforms, or update settings.
+- Use test accounts before turning on scheduled or automatic workflows.
+
+## Links
+
+- npm package: [https://www.npmjs.com/package/@mallary/n8n-nodes-mallary](https://www.npmjs.com/package/@mallary/n8n-nodes-mallary)
+- GitHub repo: [https://github.com/mallarylabs/n8n-nodes-mallary](https://github.com/mallarylabs/n8n-nodes-mallary)
