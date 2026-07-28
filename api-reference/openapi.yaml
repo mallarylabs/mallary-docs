@@ -1379,7 +1379,7 @@ components:
           enum: [queued, scheduled, processing, partial, completed, failed]
         source:
           type: string
-          enum: [dashboard, api, internal]
+          enum: [api, dashboard, cli, mcp]
         created_at:
           type: string
         posted_at:

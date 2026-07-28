@@ -1,11 +1,11 @@
 ---
 title: "Social Media MCP Server"
-description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, list comments, post supplied replies, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms through Model Context Protocol."
+description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, list comments, post supplied replies, fetch analytics, manage profiles and settings, list connected platforms, manage webhooks, and disconnect platforms through Model Context Protocol."
 ---
 
 Mallary MCP is a remote social media MCP server for AI assistants, agent workflows, and developer tools that speak Model Context Protocol.
 
-If you want an AI agent to post to social media, upload media, reply to comments, check analytics, list connected platforms, manage webhooks, or inspect publishing jobs and platform post URLs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
+If you want an AI agent to post to social media, upload media, reply to comments, check analytics, manage profiles and settings, list connected platforms, manage webhooks, or inspect publishing jobs and platform post URLs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
 
 ## Start here
 
@@ -26,7 +26,7 @@ If you want an AI agent to post to social media, upload media, reply to comments
   </Card>
   <Card title="Enabled Tools" icon="wrench" href="/mcp-reference/tools">
     See the current Mallary MCP tool names for posting, uploads, comments, analytics,
-    connected platform listing, and webhooks.
+    profiles, settings, connected platform listing, and webhooks.
   </Card>
   <Card title="Runtime Behavior" icon="workflow" href="/mcp-reference/behavior">
     Review preflight, idempotency forwarding, API parity, and error handling
@@ -53,6 +53,18 @@ If you want an AI agent to post to social media, upload media, reply to comments
 6. When prompted, click Connect to complete the OAuth flow — you'll enter your Mallary API key in the browser
 
 ## Add to Claude Code
+
+Mallary also provides an official Claude Code plugin that bundles this MCP server with Mallary-specific workflow instructions:
+
+```bash
+claude plugin marketplace add mallarylabs/claude-code-plugins
+claude plugin install mallary@mallary
+claude plugin enable mallary@mallary
+```
+
+Claude Code asks for your Mallary API key when you enable the plugin.
+
+To connect only the MCP server without the plugin:
 
 1. For Claude Code, run:
 ```bash
@@ -127,7 +139,9 @@ With Mallary MCP you can:
 - fetch analytics
 - list connected platforms across Mallary's supported platform set
 - list profile IDs with `mallary_list_profiles`
+- create and rename connection profiles
 - target non-default connection profiles with `profile_id`
+- read and update profile settings
 - manage webhooks
 - disconnect platforms
 
@@ -191,17 +205,24 @@ The current enabled tools are:
 - `mallary_create_upload_url`
 - `mallary_create_post`
 - `mallary_get_job`
+- `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
+- `mallary_list_comments`
+- `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
 - `mallary_list_profiles`
+- `mallary_create_profile`
+- `mallary_rename_profile`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
+- `mallary_get_settings`
+- `mallary_update_settings`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
 
-Use `mallary_list_profiles` to find random public profile IDs. Tools that publish, list posts, read analytics, list platforms, or disconnect platforms accept `profile_id` for non-default connection profiles. Omit it to use the default profile.
+Use `mallary_list_profiles` to find random public profile IDs. Tools that publish, list posts, read comments, read analytics, list platforms, read settings, update settings, or disconnect platforms accept `profile_id` for non-default connection profiles. Omit it to use the default profile.
 
 ## What makes Mallary MCP useful
 
@@ -251,13 +272,14 @@ For the full matrix of platform-specific media rules, see:
 
 ## Plans and feature access
 
-MCP access is available on paid plans only.
+Comment listing and comment replies are available on all Mallary plans. Most other MCP tools require a paid plan.
 
 Current product rules are:
 
-- Free: no MCP access
+- Free: comment listing and comment replies
 - Starter: MCP enabled
 - Pro: MCP enabled
+- Business: MCP enabled
 - Business: MCP enabled
 
 Other related capabilities such as analytics or AI auto replies still follow the plan rules of the authenticated account.

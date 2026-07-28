@@ -23,11 +23,19 @@ Identity is always resolved from the API key owner.
 - `mallary_create_upload_url`
 - `mallary_create_post`
 - `mallary_get_job`
+- `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
+- `mallary_list_comments`
+- `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_list_profiles`
+- `mallary_create_profile`
+- `mallary_rename_profile`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
+- `mallary_get_settings`
+- `mallary_update_settings`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
@@ -38,7 +46,9 @@ Identity is always resolved from the API key owner.
 - `mallary_create_post` runs preflight first by default (`run_preflight=true`).
 - `Idempotency-Key` is forwarded when `idempotency_key` is provided.
 - Use `mallary_list_profiles` to list random public profile IDs.
-- Publishing, post listing, analytics, platform listing, and disconnect tools accept `profile_id` for non-default connection profiles.
+- Publishing, post listing, comment listing, analytics, platform listing, settings, and disconnect tools accept `profile_id` for non-default connection profiles.
+- `mallary_create_profile` and `mallary_rename_profile` manage Mallary connection profiles.
+- `mallary_list_comments` and `mallary_reply_to_comment` are available on all Mallary plans.
 - Non-2xx API results are returned as structured MCP errors with:
   - `http_status`
   - `code`

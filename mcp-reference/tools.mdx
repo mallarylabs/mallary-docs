@@ -10,14 +10,19 @@ Mallary MCP currently exposes these tool names:
 - `mallary_create_upload_url`
 - `mallary_create_post`
 - `mallary_get_job`
+- `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
 - `mallary_list_comments`
 - `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
 - `mallary_list_profiles`
+- `mallary_create_profile`
+- `mallary_rename_profile`
 - `mallary_list_platforms`
 - `mallary_disconnect_platform`
+- `mallary_get_settings`
+- `mallary_update_settings`
 - `mallary_list_webhooks`
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
@@ -29,11 +34,14 @@ These tools cover:
 - uploads
 - post creation
 - job lookup
+- TikTok final URL attachment
 - post listing
 - comment listing and supplied comment replies
 - post deletion
 - analytics retrieval
 - profile listing
+- profile creation and rename
+- profile settings retrieval and update
 - connected platform listing
 - platform disconnects
 - webhook listing
@@ -58,6 +66,8 @@ MCP tools use the default Mallary profile unless `profile_id` is provided.
 
 Use `mallary_list_profiles` to list each profile's random public ID, then pass that string as `profile_id` when targeting a non-default profile.
 
+Use `mallary_create_profile` to create a new profile and `mallary_rename_profile` to rename an existing profile.
+
 The following tools accept `profile_id`:
 
 - `mallary_create_post`
@@ -65,7 +75,15 @@ The following tools accept `profile_id`:
 - `mallary_list_comments`
 - `mallary_get_analytics`
 - `mallary_list_platforms`
+- `mallary_get_settings`
+- `mallary_update_settings`
 - `mallary_disconnect_platform`
+
+## Settings
+
+`mallary_get_settings` reads profile settings, business profile fields, auto-reply status, warnings, and plan capabilities.
+
+`mallary_update_settings` updates only the fields you send. Supported fields include `auto_reply_enabled`, `brand_profile`, `business_name`, `business_description`, `website_url`, `services`, `features`, `contact_info`, `pricing`, and `faq`.
 
 ## Comment Engagement
 
