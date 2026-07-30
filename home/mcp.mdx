@@ -5,7 +5,7 @@ description: "Mallary MCP is a remote social media MCP server for AI agents and 
 
 Mallary MCP is a remote social media MCP server for AI assistants, agent workflows, and developer tools that speak Model Context Protocol.
 
-If you want an AI agent to post to social media, upload media, reply to comments, check analytics, manage profiles and settings, list connected platforms, manage webhooks, or inspect publishing jobs and platform post URLs without building a custom REST client first, Mallary MCP gives you a structured tool layer over the Mallary platform.
+Mallary MCP gives you a structured tool layer over the Mallary platform. Your AI agent can post to social media, upload media, and reply to comments. It can also read analytics and publishing jobs, manage profiles, settings, and webhooks, and list connected platforms. You do not need to build a custom REST client first.
 
 ## Start here
 
@@ -49,8 +49,10 @@ If you want an AI agent to post to social media, upload media, reply to comments
   }
 }
 ```
-5. Save and go back to Tools & MCP
-6. When prompted, click Connect to complete the OAuth flow — you'll enter your Mallary API key in the browser
+5. Save the configuration.
+6. Return to Tools & MCP.
+7. When Cursor prompts you, click Connect.
+8. Enter your Mallary API key in the browser to complete the OAuth flow.
 
 ## Add to Claude Code
 
@@ -70,21 +72,23 @@ To connect only the MCP server without the plugin:
 ```bash
 claude mcp add --transport http mallary https://mallary.ai/mcp
 ```
-2. Then run `/mcp` and select Authenticate for Mallary to complete the OAuth flow.
+2. Run `/mcp`.
+3. Select Authenticate for Mallary to complete the OAuth flow.
 
 ## Add to Claude
 
 Connect directly from Claude without manually configuring an API key:
 
-1. Go to Settings → Connectors
-2. Click Add custom connector, enter Mallary as the name and https://mallary.ai/mcp as the URL
-3. Click Authorize when prompted to complete the OAuth flow
+1. Go to Settings → Connectors.
+2. Click Add custom connector.
+3. Enter Mallary as the name and https://mallary.ai/mcp as the URL.
+4. When Claude prompts you, click Authorize to complete the OAuth flow.
 
 ## Add to Codex
 ```bash
 codex mcp add mallary --url https://mallary.ai/mcp
 ```
-Launch Codex with `codex`. You'll be prompted to authenticate via OAuth.
+Run Codex with `codex`. Codex then prompts you to authenticate with OAuth.
 
 ## Add to VSCode
 
@@ -132,11 +136,11 @@ With Mallary MCP you can:
 
 - create upload URLs
 - create and schedule social media posts
-- inspect job status
+- read job status
 - list grouped posts
 - list comments and post supplied replies on published posts
 - delete pending posts
-- fetch analytics
+- read analytics
 - list connected platforms across Mallary's supported platform set
 - list profile IDs with `mallary_list_profiles`
 - create and rename connection profiles
@@ -155,7 +159,7 @@ Mallary MCP is useful when you want to connect social publishing directly into:
 - internal AI tooling
 - LLM-based operator workflows
 
-Instead of teaching a model how to compose raw HTTP requests for every task, you can give it a tool surface with clearer actions and safer inputs.
+A model does not need to compose raw HTTP requests for every task. Instead, you give it a tool surface with clearer actions and safer inputs.
 
 ## Base URL
 
@@ -195,7 +199,7 @@ That means:
 
 - MCP tools route through the existing `/api/v1/*` handlers
 - posting logic is not duplicated in a separate MCP-only implementation
-- tool responses may be returned as event-stream payloads
+- Mallary can return tool responses as event-stream payloads
 - `mallary_create_post` runs preflight first by default
 
 ## Mallary MCP tools
@@ -230,12 +234,12 @@ Mallary MCP is a strong fit when you want an AI workflow to:
 
 - generate content and publish it
 - upload images or video before publishing
-- check whether a post succeeded or failed
+- read whether a post succeeded or failed
 - list previous posts and grouped outcomes
-- inspect analytics snapshots after publishing
+- read analytics snapshots after publishing
 - register or remove webhooks as part of automation
 
-It is especially useful when you want one social media tool surface instead of separate per-platform agent integrations.
+It gives you one social media tool surface instead of separate per-platform agent integrations.
 
 ## Relationship to the Mallary API
 
@@ -250,7 +254,7 @@ It uses the same underlying platform as the dashboard, REST API, and CLI, which 
 
 When an MCP tool creates posts, any platform-specific posting behavior still comes from the API request model, especially `platform_options`.
 
-The same applies to scheduling: `mallary_create_post` accepts an absolute `scheduled_at`, or a local `scheduled_at` paired with `scheduled_timezone` using an IANA timezone such as `America/New_York`.
+The same applies to scheduling. `mallary_create_post` accepts an absolute `scheduled_at`. It also accepts a local `scheduled_at` with a `scheduled_timezone` such as `America/New_York`.
 
 For the exact supported fields and examples by platform, see:
 
@@ -280,22 +284,21 @@ Current product rules are:
 - Starter: MCP enabled
 - Pro: MCP enabled
 - Business: MCP enabled
-- Business: MCP enabled
 
 Other related capabilities such as analytics or AI auto replies still follow the plan rules of the authenticated account.
 
 ## Error handling
 
-Mallary MCP returns structured errors when the underlying API call is not successful.
+When the underlying API call is not successful, Mallary MCP returns structured errors.
 
-Non-2xx results are surfaced with fields such as:
+Non-2xx results include fields such as:
 
 - `http_status`
 - `code`
 - `message`
 - `details` when available
 
-This makes it easier for agents and integrations to decide whether to retry, ask for missing data, or report a plan or validation issue.
+These fields help agents and integrations decide whether to retry, ask for missing data, or report a plan or validation error.
 
 ## Good fit for Mallary MCP
 

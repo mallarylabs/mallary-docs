@@ -12,13 +12,13 @@ Connection profiles let one Mallary user connect multiple accounts on the same p
 
 ## Scheduling
 
-- Use `scheduled_at` with an absolute timestamp like `2026-04-06T18:30:00Z` if you already know the exact UTC or offset time you want.
-- Use `scheduled_at` with a local wall-clock time like `2026-04-06T14:30` plus `scheduled_timezone` with an IANA timezone like `America/New_York` when you want Mallary to resolve the post in a specific timezone.
+- If you already know the exact UTC or offset time, use `scheduled_at` with an absolute timestamp like `2026-04-06T18:30:00Z`.
+- To resolve the post in a specific timezone, use a local `scheduled_at` like `2026-04-06T14:30` plus `scheduled_timezone` with an IANA timezone like `America/New_York`.
 - Mallary stores the resolved publish time in UTC and returns the original `scheduled_timezone` on grouped post reads.
 
 ## Publish Results
 
-Post creation is asynchronous. The create response returns one Mallary job ID per platform immediately, with `platform_post_id` and `platform_post_url` set to `null` until that platform finishes publishing. After completion, use `GET /api/v1/jobs/{id}` or `GET /api/v1/posts` to read the platform-returned post ID and public post URL when the platform exposes one.
+Post creation is asynchronous. The create response returns one Mallary job ID per platform immediately, with `platform_post_id` and `platform_post_url` set to `null` until that platform finishes publishing. After completion, use `GET /api/v1/jobs/{id}` or `GET /api/v1/posts`. These return the platform post ID and the public post URL that the platform exposes.
 
 ## Video Thumbnails
 
@@ -38,19 +38,19 @@ Attach a custom thumbnail or cover to a video media item with `thumbnail_url`.
 }
 ```
 
-`thumbnail_url` must be a Mallary-hosted image URL, usually created with `POST /api/v1/upload`. If a thumbnail is unsupported for the platform, wrong for the post type, or rejected by the provider, Mallary skips it and continues publishing the post where possible.
+`thumbnail_url` must be a Mallary-hosted image URL, usually created with `POST /api/v1/upload`. Mallary skips a thumbnail that is unsupported for the platform, wrong for the post type, or rejected by the provider. It then continues to publish the post where possible.
 
 Current thumbnail behavior:
 
-- YouTube regular videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 2 MB, requires at least 640px width when dimensions are known, and skips images that are not close to 16:9. Recommended: `1280x720` 16:9. YouTube Shorts thumbnails are skipped.
+- YouTube regular videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 2 MB. When the dimensions are known, Mallary requires at least 640px width. Mallary skips images that are not close to 16:9. Recommended: `1280x720` 16:9. Mallary skips YouTube Shorts thumbnails.
 - Facebook videos: supported for video uploads. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
 - Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
 - TikTok video posts: TikTok currently exposes frame-based cover selection through `video_cover_timestamp_ms`, not arbitrary image thumbnails. If `thumbnail_url` is supplied, Mallary does not send `video_cover_timestamp_ms` and lets TikTok use its default cover behavior.
-- TikTok photo posts: `thumbnail_url` can choose the photo cover only when it exactly matches one of the image URLs in `media[]`; Mallary then uses that image index as `photo_cover_index`. It is not uploaded as an extra photo.
+- TikTok photo posts: `thumbnail_url` can choose the photo cover only when it exactly matches one of the image URLs in `media[]`. Mallary then uses that image index as `photo_cover_index`. Mallary does not upload it as an extra photo.
 
 ## Platform-Specific Media Rules
 
-Mallary validates media before queueing a platform job. These are the media rules currently enforced by the public API and current publisher implementations.
+Mallary validates media before it queues a platform job. The public API and the current publishers enforce these media rules.
 
 ### Facebook
 
@@ -58,7 +58,7 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Facebook does not allow mixing images and video in the same post.
 - Feed images accept `jpg`, `jpeg`, `png`, `gif`, and `webp`. Feed video accepts `mp4` and `mov`.
 - Facebook stories support 1 image or 1 video.
-- `platform_options.facebook.message` sets a Facebook-specific message; omit it to use the top-level `message`.
+- `platform_options.facebook.message` sets a Facebook-specific message. Omit it to use the top-level `message`.
 
 ### Instagram
 
@@ -69,16 +69,16 @@ Mallary validates media before queueing a platform job. These are the media rule
   reel = 1 video,
   carousel = 2 to 10 mixed image/video items.
 - The publisher uses the matching Instagram container flow for `feed`, `story`, `reel`, and `carousel` when selected through `platform_options.instagram.post_type`.
-- `platform_options.instagram.message` sets an Instagram-specific caption; omit it to use the top-level `message`.
-- Story captions and follow-up comments are not supported by Instagram's publishing API; include story text in the media itself.
+- `platform_options.instagram.message` sets an Instagram-specific caption. Omit it to use the top-level `message`.
+- Instagram's publishing API does not support story captions or follow-up comments. Include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 
 ### LinkedIn
 
 - LinkedIn supports text-only posts or one image attachment.
-- LinkedIn video attachments are rejected before queueing.
+- Mallary rejects LinkedIn video attachments before queueing.
 - LinkedIn image attachments accept `jpg`, `jpeg`, `png`, or `gif`.
-- `platform_options.linkedin.message` sets a LinkedIn-specific message; omit it to use the top-level `message`.
+- `platform_options.linkedin.message` sets a LinkedIn-specific message. Omit it to use the top-level `message`.
 
 ### Threads
 
@@ -92,21 +92,21 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Video posts support exactly 1 video in `mp4` or `mov`.
 - Carousel posts support 2 to 20 supported media items total.
 - `platform_options.threads.post_type` can be `text`, `image`, `video`, or `carousel`.
-- When `platform_options.threads.post_type` is omitted, Mallary chooses dynamically from the payload:
+- If you omit `platform_options.threads.post_type`, Mallary chooses from the payload:
   no media = `text`,
   one image = `image`,
   one video = `video`,
   multiple supported media items = `carousel`.
-- `platform_options.threads.message` sets a Threads-specific message; omit it to use the top-level `message`.
-- `comments_under_post` is currently supported for Threads.
+- `platform_options.threads.message` sets a Threads-specific message. Omit it to use the top-level `message`.
+- Threads currently supports `comments_under_post`.
 
 ### YouTube
 
 - YouTube requires exactly one video.
 - `regular` video supports one video up to 12 hours and up to 256 GB.
-- `shorts` supports one video up to 3 minutes; vertical video is recommended.
-- Images are not supported for YouTube posting.
-- `platform_options.youtube.message` sets a YouTube-specific description/default-title source; omit it to use the top-level `message`.
+- `shorts` supports one video up to 3 minutes. Use vertical video.
+- YouTube posting does not support images.
+- `platform_options.youtube.message` sets a YouTube-specific description/default-title source. Omit it to use the top-level `message`.
 - `platform_options.youtube.title` sets the YouTube title and takes precedence over the first line of the effective message.
 
 ### TikTok
@@ -120,11 +120,11 @@ Mallary validates media before queueing a platform job. These are the media rule
 - For TikTok video posts, `platform_options.tiktok.source` can be `FILE_UPLOAD` or `PULL_FROM_URL`.
 - For TikTok photo posts, TikTok only allows `PULL_FROM_URL`.
 - For TikTok `PULL_FROM_URL`, Mallary only accepts media already hosted on the Mallary CDN (`https://files.mallary.ai/...`).
-- `platform_options.tiktok.message` sets a TikTok-specific caption/title fallback; omit it to use the top-level `message`.
+- `platform_options.tiktok.message` sets a TikTok-specific caption/title fallback. Omit it to use the top-level `message`.
 - `platform_options.tiktok.title` sets the TikTok title and takes precedence over the effective message where TikTok accepts a title.
 - `platform_options.tiktok.description` sets the TikTok photo description.
-- Direct-post TikTok options now include `privacy_level`, `disable_comment`, `disable_duet`, `disable_stitch`, `video_cover_timestamp_ms`, `auto_add_music`, `brand_content_toggle`, `brand_organic_toggle`, `is_aigc`, and `photo_cover_index` where applicable.
-- `comments_under_post` is not currently supported for TikTok posts.
+- Direct-post TikTok options include `privacy_level`, `disable_comment`, `disable_duet`, `disable_stitch`, `video_cover_timestamp_ms`, `auto_add_music`, `brand_content_toggle`, `brand_organic_toggle`, `is_aigc`, and `photo_cover_index` where applicable.
+- TikTok posts do not currently support `comments_under_post`.
 
 ### Pinterest
 
@@ -133,15 +133,15 @@ Mallary validates media before queueing a platform job. These are the media rule
 - Image Pins accept one `jpg`, `jpeg`, `png`, `webp`, or `gif` file up to 32 MB.
 - Video Pins accept one `mp4` or `mov` file, 4 seconds to 15 minutes, up to 2 GB.
 - `boardId` is required for Pinterest posting.
-- `platform_options.pinterest.message` sets a Pinterest-specific description/default title source; omit it to use the top-level `message`.
+- `platform_options.pinterest.message` sets a Pinterest-specific description/default title source. Omit it to use the top-level `message`.
 
 ### Reddit
 
 - `text` and `link` posts do not upload media through the Mallary API.
 - `image` posts require one image or GIF up to 20 MB.
-- Reddit video upload is not supported by the current public API path; use a link post instead if you need to point at externally hosted video.
+- The current public API path does not support Reddit video upload. To point at externally hosted video, use a link post.
 - `subreddit` or `subredditName` is required in platform options.
-- `platform_options.reddit.message` sets a Reddit-specific title/text source; omit it to use the top-level `message`.
+- `platform_options.reddit.message` sets a Reddit-specific title/text source. Omit it to use the top-level `message`.
 
 ### Snapchat
 
@@ -151,8 +151,8 @@ Mallary validates media before queueing a platform job. These are the media rule
   `spotlight` = one `mp4` video.
 - Snapchat supports only one media item per post.
 - Snapchat video must be 5 to 60 seconds.
-- The current publisher implementation fails fast until Snapchat partner access and credentials are enabled.
-- `platform_options.snapchat.message` sets a Snapchat-specific message; omit it to use the top-level `message`.
+- The current publisher implementation fails fast until you enable Snapchat partner access and credentials.
+- `platform_options.snapchat.message` sets a Snapchat-specific message. Omit it to use the top-level `message`.
 
 ### X
 
@@ -161,4 +161,4 @@ Mallary validates media before queueing a platform job. These are the media rule
 - GIFs cannot be combined with other attachments.
 - X images accept `jpg`, `jpeg`, `png`, `webp`, and `gif`. Video accepts `mp4` or `mov`.
 - X video supports up to 140 seconds and up to 512 MB.
-- `platform_options.x.message` or `platform_options.twitter.message` sets an X-specific message; omit it to use the top-level `message`.
+- `platform_options.x.message` or `platform_options.twitter.message` sets an X-specific message. Omit it to use the top-level `message`.

@@ -57,8 +57,8 @@ Identity is always resolved from the API key owner.
 
 ## Notes
 
-- Streamable HTTP may return event-stream payloads for tool responses.
-- Configure via env vars:
+- Streamable HTTP can return event-stream payloads for tool responses.
+- Configure with these environment variables:
   - `MCP_ENABLED` (`0`/`1`)
   - `MCP_PATH` (default `/mcp`)
   - `MCP_MAX_BODY_BYTES`

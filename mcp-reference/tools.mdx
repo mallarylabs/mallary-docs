@@ -62,7 +62,7 @@ The response includes:
 
 ## Connection profiles
 
-MCP tools use the default Mallary profile unless `profile_id` is provided.
+MCP tools use the default Mallary profile unless you send `profile_id`.
 
 Use `mallary_list_profiles` to list each profile's random public ID, then pass that string as `profile_id` when targeting a non-default profile.
 
@@ -89,9 +89,9 @@ The following tools accept `profile_id`:
 
 `mallary_list_comments` and `mallary_reply_to_comment` are available on all Mallary plans.
 
-Use `mallary_list_comments` with a Mallary `post_id`/job ID to retrieve comments on a published post. Then you or your AI Agent can write a reply and pass that exact text to `mallary_reply_to_comment`.
+Use `mallary_list_comments` with a Mallary `post_id`/job ID to read comments on a published post. Then you or your AI agent can write a reply and pass that exact text to `mallary_reply_to_comment`.
 
-Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, and YouTube. The MCP tool does not generate the reply. If you want auto generated replies, try our AI-Auto Replies feature.
+Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, and YouTube. The MCP tool does not generate the reply. If you want auto-generated replies, use the Mallary AI auto reply feature.
 
 ## Scheduling
 
@@ -119,11 +119,11 @@ For the exact supported `platform_options` fields and examples, use the API refe
 
 Examples:
 
-- Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`, and its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
+- Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`. Its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
-- Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
+- Reddit image posts require one image or GIF. The current public API path does not support Reddit video upload.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 
 For the full per-platform matrix and current runtime caveats, see:
@@ -147,4 +147,4 @@ For the full per-platform matrix and current runtime caveats, see:
 }
 ```
 
-The thumbnail URL must already be hosted on `https://files.mallary.ai/...`. YouTube regular videos, Facebook videos, and Instagram videos/Reels can use custom thumbnails/covers. TikTok video posts do not accept arbitrary image thumbnails through Mallary; TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs and should become the photo cover.
+The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube regular videos, Facebook videos, and Instagram videos/Reels can use custom thumbnails or covers. TikTok video posts do not accept arbitrary image thumbnails through Mallary. TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs, and that image becomes the photo cover.

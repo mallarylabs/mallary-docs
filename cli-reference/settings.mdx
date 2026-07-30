@@ -50,8 +50,8 @@ Example partial payload:
 ## Notes
 
 - `mallary settings update --file ...` accepts partial updates
-- settings are profile-scoped; omit `--profile-id` to use the default profile
+- settings are profile-scoped. Omit `--profile-id` to use the default profile
 - use `mallary profiles list` to find profile IDs
-- `auto_reply_enabled` can only be turned on for plans that include AI auto reply
+- only plans that include AI auto reply can turn on `auto_reply_enabled`
 - enabling `auto_reply_enabled` also requires:
   `business_name`, `website_url`, `business_description`, `services`, and `contact_info`

@@ -43,7 +43,7 @@ or via Settings > Community nodes:
 
 <img 
   src="/images/n8n-step1.png" 
-  alt="n8n workflow interface"
+  alt="The Community nodes page in n8n settings"
   className="rounded-lg"
 />
 
@@ -51,29 +51,29 @@ Click the "Install a community node" button:
 
 <img 
   src="/images/n8n-step2.png" 
-  alt="n8n workflow interface"
+  alt="The Install a community node button in n8n"
   className="rounded-lg"
 />
 
-Enter the npm package name "@mallary/n8n-nodes-mallary" in the box and click install:
+Enter the npm package name "@mallary/n8n-nodes-mallary" in the box. Then click Install:
 
 <img 
   src="/images/n8n-step3.png" 
-  alt="n8n workflow interface"
+  alt="The n8n community node install dialog with the Mallary package name entered"
   className="rounded-lg"
 />
 
-Now make a new workflow and open the nodes panel by selecting + or pressing Tab, and search for Mallary:
+Create a new workflow. Open the nodes panel with + or the Tab key. Then search for Mallary:
 
 <img 
   src="/images/n8n-step4.png" 
-  alt="n8n workflow interface"
+  alt="The n8n nodes panel with Mallary in the search box"
   className="rounded-lg"
 />
 
 ## Credentials
 
-Now add your API key (get it from your <a href="https://mallary.ai/dashboard" target="_blank">Mallary dashboard</a>) as a Mallary API credential, and you're ready to build.
+Get your API key from the <a href="https://mallary.ai/dashboard" target="_blank">Mallary dashboard</a>. Then add it as a Mallary API credential.
 
 Keep your API key private. It can publish posts, reply to comments, read account data, and manage webhooks. Store it only in n8n credentials.
 
@@ -82,7 +82,7 @@ Keep your API key private. It can publish posts, reply to comments, read account
 
 ## Mallary node
 
-Use the Mallary action node when a workflow needs to do something in Mallary.
+Use the Mallary action node when a workflow must perform an action in Mallary.
 
 Common workflows include:
 
@@ -94,7 +94,7 @@ Common workflows include:
 
 ## Mallary Trigger
 
-Use the Mallary Trigger node when Mallary should start an n8n workflow.
+Use the Mallary Trigger node when a Mallary event must start an n8n workflow.
 
 Supported events:
 
@@ -105,7 +105,7 @@ Supported events:
 - `auto_reply.posted`
 - `*`
 
-When the workflow is activated, the trigger registers the n8n webhook URL with Mallary. When the workflow is deactivated, it removes that webhook.
+When you activate the workflow, the trigger registers the n8n webhook URL with Mallary. When you deactivate the workflow, the trigger removes that webhook.
 
 ## Platform options
 
@@ -125,7 +125,7 @@ For the full API request shape, see [Create Post](/api-reference/endpoint/create
 ## Safe use
 
 - Do not use production profiles for test posts unless you want public posts.
-- Do not upload private or sensitive files unless Mallary should host them.
+- Do not upload private or sensitive files unless Mallary must host them.
 - Do not print or log your Mallary API key.
 - Review workflows that delete posts, disconnect platforms, or update settings.
 - Use test accounts before turning on scheduled or automatic workflows.

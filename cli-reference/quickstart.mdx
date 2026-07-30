@@ -33,7 +33,7 @@ mallary posts create \
 mallary posts list
 ```
 
-## Inspect a Job
+## Read a Job
 
 ```bash
 mallary jobs get 123
@@ -49,7 +49,7 @@ mallary platforms list
 
 ## List Your Profiles within Mallary
 
-Profiles are used to group your social media accounts. You can create a profile for each of your businesses, and then connect your social media accounts for each business inside this profile. Your default profile will be used if you don’t pass a `profile_id` when making requests.
+Profiles group your social media accounts. Create one profile for each of your businesses. Then connect the social media accounts of that business inside its profile. If you do not send a `profile_id`, Mallary uses your default profile.
 
 Each profile has a random public ID, such as AbC123xYz90. Use that ID as `profile_id` in API, MCP, and CLI requests.
 

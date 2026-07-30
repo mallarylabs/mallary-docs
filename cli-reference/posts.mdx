@@ -62,11 +62,11 @@ Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `ma
 ## File Mode Rules
 
 - `--file` is mutually exclusive with payload-building flags
-- local `media[].url` file paths are uploaded to the Mallary CDN first
-- local `media[].thumbnail_url` file paths are uploaded to the Mallary CDN first
-- existing remote media URLs must already be hosted on `https://files.mallary.ai/...`
-- external remote media URLs are rejected
-- platform-specific payloads are passed through to the API
+- Mallary uploads local `media[].url` file paths to the Mallary CDN first
+- Mallary uploads local `media[].thumbnail_url` file paths to the Mallary CDN first
+- existing remote media URLs must already point to `https://files.mallary.ai/...`
+- Mallary rejects external remote media URLs
+- Mallary passes platform-specific payloads through to the API
 - use `platform_options.<platform>.message` for a platform-specific message or caption
 
 ## Video Thumbnails
@@ -81,14 +81,14 @@ mallary posts create \
   --thumbnail ./launch-cover.jpg
 ```
 
-In file mode, put `thumbnail_url` on the media item. Local thumbnail paths are uploaded automatically, and existing remote thumbnail URLs must already be hosted on `https://files.mallary.ai/...`.
+In file mode, put `thumbnail_url` on the media item. Mallary uploads local thumbnail paths automatically. Existing remote thumbnail URLs must already point to `https://files.mallary.ai/...`.
 
 Current thumbnail support:
 
 - YouTube regular videos: supported. Use `jpg`, `jpeg`, or `png` up to 2 MB. Recommended: `1280x720` 16:9. YouTube Shorts thumbnails are skipped.
 - Facebook videos: supported with `jpg`, `jpeg`, or `png` up to 10 MB.
-- Instagram videos/Reels: supported with a Mallary-hosted cover URL; use an image that matches the video placement.
-- TikTok video posts: arbitrary thumbnail images are not sent to TikTok; supplying `thumbnail_url` overrides Mallary's `video_cover_timestamp_ms` behavior and lets TikTok use its default cover.
+- Instagram videos/Reels: supported with a Mallary-hosted cover URL. Use an image that matches the video placement.
+- TikTok video posts: Mallary does not send arbitrary thumbnail images to TikTok. If you supply `thumbnail_url`, Mallary skips its `video_cover_timestamp_ms` behavior, and TikTok uses its default cover.
 - TikTok photo posts: `thumbnail_url` selects the cover only when it exactly matches one of the image URLs in the same `media[]` array.
 
 ## Scheduling Rules
@@ -122,7 +122,7 @@ Every publishing platform accepts `platform_options.<platform>.message` as an op
 ## Threads Notes
 
 - `platform_options.threads.post_type` can be `text`, `image`, `video`, or `carousel`.
-- When `platform_options.threads.post_type` is omitted, Mallary chooses from the media payload:
+- If you omit `platform_options.threads.post_type`, Mallary chooses from the media payload:
   no media = `text`,
   one image = `image`,
   one video = `video`,
@@ -142,12 +142,12 @@ Important current rules:
 
 - Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
-- Instagram supports `feed`, `story`, `reel`, and `carousel` via `platform_options.instagram.post_type`; Stories use one image/video, Reels use one video, and carousels use 2 to 10 mixed image/video items.
+- Instagram supports `feed`, `story`, `reel`, and `carousel` through `platform_options.instagram.post_type`. Stories use one image or video, Reels use one video, and carousels use 2 to 10 mixed items.
 - LinkedIn currently supports text-only posts or one image attachment only.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
-- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. Use `platform_options.tiktok.post_mode = DIRECT_POST` only when you want Mallary to publish directly.
+- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. To publish directly instead, set `platform_options.tiktok.post_mode = DIRECT_POST`.
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
-- Reddit image posts require one image or GIF, and Reddit video upload is not supported by the current public API path.
+- Reddit image posts require one image or GIF. The current public API path does not support Reddit video upload.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 - Snapchat requires partner/API access before posting can succeed, even though validation rules also exist for its media shapes.
 
@@ -179,11 +179,11 @@ Example:
 ## AI Auto Reply
 
 - available on Pro and Business plans only
-- can be enabled account-wide in `mallary settings update`
-- can be enabled per post with `--auto-reply-enabled`
-- depends on saved account settings, not just the current payload
+- you can enable it account-wide with `mallary settings update`
+- you can enable it per post with `--auto-reply-enabled`
+- it depends on saved account settings, not just the current payload
 
-To enable it successfully, these settings must be populated:
+To enable it, you must set these fields:
 
 - `business_name`
 - `website_url`

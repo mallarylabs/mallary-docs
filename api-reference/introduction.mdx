@@ -167,8 +167,8 @@ The current public platform enum includes:
 - optional `profile_id` for non-default connection profiles
 - media attachments
 - `comments_under_post`
-- optional scheduling via `scheduled_at`
-- timezone-aware scheduling via `scheduled_timezone` with IANA values like `America/New_York`
+- optional scheduling with `scheduled_at`. Send an absolute timestamp such as `2026-04-06T18:30:00Z`
+- timezone-aware scheduling with `scheduled_timezone`. A local `2026-04-06T14:30` then resolves in an IANA timezone such as `America/New_York`
 - optional per-post AI auto-reply override
 - per-platform `platform_options`
 - optional `webhook_url`
@@ -193,16 +193,15 @@ When you need the exact supported `platform_options` shape, field names, and exa
 
 ## Platform-Specific Media Rules
 
-Mallary also enforces platform-specific media rules before jobs are queued.
+Mallary enforces platform-specific media rules before it queues jobs.
 
 Examples:
 
 - Threads supports `text`, `image`, `video`, and `carousel` post types. Carousel posts support 2 to 20 supported media items.
-- Scheduling supports absolute timestamps such as `2026-04-06T18:30:00Z`, or local wall-clock times such as `2026-04-06T14:30` when paired with `scheduled_timezone: "America/New_York"`.
 - YouTube requires exactly one video.
 - Instagram supports `feed`, `story`, `reel`, and `carousel` post types. Stories use one image/video, Reels use one video, and carousels support 2 to 10 mixed media items.
 - Pinterest requires exactly one image or GIF, or exactly one video, and also requires `boardId`.
-- Reddit image posts require one image or GIF, while Reddit video upload is not supported by the current public API path.
+- Reddit image posts require one image or GIF. The current public API path does not support Reddit video upload.
 - TikTok supports one video for video posts, or up to 35 images for photo posts.
 - X allows up to 4 images or 1 video or 1 GIF.
 
@@ -212,7 +211,7 @@ For the full per-platform matrix and current runtime caveats, see:
 
 ## Connection Profiles
 
-Mallary supports multiple connected accounts per platform by grouping connections into named profiles. Existing accounts use the default profile.
+Mallary groups connections into named profiles. This supports multiple connected accounts per platform. Existing accounts use the default profile.
 
 Use `GET /api/v1/profiles` to list each profile's random public ID, such as `AbC123xYz90`.
 

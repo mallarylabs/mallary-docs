@@ -7,7 +7,7 @@ description: "How Mallary MCP handles tool execution, preflight, idempotency, an
 
 Mallary exposes a remote MCP server over Streamable HTTP for public API parity.
 
-MCP tools route through the existing `/api/v1/*` handlers rather than duplicating posting logic in a separate MCP-only layer.
+MCP tools route through the existing `/api/v1/*` handlers. Mallary does not duplicate posting logic in a separate MCP-only layer.
 
 ## Preflight
 
@@ -15,11 +15,11 @@ MCP tools route through the existing `/api/v1/*` handlers rather than duplicatin
 
 ## Idempotency
 
-If `idempotency_key` is provided, Mallary forwards it as an `Idempotency-Key` header to the underlying API handler.
+If you send `idempotency_key`, Mallary forwards it as an `Idempotency-Key` header to the underlying API handler.
 
 ## Error Shape
 
-Non-2xx API results are returned as structured MCP errors with:
+Mallary returns non-2xx API results as structured MCP errors with:
 
 - `http_status`
 - `code`
@@ -28,4 +28,4 @@ Non-2xx API results are returned as structured MCP errors with:
 
 ## Transport Note
 
-Streamable HTTP may return event-stream payloads for tool responses.
+Streamable HTTP can return event-stream payloads for tool responses.

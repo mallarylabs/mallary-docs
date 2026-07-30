@@ -3,9 +3,9 @@ title: "Social Media API"
 description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, list comments, post supplied replies, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
 ---
 
-Mallary API is a developer-friendly social media API for uploading media, creating posts, scheduling content, tracking job status, listing comments, posting supplied replies, reading analytics, listing connected platforms, managing webhooks, and controlling connected publishing platforms from one integration.
+Mallary API is a social media API for many platforms from one integration. Use it to upload media, create posts, schedule content, and track job status. It also lists comments, posts supplied replies, reads analytics, lists connected platforms, and manages webhooks.
 
-If you are looking for a social media posting API, a social media scheduling API, or a multi-platform publishing API for your app, backend, automation workflow, or AI agent, Mallary is the API layer behind the Mallary product.
+Mallary is the API layer behind the Mallary product. It is a social media posting API, a scheduling API, and a multi-platform publishing API. Use it in your app, your backend, an automation workflow, or an AI agent.
 
 ## Start here
 
@@ -48,7 +48,7 @@ With the Mallary API you can:
 - track per-platform job status, publish results, and platform post IDs/URLs
 - list grouped posts and retries
 - list comments and post supplied replies on published posts
-- fetch analytics snapshots for published content
+- read analytics snapshots for published content
 - list which supported platforms are currently connected for the authenticated account
 - manage connection profiles for multiple accounts on the same platform
 - read and update profile-scoped brand and AI auto-reply settings
@@ -57,14 +57,14 @@ With the Mallary API you can:
 
 ## Why developers use the Mallary API
 
-The Mallary API is designed for teams that want one integration instead of maintaining separate posting logic for every platform.
+The Mallary API serves teams that want one integration. It removes the separate posting logic for every platform.
 
 It is useful for:
 
 - SaaS products that need built-in social publishing
 - internal tools for marketing and operations teams
 - automation pipelines
-- AI agents that need to publish or inspect social content
+- AI agents that need to publish or read social content
 - scripts and server-side workflows that need reliable API-based posting
 
 ## Base URL
@@ -138,7 +138,7 @@ The normal flow is:
 
 Use the same upload flow for custom video thumbnails. Pass the returned thumbnail `mediaUrl` as `media[].thumbnail_url` when creating the post.
 
-This keeps posting requests simple and gives downstream platforms a stable hosted media URL.
+This flow keeps posting requests simple and gives downstream platforms a stable hosted media URL.
 
 ## Posting and scheduling features
 
@@ -164,7 +164,7 @@ For scheduling, you can either send an absolute timestamp like `2026-04-06T18:30
 
 ## Connection profiles
 
-Connection profiles are used to group your social media accounts. You can create a profile for each of your businesses, and then connect your social media accounts for each business inside this profile. Your default profile will be used if you don't pass a `profile_id` when making requests.
+Connection profiles group your social media accounts. Create one profile for each of your businesses. Then connect the social media accounts of that business inside its profile. If you do not send a `profile_id`, Mallary uses your default profile.
 
 Call `GET /api/v1/profiles` to list each profile's random public ID. Profile IDs are short letter/number strings like `AbC123xYz90`, not sequential database IDs.
 
@@ -200,13 +200,13 @@ For the exact `platform_options` structure and currently documented fields by pl
 
 ## Platform-specific media rules
 
-Mallary also applies platform-specific media validation before a post is queued.
+Mallary applies platform-specific media validation before it queues a post.
 
 Important examples:
 
 - Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel using JPG/JPEG/PNG/WEBP/MP4/MOV media.
 - YouTube requires exactly one video.
-- Instagram supports `feed`, `story`, `reel`, and `carousel` via `platform_options.instagram.post_type`; Stories use one image/video, Reels use one video, and carousels use 2 to 10 mixed image/video items.
+- Instagram supports `feed`, `story`, `reel`, and `carousel` through `platform_options.instagram.post_type`. Stories use one image or video, Reels use one video, and carousels use 2 to 10 mixed items.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - Pinterest requires exactly one image or GIF, or exactly one video.
 - X allows up to 4 images, or 1 video, or 1 GIF.
@@ -222,11 +222,11 @@ The Mallary API is not just for submission.
 You can also use it to:
 
 - read job state while a post is queued, delayed, processing, completed, or failed
-- inspect per-platform post results
+- read per-platform post results
 - list grouped posts with retry information
-- retrieve analytics snapshots for recent content or one specific post
+- read analytics snapshots for recent content or one specific post
 
-This is useful when you need a real publishing workflow instead of a fire-and-forget endpoint.
+These endpoints support a real publishing workflow, not a fire-and-forget endpoint.
 
 ## Webhooks
 
@@ -255,7 +255,7 @@ Current platform behavior and product rules include:
 - Starter plans include scheduling, analytics, MCP, and CLI
 - Pro and Business plans include AI auto replies in addition to scheduling and analytics
 
-For API users, this means some requests may return plan-related errors if the authenticated account does not have access to a requested capability.
+If the authenticated account does not have access to a capability, the API returns a plan-related error.
 
 ## Rate limits
 

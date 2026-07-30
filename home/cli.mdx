@@ -3,9 +3,9 @@ title: "Social Media CLI"
 description: "Mallary CLI is a social media command line tool for developers, operators, CI pipelines, and AI agents. Use it to upload media, create and schedule posts, inspect jobs, fetch analytics, manage webhooks, update settings, list connected platforms, and disconnect platforms."
 ---
 
-Mallary CLI is a social media command line interface for developers, operators, automation scripts, CI jobs, and AI agents that need fast access to the Mallary publishing platform.
+Mallary CLI is a social media command line interface for the Mallary publishing platform. It serves developers, operators, automation scripts, CI jobs, and AI agents.
 
-If you want a social media CLI for uploading media, creating posts, scheduling content, inspecting jobs, reading analytics, listing connected platforms, managing webhooks, or updating brand settings, Mallary CLI gives you a direct command-line client for the public Mallary platform.
+If you want a social media CLI, Mallary gives you a direct command-line client for the public Mallary platform. Use it to upload media, create posts, schedule content, and read job status. You can also read analytics, list connected platforms, manage webhooks, and update brand settings.
 
 ## Start here
 
@@ -32,9 +32,9 @@ With the CLI you can:
 - upload local media files
 - create and schedule posts
 - list comments and post supplied replies on published posts
-- inspect publishing jobs, including platform post IDs and URLs when available
+- read publishing jobs, including platform post IDs and URLs when available
 - list grouped posts
-- fetch analytics
+- read analytics
 - create, list, and delete webhooks
 - update settings for brand and auto-reply behavior
 - list connected platforms
@@ -107,15 +107,15 @@ mallary platforms disconnect facebook
 
 ## Media handling
 
-Mallary CLI is designed to make media uploads easier in local and scripted workflows.
+Mallary CLI handles media uploads for local and scripted workflows.
 
-Current behavior includes:
+Current behavior is:
 
-- local files are uploaded to Mallary automatically
-- external remote media URLs are rejected
-- existing `https://files.mallary.ai/...` URLs are allowed
+- Mallary uploads local files automatically
+- Mallary rejects external remote media URLs
+- Mallary accepts existing `https://files.mallary.ai/...` URLs
 
-This is useful because many downstream social platforms expect trusted hosted media URLs.
+Many downstream social platforms expect trusted hosted media URLs.
 
 ## Posting and scheduling
 
@@ -132,7 +132,7 @@ You can:
 - enable per-post AI auto reply
 - use platform-specific payloads in file mode
 
-The CLI is especially helpful when you want to test the same post payloads you plan to send from automation or backend systems.
+The CLI can test the same post payloads that you plan to send from automation or backend systems.
 
 For scheduling, you can either send an absolute timestamp with `--scheduled-at 2026-04-06T18:30:00Z`, or pair a local `--scheduled-at 2026-04-06T14:30` with `--scheduled-timezone America/New_York`.
 
@@ -163,7 +163,7 @@ Examples:
 - YouTube requires exactly one video.
 - Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
-- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. Use `platform_options.tiktok.post_mode = DIRECT_POST` only when you want Mallary to publish directly.
+- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. To publish directly instead, set `platform_options.tiktok.post_mode = DIRECT_POST`.
 - Pinterest requires exactly one image or GIF, or exactly one video.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 
@@ -175,7 +175,7 @@ For the full matrix, see:
 
 Mallary CLI supports `--json` output for scripting and automated workflows.
 
-That makes it a good fit for:
+This output format is a good fit for:
 
 - shell scripts
 - GitHub Actions
@@ -191,7 +191,7 @@ CLI access is available on paid plans only:
 - Pro
 - Business
 
-Current product rules also mean:
+Current product rules are:
 
 - Free plans do not have CLI access
 - analytics access follows plan capabilities

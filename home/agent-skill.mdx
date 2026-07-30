@@ -13,14 +13,14 @@ Or download <a href="https://github.com/mallarylabs/mallary-agent/blob/main/SKIL
 
 ## What's included
 
-The skill teaches your AI agent how to use the Mallary API effectively — endpoint selection, parameter usage, pagination, uploads, and platform-specific quirks for TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, Facebook, and more.
+The skill teaches your AI agent how to use the Mallary API. It covers endpoint selection, parameter usage, pagination, uploads, and platform-specific rules. These rules cover all 10 supported platforms, including TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, and Facebook.
 
 | When you say | What the skill does                           |
 | -------- | ------------------------------------- |
-| "post this video to all my accounts"     | Hands the video and publishing intent to Mallary CLI, which handles upload, queuing, platform-specific posting, retries, status tracking, and reporting. |
-| "Schedule these 2 video posts for tomorrow at 9am and 3pm."      | Understand the scheduling request, resolves “tomorrow at 9am and 3pm” into exact timestamps, uploads the two videos to the Mallary CDN, creates two scheduled post jobs through Mallary’s API or MCP, and Mallary’s worker later publishes them to the user’s connected accounts while tracking status, retries, and failures. |
-| "How did yesterday's post do?" | Recognize an analytics request. Resolves “yesterday” to the correct date range, authenticates through Mallary’s API or MCP, finds the user’s posts from that day, and retrieves available performance data such as views, likes, comments, shares, clicks, or platform-specific metrics. |
-| "Reply to everyone who commented on my launch post." | Calls Mallary's comment-list endpoint/tool for the published post, writes each reply in the user's voice, then sends the exact reply text back through Mallary's comment-reply endpoint/tool. |
+| "post this video to all my accounts"     | Sends the video and the publishing intent to the Mallary CLI. The CLI handles the upload, the queue, platform-specific posting, retries, status, and reporting. |
+| "Schedule these 2 video posts for tomorrow at 9am and 3pm."      | Resolves "tomorrow at 9am and 3pm" into exact timestamps. Uploads the two videos to the Mallary CDN. Creates two scheduled jobs through the Mallary API or MCP. A Mallary worker publishes them later, and tracks status, retries, and failures. |
+| "How did yesterday's post do?" | Resolves "yesterday" to the correct date range. Authenticates through the Mallary API or MCP. Finds the posts from that day. Reads the available performance data, such as views, likes, comments, shares, clicks, and platform-specific metrics. |
+| "Reply to everyone who commented on my launch post." | Calls the Mallary comment-list endpoint or tool for the published post. Writes each reply in the user's voice. Sends the exact reply text through the comment-reply endpoint or tool. |
 
 ## Authentication
 
@@ -44,7 +44,7 @@ Authorization: Bearer <mallary_api_key>
 
 
 ## Skill vs MCP
-The MCP server gives your AI agent direct API access — it can call Mallary endpoints on your behalf. The skill teaches the agent best practices for using those APIs: which endpoint to pick, how to upload files, and platform-specific gotchas. Use them together for the best experience, or independently.
+The MCP server gives your AI agent direct API access. It can call Mallary endpoints on your behalf. The skill teaches the agent best practices for those APIs: which endpoint to pick, how to upload files, and the platform-specific rules. Use the skill and the MCP server together, or use each one alone.
 
 ## Comment engagement
 
