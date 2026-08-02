@@ -1,0 +1,48 @@
+---
+title: "Mallary for ChatGPT and Codex"
+description: "Use Mallary inside ChatGPT and Codex to publish social posts, reply to comments, and review results."
+---
+
+Mallary connects your social publishing workflow to ChatGPT and Codex. You can work with your connected social accounts without sharing an API key.
+
+## What You Can Do
+
+- see connected social accounts
+- create or schedule social posts
+- use a different message for each platform
+- check publishing status and open published posts
+- read comments and post approved replies
+- review post analytics
+- manage Mallary profiles, settings, and webhooks
+
+## How Sign-In Works
+
+The Mallary plugin uses OAuth. ChatGPT or Codex opens Mallary in your browser and asks you to approve access.
+
+Mallary never gives the plugin your password, social account tokens, API keys, or payment details. You can review or revoke access from your Mallary account at any time.
+
+## Safe Actions
+
+The plugin checks read-only information first. Before it publishes, replies, deletes, disconnects an account, changes settings, or creates a webhook, it shows the exact action and asks for confirmation.
+
+Do not approve an action until the profile, platforms, message, schedule, and other details are correct.
+
+## Media In Version 1
+
+The first version supports text posts and media that is already hosted at `https://files.mallary.ai`.
+
+ChatGPT cannot upload bytes from a local file directly through the Mallary plugin in version 1. Creating an upload URL does not upload the file.
+
+## Availability
+
+The plugin will appear in the shared ChatGPT and Codex plugin directory after OpenAI review and publication. Until then, approved testers can connect the Mallary MCP server in ChatGPT Developer Mode.
+
+Mallary MCP endpoint:
+
+```text
+https://mallary.ai/mcp
+```
+
+<Card title="Mallary MCP authentication" href="/mcp-reference/authentication">
+  See how OAuth permissions and account revocation work.
+</Card>

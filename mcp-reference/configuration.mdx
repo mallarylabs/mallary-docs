@@ -12,6 +12,19 @@ These environment variables configure Mallary MCP:
 - `MCP_MAX_BODY_BYTES`
 - `MCP_ALLOWED_ORIGINS`
 
+OAuth is run as a separate Node service. It uses:
+
+- `MALLARY_OAUTH_ENABLED`
+- `MALLARY_OAUTH_ISSUER`
+- `MALLARY_OAUTH_RESOURCE`
+- `MALLARY_OAUTH_PORT`
+- `MALLARY_OAUTH_STORAGE_KEY`
+- `MALLARY_OAUTH_INTERACTION_KEY`
+- `MALLARY_OAUTH_JWKS_PATH` or `MALLARY_OAUTH_JWKS_JSON`
+- `MALLARY_OAUTH_INTROSPECTION_CLIENT_ID`
+- `MALLARY_OAUTH_INTROSPECTION_CLIENT_SECRET` (optional; derived from the storage key when omitted)
+- `MALLARY_OAUTH_TEST_USER_IDS` (optional rollout allowlist)
+
 ## Defaults and Values
 
 - `MCP_ENABLED`: `0` or `1`
@@ -27,3 +40,5 @@ Mallary MCP supports:
 - `DELETE /mcp`
 
 `GET /mcp` supports session transport. `DELETE /mcp` supports session termination.
+
+The OAuth service should bind to a private local port and be exposed only through TLS at `https://auth.mallary.ai`.
