@@ -1,0 +1,85 @@
+---
+title: "Mallary for Cursor"
+description: "Use Mallary in Cursor to plan posts, publish after approval, reply to comments, and check social media results."
+---
+
+Mallary brings your social media workflow into Cursor. The plugin connects to your Mallary account with OAuth, so you do not need to paste an API key into Cursor.
+
+<Note>
+  The Mallary plugin is ready for Cursor Marketplace review. Until Cursor approves the listing, you can install it from source for testing.
+</Note>
+
+## What You Can Do
+
+- see your Mallary profiles and connected social accounts
+- create or schedule social posts
+- use a different message for each platform
+- check publishing jobs and open published posts
+- read comments and post approved replies
+- review post analytics
+- manage profiles, settings, platforms, and webhooks
+
+## Install from Source
+
+Cursor needs a real directory copy. Do not use a symlink.
+
+```bash
+git clone https://github.com/mallarylabs/cursor-plugin.git
+mkdir -p ~/.cursor/plugins/local
+rsync -a --delete --exclude='.git' cursor-plugin/ ~/.cursor/plugins/local/mallary/
+```
+
+Reload Cursor with `Cmd-Shift-P`, then choose `Developer: Reload Window`.
+
+Open `Cursor Settings` → `Plugins` and confirm Mallary appears. Then open `Cursor Settings` → `Tools & MCPs` and confirm `mallary` is listed.
+
+## Sign In
+
+The first Mallary request opens Mallary in your browser. Sign in and approve the requested access. Cursor can then use Mallary without seeing your password, API keys, social account tokens, or payment details.
+
+Try this safe prompt:
+
+```text
+Ask Mallary to show my profiles and connected social accounts. Do not post or change anything.
+```
+
+You can also use the plugin command:
+
+```text
+/mallary Show my latest posts and their status.
+```
+
+## Switching from an Older Setup
+
+If Mallary appears twice in Cursor, remove the older Mallary entry from `~/.cursor/mcp.json` or disable the older Claude plugin copy. Keep only one Mallary MCP connection enabled so Cursor does not show duplicate tools.
+
+## Install from the Marketplace
+
+After Cursor approves the listing, install Mallary from Cursor chat:
+
+```text
+/add-plugin mallary
+```
+
+## Safe Actions
+
+The plugin reads the current state first. Before it publishes, replies, deletes, disconnects an account, changes settings, or manages a webhook, it shows the exact action and asks for confirmation.
+
+Do not approve an action until the profile, platforms, message, schedule, destination, and other details are correct.
+
+## Media in Version 1
+
+Version 1 supports media that is already hosted at `https://files.mallary.ai`.
+
+Creating an upload URL does not upload a local file. Upload local media through Mallary or the Mallary CLI first, then use the approved Mallary media URL.
+
+## Privacy and Support
+
+- [Privacy policy](https://mallary.ai/privacy)
+- [Terms of service](https://mallary.ai/tos)
+- [Cursor plugin source](https://github.com/mallarylabs/cursor-plugin)
+- [Email support](mailto:support@mallary.ai)
+
+<Card title="Mallary MCP authentication" href="/mcp-reference/authentication">
+  See how OAuth permissions and account revocation work.
+</Card>
