@@ -5,7 +5,7 @@ description: "Connect to Mallary MCP with OAuth or a Mallary API key."
 
 Mallary MCP supports OAuth 2.1 for apps and agents. Mallary API keys remain supported for scripts and existing integrations.
 
-The Mallary plugin for ChatGPT and Codex always uses OAuth. It never asks the user to create, paste, or reveal a Mallary API key.
+Mallary connectors for Claude, ChatGPT, Codex, and Cursor use OAuth. They never ask the user to create, paste, or reveal a Mallary API key.
 
 <Card
   title="Before using the Mallary MCP Server:"
@@ -35,7 +35,7 @@ https://auth.mallary.ai
 
 Mallary asks the signed-in user to approve the exact access the app needs. Mallary never gives the app the user's password or connected social account tokens.
 
-ChatGPT and Codex can register a dedicated OAuth client through Mallary's dynamic client registration endpoint. Access tokens are short lived. Refresh tokens rotate, and revoked grants stop working.
+Claude can use a Client ID Metadata Document, while other clients can use Mallary's dynamic client registration endpoint. Mallary keeps both methods available. Access tokens are short lived. Refresh tokens rotate, and revoked grants stop working.
 
 Users can review and revoke OAuth access at `https://mallary.ai/oauth-connections`.
 

@@ -22,7 +22,7 @@ Mallary MCP gives you a structured tool layer over the Mallary platform. Your AI
     icon="key-round"
     href="/mcp-reference/authentication"
   >
-    Learn how to authenticate Mallary MCP with your Mallary API key.
+    Learn how to connect with OAuth or a Mallary API key.
   </Card>
   <Card title="Enabled Tools" icon="wrench" href="/mcp-reference/tools">
     See the current Mallary MCP tool names for posting, uploads, comments, analytics,
@@ -81,12 +81,16 @@ claude mcp add --transport http mallary https://mallary.ai/mcp
 
 ## Add to Claude
 
-Connect directly from Claude without manually configuring an API key:
+Mallary works now as a custom Claude connector. The public Connectors Directory listing is being prepared.
 
-1. Go to Settings → Connectors.
-2. Click Add custom connector.
-3. Enter Mallary as the name and https://mallary.ai/mcp as the URL.
-4. When Claude prompts you, click Authorize to complete the OAuth flow.
+1. Go to `Customize` → `Connectors`.
+2. Click `+`, then choose `Add custom connector`.
+3. Enter `Mallary` as the name and `https://mallary.ai/mcp` as the URL.
+4. Click `Connect` and complete the Mallary OAuth flow.
+
+<Card title="Mallary for Claude" href="/home/claude">
+  See the full Claude connector setup, safety guidance, and feature list.
+</Card>
 
 ## Add to Codex
 ```bash
@@ -187,7 +191,7 @@ Supported methods:
 
 ## Authentication
 
-Authenticate with your Mallary API key:
+OAuth-ready clients should use Mallary's browser sign-in flow. Existing scripts and manual clients can still authenticate with a Mallary API key:
 
 ```http
 Authorization: Bearer <mallary_api_key>
