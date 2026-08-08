@@ -1,0 +1,117 @@
+---
+title: "Social Media Automation for Make"
+description: "Use the official Mallary app for Make to publish and schedule social posts, upload media, manage comments, read analytics, and watch publishing events."
+---
+
+Mallary for Make brings your social publishing workflow into Make.com.
+
+You can build a visual scenario that uploads media, publishes a post, checks the job, reads comments, and saves results. Mallary handles the social platform APIs. Make handles the steps around them.
+
+<Note>The official Mallary app is ready for Make Marketplace submission. This page will link to the public listing after Make approves it.</Note>
+
+## What you can do
+
+- Publish now or schedule a post.
+- Post to one or many social platforms.
+- Use a different message or title for each platform.
+- Upload an image or video from an earlier Make module.
+- List posts and check publishing jobs.
+- Get the final post ID and link from each platform.
+- Read comments and post the exact reply you approve.
+- Read views, likes, comments, shares, clicks, reach, and impressions.
+- List, create, and rename Mallary profiles.
+- List or disconnect connected platforms.
+- Read and update profile settings.
+- Create, list, and delete webhooks.
+- Start a scenario when Mallary sends a publishing event.
+- Call a newer Mallary API route with **Make an API call**.
+
+## Connect your Mallary account
+
+1. Open the Mallary dashboard.
+2. Create a separate API key for Make.
+3. In Make, add a Mallary module to your scenario.
+4. Click **Add** next to the Mallary connection field.
+5. Paste the API key into the private connection form.
+6. Save the connection.
+7. Run **List Profiles** to test it.
+
+Keep your API key private. It can publish posts, reply to comments, read account data, change settings, and manage webhooks. Store it only in the Make connection. Do not put it in module fields, logs, notes, or screenshots.
+
+## Publish a post
+
+Use **Create or Schedule a Post**.
+
+Add:
+
+1. The default message.
+2. One or more platforms.
+3. A profile ID when you do not want the default profile.
+4. Any Mallary media URLs.
+5. A date and time when the post should be scheduled.
+6. Platform Options JSON when a platform needs its own message, title, privacy choice, board, subreddit, or other setting.
+
+<Warning>This module can publish to real social accounts. Check the Mallary profile, platforms, text, media, and time before the scenario runs.</Warning>
+
+The first response contains a Mallary job for each platform. The platform post ID and link may still be empty while the job is queued. Use **Get a Publishing Job** or **List Posts** after publishing finishes to get the final platform post ID and link.
+
+## Upload a file
+
+Use **Upload Media** when an earlier Make module gives you a file name and file data.
+
+The module:
+
+1. asks Mallary for a short-lived upload URL,
+2. sends the file bytes to Mallary storage,
+3. returns a public `https://files.mallary.ai/...` media URL.
+
+<Warning>Upload Media sends the selected file to Mallary storage. Do not map private, regulated, or secret files unless you mean to upload them for social publishing.</Warning>
+
+Use **Create an Upload URL** only when another module will handle the upload request itself.
+
+## Work with comments
+
+Use **List Comments** with a Mallary post ID. Leave the platform blank to check every supported platform in a grouped post.
+
+Use **Reply to a Comment** only after the reply text is ready.
+
+<Warning>Mallary posts the exact reply text to the live social platform. It does not generate or rewrite the reply in this module.</Warning>
+
+## Watch Mallary events
+
+Use **Watch Mallary Events** to start a scenario when Mallary sends one of these events:
+
+- `post.scheduled`
+- `post.published`
+- `post.failed`
+- `post.partial`
+- `auto_reply.posted`
+
+When you enable the trigger, Make registers its webhook URL with Mallary. When the webhook is removed, Make removes the Mallary webhook too. Mallary signs each delivery, and the trigger checks the signature before it returns the event.
+
+## Destructive actions
+
+These modules can remove content or access:
+
+- **Delete a Pending Post**
+- **Disconnect a Platform**
+- **Delete a Webhook**
+
+Each module has a separate confirmation field. Check the ID, profile, and platform before you turn it on.
+
+## Advanced API calls
+
+Use **Make an API call** when Mallary adds an API route before a focused Make module is ready.
+
+- Enter a relative path such as `/api/v1/profiles`.
+- Do not enter a full URL.
+- You do not need to add the Mallary authorization header.
+- The app always sends `x-mallary-client: make` so Mallary can show Make usage in observability.
+
+## Source and support
+
+- Source: [github.com/mallarylabs/make-app-mallary](https://github.com/mallarylabs/make-app-mallary)
+- Mallary API: [API overview](/api-reference/introduction)
+- Website: [mallary.ai/integrations/make](https://mallary.ai/integrations/make)
+
+The source repo includes all 22 modules, local validation, review test steps, and the Mallary app logo.

@@ -241,6 +241,8 @@ The current documented webhook events include:
 - `auto_reply.posted`
 - `*` to receive all supported events
 
+Each delivery includes `event`, `event_id`, `data`, and `sent_at`. If you set a webhook secret, Mallary sends `X-Mallary-Signature` for the full request body. It also sends `X-Mallary-Payload-Signature` for the exact JSON string in `signed_payload`. Verify a signature before you trust or process the event.
+
 ## Plans and feature gating
 
 Some features are gated by plan.
