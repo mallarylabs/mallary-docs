@@ -3,3 +3,23 @@ title: "Create Webhook"
 description: "Create a webhook for post and auto-reply lifecycle events."
 openapi: "POST /api/v1/webhooks"
 ---
+
+## Delivery body
+
+Mallary sends a JSON body like this:
+
+```json
+{
+  "event": "post.published",
+  "event_id": "7dd724b3-e237-4b1f-9d3c-28f1932eb195",
+  "data": {
+    "batch_id": "batch_example",
+    "platform": "facebook",
+    "status": "completed"
+  },
+  "sent_at": "2026-08-08T12:00:00.000Z",
+  "signed_payload": "{\"event\":\"post.published\",\"event_id\":\"7dd724b3-e237-4b1f-9d3c-28f1932eb195\",\"data\":{\"batch_id\":\"batch_example\",\"platform\":\"facebook\",\"status\":\"completed\"},\"sent_at\":\"2026-08-08T12:00:00.000Z\"}"
+}
+```
+
+If you set a webhook secret, Mallary sends `X-Mallary-Payload-Signature` as `sha256=<hex digest>`. It is the HMAC-SHA256 signature of the exact `signed_payload` string. Verify it before parsing or using the event.

@@ -125,7 +125,7 @@ paths:
           name: id
           required: true
           schema:
-            type: integer
+            type: string
           description: TikTok job ID returned by `POST /api/v1/post`.
       requestBody:
         required: true
@@ -142,6 +142,10 @@ paths:
       responses:
         "200":
           description: TikTok post URL saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttachTikTokPostUrlResponse"
         "400":
           description: Invalid job ID, missing URL, or non-TikTok job
         "401":
@@ -1238,6 +1242,8 @@ components:
       properties:
         id:
           type: string
+        platform:
+          $ref: "#/components/schemas/Platform"
         status:
           type: string
           enum:
@@ -1272,6 +1278,10 @@ components:
         error:
           type: string
           nullable: true
+        action_required:
+          type: object
+          nullable: true
+          additionalProperties: true
         created_at:
           type: string
           nullable: true
@@ -1301,9 +1311,34 @@ components:
               items:
                 $ref: "#/components/schemas/AutoReplyWarning"
 
+    AttachTikTokPostUrlResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            job_id:
+              type: integer
+            platform:
+              type: string
+              enum: [tiktok]
+            platform_post_id:
+              type: string
+            platform_post_url:
+              type: string
+              format: uri
+            analytics_refresh:
+              type: string
+              enum: [queued]
+
     PostResult:
       type: object
       properties:
+        job_id:
+          type: integer
         platform:
           $ref: "#/components/schemas/Platform"
         success:
@@ -1315,12 +1350,22 @@ components:
         platform_post_url:
           type: string
           nullable: true
+        shortcode:
+          type: string
+          nullable: true
+        platform_username:
+          type: string
+          nullable: true
         post_type:
           type: string
           nullable: true
         error_message:
           type: string
           nullable: true
+        action_required:
+          type: object
+          nullable: true
+          additionalProperties: true
         retry_exhausted:
           type: boolean
           nullable: true
@@ -1404,6 +1449,8 @@ components:
           type: array
           items:
             type: integer
+        auto_reply_enabled:
+          type: boolean
         message:
           type: string
         media:
@@ -1427,6 +1474,10 @@ components:
         scheduled_timezone:
           type: string
           nullable: true
+        action_required:
+          type: object
+          nullable: true
+          additionalProperties: true
         platforms:
           type: array
           items:
@@ -1687,6 +1738,14 @@ components:
               type: string
             faq:
               type: string
+            business_profile_prefill_at:
+              type: string
+              nullable: true
+            business_profile_prefill_next_allowed_at:
+              type: string
+              nullable: true
+            business_profile_prefill_retry_after_seconds:
+              type: integer
 
     ConnectedPlatformItem:
       type: object

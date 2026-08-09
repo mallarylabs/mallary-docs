@@ -1,0 +1,16 @@
+---
+title: "Attach a TikTok Post URL"
+description: "Save the final TikTok post URL after a manual TikTok upload is complete."
+openapi: "POST /api/v1/jobs/{id}/tiktok/post-url"
+---
+
+Use this endpoint only when a TikTok publishing job asks the creator to finish the upload in TikTok.
+
+Send the job ID from `POST /api/v1/post` and the final public TikTok video or photo URL. Mallary saves the TikTok post ID and URL, marks the job complete, and queues an analytics refresh.
+
+Accepted URLs include:
+
+- `https://www.tiktok.com/@handle/video/1234567890`
+- `https://www.tiktok.com/@handle/photo/1234567890`
+
+The endpoint returns an error if the job is not a TikTok job or does not need a final URL.
