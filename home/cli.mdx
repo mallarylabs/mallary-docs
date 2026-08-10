@@ -64,11 +64,14 @@ The CLI is a convenient interface over the same underlying Mallary system used b
 
 ## Authentication
 
-Mallary CLI uses environment-variable authentication only.
+For interactive use, sign in with browser-based OAuth:
 
 ```bash
-export MALLARY_API_KEY="your_mallary_api_key"
+mallary auth login
+mallary auth status
 ```
+
+OAuth starts with read-only access, stores credentials outside your project by default, and refreshes access automatically. `MALLARY_API_KEY` remains available as an optional environment override for CI or other non-interactive environments.
 
 ## Installation
 

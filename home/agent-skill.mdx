@@ -24,23 +24,31 @@ The skill teaches your AI agent how to use the Mallary API. It covers endpoint s
 
 ## Authentication
 
-Authenticate with your Mallary API key:
+For OpenClaw, Hermes, and other CLI-backed agent harnesses, install the Mallary CLI and start browser-based OAuth:
 
-```http
-Authorization: Bearer <mallary_api_key>
+```bash
+npm install -g @mallary/cli
+mallary auth login
+mallary auth status
 ```
 
+The CLI shows a Mallary sign-in URL and one-time code. The agent should show those to you and wait while you approve access in your browser. Do not paste your password, API key, access token, or refresh token into the agent.
+
+OAuth starts with read-only access. Broader scopes should be requested only after you ask for that capability. Authentication and scope consent do not approve a specific upload, post, reply, deletion, webhook or settings change, or account disconnection.
+
 <Card
-  title="Get your API Key"
+  title="Connect with OAuth"
   href="https://mallary.ai"
   horizontal
 >
   <ol>
     <li>Sign up at https://mallary.ai</li>
     <li>Connect your social media accounts in the Mallary dashboard</li>
-    <li>Get your Mallary API key</li>
+    <li>Run <code>mallary auth login</code> and approve read-only access</li>
   </ol>
 </Card>
+
+`MALLARY_API_KEY` remains available as an optional fallback for CI or another environment where OAuth is not practical. Keep it in a masked secret store and never paste it into an agent prompt. When set, it takes precedence over stored OAuth.
 
 
 ## Skill vs MCP

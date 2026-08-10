@@ -1,9 +1,9 @@
 ---
 title: "Authentication"
-description: "Authenticate Mallary CLI with your Mallary API key."
+description: "Authenticate Mallary CLI with browser-based OAuth or an API key."
 ---
 
-Mallary CLI uses environment-variable authentication only.
+OAuth is the default for interactive use, including OpenClaw, Hermes, and other AI agent harnesses.
 
 <Card
   title="Before using the Mallary CLI:"
@@ -13,12 +13,46 @@ Mallary CLI uses environment-variable authentication only.
   <ol>
     <li>Sign up at https://mallary.ai</li>
     <li>Connect your social media accounts in the Mallary dashboard</li>
-    <li>Get your Mallary API key</li>
+    <li>Sign in to the CLI with OAuth</li>
   </ol>
 </Card>
 
-## Required Environment Variable
+## Sign in with OAuth
+
+```bash
+mallary auth login
+```
+
+The CLI shows a Mallary sign-in URL and a one-time code. Open the URL, sign in to Mallary, review the requested access, and approve it. OpenClaw, Hermes, and other agents do not need to receive your password, API key, access token, or refresh token.
+
+OAuth starts with read-only access. Add a broader scope only when you intend to use that capability:
+
+```bash
+mallary auth login --scope publish
+mallary auth login --scope engage
+mallary auth login --scope manage
+mallary auth login --scope all
+```
+
+Authentication and OAuth scope consent do not approve a specific state-changing action. Before an AI agent posts, uploads, replies, deletes, changes settings or webhooks, or disconnects an account, it must show the exact action and get separate approval.
+
+## Check or remove OAuth access
+
+```bash
+mallary auth status
+mallary auth logout
+```
+
+`auth status` reports whether OAuth or `MALLARY_API_KEY` is active without printing credentials. OAuth access tokens refresh automatically. `auth logout` revokes and removes the stored OAuth connection.
+
+By default, OAuth credentials are stored outside the current project in the operating system's per-user application configuration directory. On macOS and Linux, the credentials file is restricted to the current user.
+
+## API key alternative
+
+API-key authentication remains available for CI and other environments where OAuth is not practical:
 
 ```bash
 export MALLARY_API_KEY="your_mallary_api_key"
 ```
+
+When this variable is set, it takes precedence over stored OAuth credentials. Keep it in a masked secret store. Never commit it, paste it into an agent prompt, or print it in logs.

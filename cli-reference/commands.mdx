@@ -1,7 +1,18 @@
 ---
 title: "Commands"
-description: "The main Mallary CLI commands for health, uploads, posts, comments, jobs, analytics, webhooks, settings, and platforms."
+description: "The main Mallary CLI commands for authentication, health, uploads, posts, comments, jobs, analytics, webhooks, settings, and platforms."
 ---
+
+## Authentication
+
+```bash
+mallary auth login
+mallary auth login --scope publish
+mallary auth status
+mallary auth logout
+```
+
+OAuth login starts with read-only access. A broader scope grants a capability but does not approve a particular state-changing command.
 
 ## Health
 

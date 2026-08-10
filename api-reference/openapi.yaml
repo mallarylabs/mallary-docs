@@ -1459,7 +1459,7 @@ components:
             $ref: "#/components/schemas/MediaItem"
         status:
           type: string
-          enum: [queued, scheduled, processing, partial, completed, failed]
+          enum: [queued, scheduled, processing, partial, completed, failed, cancelled]
         source:
           type: string
           enum: [api, dashboard, cli, mcp, make]
