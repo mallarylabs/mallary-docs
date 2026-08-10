@@ -1,65 +1,59 @@
 ---
 title: "Mallary for Claude"
-description: "Connect Claude to Mallary with OAuth to plan posts, publish after approval, reply to comments, and review social media results."
+description: "Add Mallary to Claude with OAuth. Then ask Claude to post, reply, use media, and show your results."
 ---
 
-Mallary connects Claude to your social media workflow. You can work with your Mallary profiles and connected social accounts without pasting an API key into Claude.
+Use Mallary inside Claude to work with your social media. You can use the accounts in your Mallary profiles. You do not need to copy an API key.
 
-<Note>
-  Mallary works now as a custom Claude connector. Mallary is preparing its Connectors Directory submission. The separate Claude Code plugin is still under Anthropic review.
-</Note>
+<Note>Mallary is in the official Claude Connector Directory.</Note>
+
+<Card
+  title="Add to Claude"
+  icon="plug"
+  href="https://claude.ai/directory/connectors/mallary"
+>
+  Open Mallary in Claude and add the connector.
+</Card>
+
+## Start in Three Steps
+
+1. Click **Add to Claude** above.
+2. Sign in to Mallary and allow the connection.
+3. Ask Claude to use Mallary for your social media work.
 
 ## What You Can Do
 
-- see your Mallary profiles and connected social accounts
-- create or schedule social posts
-- use a different message for each platform
-- check publishing jobs and open published posts
-- read comments and post approved replies
-- review post analytics
-- manage profiles, settings, platforms, and webhooks
+- see your Mallary profiles and social accounts
+- create or schedule posts
+- write a different message for each platform
+- check if a post went live
+- read comments and send replies
+- see likes, views, shares, and other results
+- work with your Mallary settings and webhooks
 
-## Connect Mallary to Claude
+## How Sign-In Works
 
-1. Open Claude.
-2. Go to `Customize` → `Connectors`.
-3. Click `+`, then choose `Add custom connector`.
-4. Enter `Mallary` as the name.
-5. Enter this connector URL:
+Claude sends you to Mallary to sign in with OAuth. You approve the connection on the Mallary page.
 
-```text
-https://mallary.ai/mcp
-```
+Claude does not see your Mallary password, API keys, social account tokens, or payment details.
 
-6. Click `Add`, then click `Connect`.
-7. Sign in to Mallary and approve the requested access.
+## Before You Post
 
-Claude uses OAuth. It never sees your Mallary password, API keys, social account tokens, or payment details.
+Adding the connector does not post anything. Claude uses Mallary when you ask it to.
 
-## Try a Safe Prompt
+Before you ask Claude to post, check the profile, social sites, words, media, and time.
 
-```text
-Ask Mallary to show my profiles and connected social accounts. Do not post or change anything.
-```
+## Photos and Videos
 
-## Connector vs. Claude Code Plugin
+Mallary can make a link for a photo or video upload. Making the link does not upload the file by itself.
 
-The Claude connector and Claude Code plugin work together, but they are different:
+If your file is already on `https://files.mallary.ai`, Claude can use that file in a post.
 
-- **Claude connector:** Connects Claude to Mallary's live MCP tools. It works in Claude web, Desktop, mobile, Cowork, and Claude Code.
-- **Claude Code plugin:** Adds Mallary workflow instructions and the Mallary MCP connection to Claude Code. Its current review build uses a Mallary API key.
+## Claude Connector and Claude Code
 
-Do not add Mallary twice in Claude Code. If both options point to `https://mallary.ai/mcp`, Claude uses one tool set, but keeping one connection enabled makes setup easier to understand.
+The Claude connector is the quick way to use Mallary in Claude. The Claude Code plugin is a different setup.
 
-## Safe Actions
-
-The connector reads the current state first. Before Claude publishes, replies, deletes, disconnects an account, changes settings, or manages a webhook, review the exact action and approve it only when every detail is correct.
-
-## Media in Version 1
-
-Version 1 supports media already hosted at `https://files.mallary.ai`.
-
-Creating an upload URL does not upload a local file. Upload local media through Mallary or the Mallary CLI first, then use the Mallary media URL.
+If you use Claude Code, connect Mallary only once. This keeps the same Mallary tools from showing up twice.
 
 ## Privacy and Support
 
@@ -67,6 +61,6 @@ Creating an upload URL does not upload a local file. Upload local media through 
 - [Terms of service](https://mallary.ai/tos)
 - [Email support](mailto:support@mallary.ai)
 
-<Card title="Mallary MCP authentication" href="/mcp-reference/authentication">
-  See how OAuth permissions, refresh tokens, and account revocation work.
+<Card title="Mallary sign-in and access" href="/mcp-reference/authentication">
+  Learn how Mallary sign-in works and how to turn off access.
 </Card>
