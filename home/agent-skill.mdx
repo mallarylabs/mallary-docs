@@ -34,7 +34,7 @@ mallary auth status
 
 The CLI shows a Mallary sign-in URL and one-time code. The agent should show those to you and wait while you approve access in your browser. Do not paste your password, API key, access token, or refresh token into the agent.
 
-OAuth starts with read-only access. Broader scopes should be requested only after you ask for that capability. Authentication and scope consent do not approve a specific upload, post, reply, deletion, webhook or settings change, or account disconnection.
+One OAuth login gives the agent access to view data, publish posts, reply to comments, and manage settings and connections. You do not choose OAuth scopes or sign in again for another capability. Login itself does not post or change anything. After setup, a clear request to publish, schedule, upload media for a requested post, or send a supplied reply is enough authorization. The agent should ask only when a needed detail is missing or unclear, and it should not ask you to approve the same action again.
 
 <Card
   title="Connect with OAuth"
@@ -44,7 +44,7 @@ OAuth starts with read-only access. Broader scopes should be requested only afte
   <ol>
     <li>Sign up at https://mallary.ai</li>
     <li>Connect your social media accounts in the Mallary dashboard</li>
-    <li>Run <code>mallary auth login</code> and approve read-only access</li>
+    <li>Run <code>mallary auth login</code> and approve Mallary access</li>
   </ol>
 </Card>
 

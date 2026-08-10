@@ -33,13 +33,15 @@ Mallary uses the authorization code flow with PKCE. The authorization server is:
 https://auth.mallary.ai
 ```
 
-Mallary asks the signed-in user to approve the exact access the app needs. Mallary never gives the app the user's password or connected social account tokens.
+Mallary asks the signed-in user to approve the app connection. First-party Mallary clients request all Mallary capabilities in one login, so the user does not choose scopes or sign in again for another capability. Mallary never gives the app the user's password or connected social account tokens.
 
 Claude can use a Client ID Metadata Document, while other clients can use Mallary's dynamic client registration endpoint. Mallary keeps both methods available. Access tokens are short lived. Refresh tokens rotate, and revoked grants stop working.
 
 Users can review and revoke OAuth access at `https://mallary.ai/oauth-connections`.
 
-## OAuth Scopes
+## OAuth Scope Reference
+
+These scopes remain part of the OAuth protocol for client compatibility. They are not choices shown by the Mallary CLI.
 
 - `mallary.read`: read posts, comments, analytics, profiles, platforms, settings, and webhooks
 - `mallary.publish`: upload media and create or schedule posts

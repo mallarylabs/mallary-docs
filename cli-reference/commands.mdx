@@ -7,12 +7,11 @@ description: "The main Mallary CLI commands for authentication, health, uploads,
 
 ```bash
 mallary auth login
-mallary auth login --scope publish
 mallary auth status
 mallary auth logout
 ```
 
-OAuth login starts with read-only access. A broader scope grants a capability but does not approve a particular state-changing command.
+One OAuth login gives the CLI access to view data, publish posts, reply to comments, and manage settings and connections. Users do not choose scopes or sign in again for another capability. Login itself does not post or change anything. A clear later request to publish, schedule, upload media for a requested post, or send a supplied reply is enough authorization; do not ask for a second confirmation.
 
 ## Health
 
