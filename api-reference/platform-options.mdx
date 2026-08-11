@@ -1,0 +1,224 @@
+---
+title: "Platform Posting Options"
+description: "See which post types and settings Mallary supports for each social platform."
+---
+
+Use this page to make each post fit the social platform you choose.
+
+Most settings go inside `platform_options`. A few settings, such as `thumbnail_url` and `comments_under_post`, go in another part of the post request. See [Create Post](/api-reference/endpoint/create) for the full request.
+
+## Facebook
+
+Facebook supports feed posts and Stories.
+
+### Facebook feed or Story
+
+Set `platform_options.facebook.post_type` to `feed` or `story`.
+
+- A feed post can have text, a link, up to 10 images, or one video.
+- A Story can have one image or one video.
+
+### Facebook message
+
+Use `platform_options.facebook.message` to write text just for Facebook. If you leave it out, Mallary uses the main post message.
+
+### Facebook custom video thumbnail
+
+Add `thumbnail_url` to the Facebook video in `media`. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB.
+
+### Facebook first comments
+
+Use `comments_under_post` to add up to three comments under a feed post. Facebook Stories do not use first comments.
+
+## Instagram
+
+Instagram supports feed posts, Stories, Reels, and carousels.
+
+### Instagram post type
+
+Set `platform_options.instagram.post_type` to `feed`, `story`, `reel`, or `carousel`.
+
+- A feed post has one image or one video.
+- A Story has one image or one video.
+- A Reel has one video.
+- A carousel has 2 to 10 images and videos.
+
+### Instagram caption
+
+Use `platform_options.instagram.message` to write a caption just for Instagram. If you leave it out, Mallary uses the main post message. Story text must be part of the image or video.
+
+### Instagram custom video cover
+
+Add `thumbnail_url` to a feed video or Reel in `media`. Use an image stored by Mallary. A tall cover works best for a Reel.
+
+### Instagram first comments
+
+Use `comments_under_post` to add up to three comments under a feed post, Reel, or carousel. Stories do not use first comments.
+
+## LinkedIn
+
+LinkedIn supports text posts and posts with one image or GIF.
+
+### LinkedIn message
+
+Use `platform_options.linkedin.message` to write text just for LinkedIn. If you leave it out, Mallary uses the main post message.
+
+### LinkedIn choose who posts
+
+Use `platform_options.linkedin.author_urn` to choose a person or company page. You can also save this choice when you connect LinkedIn in Mallary.
+
+## Threads
+
+Threads supports text, image, video, and carousel posts.
+
+### Threads post type
+
+Set `platform_options.threads.post_type` to `text`, `image`, `video`, or `carousel`. You can also leave it out and let Mallary choose from your media.
+
+### Threads message
+
+Use `platform_options.threads.message` to write text just for Threads. If you leave it out, Mallary uses the main post message.
+
+### Threads first replies
+
+Use `comments_under_post` to add up to three replies under your new Threads post.
+
+## YouTube
+
+YouTube supports Shorts and long-form videos.
+
+### YouTube video type
+
+Set `platform_options.youtube.post_type` to `shorts` or `regular`. You can also leave it out and let Mallary choose from the video shape and length.
+
+### YouTube title and description
+
+Use `platform_options.youtube.title` for the video title. Use `platform_options.youtube.message` for the description. If you leave the title out, Mallary uses the first line of the message.
+
+### YouTube visibility
+
+Set `platform_options.youtube.visibility` to `public`, `unlisted`, or `private`. The default is `public`.
+
+### YouTube custom thumbnail
+
+Add `thumbnail_url` to a long-form YouTube video in `media`. Use a JPG or PNG file stored by Mallary. A 1280 by 720 image works best.
+
+### YouTube category and audience
+
+Use `platform_options.youtube.categoryId` to choose a YouTube category. Use `platform_options.youtube.madeForKids` to say if the video is made for kids.
+
+### YouTube first comments
+
+Use `comments_under_post` to add up to three comments when YouTube allows comments on the video.
+
+## TikTok
+
+TikTok supports videos and photo carousels.
+
+### TikTok post type
+
+Set `platform_options.tiktok.post_type` to `video` or `photo`. You can also leave it out and let Mallary choose from your media.
+
+### TikTok how it publishes
+
+Set `platform_options.tiktok.post_mode` to `DIRECT_POST` to publish from Mallary. Use `MEDIA_UPLOAD` to send the post to your TikTok inbox so you can finish it in the TikTok app.
+
+### TikTok upload source
+
+For videos, set `platform_options.tiktok.source` to `FILE_UPLOAD` or `PULL_FROM_URL`. A pulled file must already be stored by Mallary. Photo posts use `PULL_FROM_URL`.
+
+### TikTok caption and details
+
+Use these fields for TikTok text:
+
+- `platform_options.tiktok.message` sets the TikTok caption.
+- `platform_options.tiktok.title` sets the TikTok title.
+- `platform_options.tiktok.description` sets the photo post description.
+
+### TikTok privacy and sharing
+
+Use `platform_options.tiktok.privacy_level` to choose who can see a direct post. Use `disable_comment`, `disable_duet`, and `disable_stitch` to control how people can use the post.
+
+### TikTok cover
+
+Use `platform_options.tiktok.video_cover_timestamp_ms` to pick a frame from a video. Use `platform_options.tiktok.photo_cover_index` to pick the cover photo in a carousel.
+
+### TikTok music
+
+Set `platform_options.tiktok.auto_add_music` to `true` to let TikTok add music to a direct photo post. To pick a trending sound, use `MEDIA_UPLOAD` and choose the sound in the TikTok app.
+
+### TikTok content labels
+
+Use `brand_content_toggle`, `brand_organic_toggle`, and `is_aigc` when the post needs a brand, business, or AI-made label.
+
+## Pinterest
+
+Pinterest supports image Pins and video Pins.
+
+### Pinterest pin type
+
+Set `platform_options.pinterest.post_type` to `image` or `video`. You can also leave it out and let Mallary choose from your media.
+
+### Pinterest board
+
+Use `platform_options.pinterest.boardId` to choose the board that gets the Pin. If you leave it out, Mallary can use the board saved with the connection.
+
+### Pinterest title and description
+
+Use `platform_options.pinterest.title` for the Pin title. Use `platform_options.pinterest.message` for the description.
+
+### Pinterest destination link
+
+Use `platform_options.pinterest.link` to send people to a web page when they click the Pin.
+
+### Pinterest alt text
+
+Use `platform_options.pinterest.alt_text` to add a short image description for people who use screen readers.
+
+## Reddit
+
+Reddit supports text, link, and image posts.
+
+### Reddit subreddit
+
+Use `platform_options.reddit.subreddit` or `subredditName` to choose the community that gets the post.
+
+### Reddit post type
+
+Set `platform_options.reddit.post_type` to `text`, `link`, or `image`. You can also leave it out and let Mallary choose from your media.
+
+### Reddit text
+
+Use `platform_options.reddit.message` to write text just for Reddit. Mallary uses this text for the Reddit title and post text where needed.
+
+## Snapchat
+
+Snapchat supports Stories, Saved Stories, and Spotlight posts.
+
+### Snapchat post type
+
+Set `platform_options.snapchat.contentType` to `story`, `saved_story`, or `spotlight`.
+
+### Snapchat title or description
+
+Use `platform_options.snapchat.message` for the text that goes with a Saved Story or Spotlight post.
+
+### Snapchat image or video
+
+Add one image or one MP4 video to `media`. Stories and Saved Stories can use an image or video. Spotlight uses a video.
+
+## X
+
+X supports text, image, video, and GIF posts.
+
+### X message
+
+Use `platform_options.x.message` to write text just for X. `platform_options.twitter.message` also works for older requests.
+
+### X media type
+
+Add up to four images, one video, or one GIF to `media`. Mallary picks the post type from the media. Do not mix images and video.
+
+### X first replies
+
+Use `comments_under_post` to add up to three replies under your new X post.

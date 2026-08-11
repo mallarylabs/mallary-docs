@@ -52,6 +52,8 @@ Current thumbnail behavior:
 
 Mallary validates media before it queues a platform job. The public API and the current publishers enforce these media rules.
 
+For a simple guide to each setting, see [Platform Posting Options](/api-reference/platform-options).
+
 ### Facebook
 
 - Feed posts can be text-only, link-only, up to 10 images, or 1 video.
@@ -132,7 +134,7 @@ Mallary validates media before it queues a platform job. The public API and the 
 - Pinterest does not allow mixing image and video in the same Pin.
 - Image Pins accept one `jpg`, `jpeg`, `png`, `webp`, or `gif` file up to 32 MB.
 - Video Pins accept one `mp4` or `mov` file, 4 seconds to 15 minutes, up to 2 GB.
-- `boardId` is required for Pinterest posting.
+- A Pinterest board is required. Send `boardId`, or use the board saved with the Pinterest connection.
 - `platform_options.pinterest.message` sets a Pinterest-specific description/default title source. Omit it to use the top-level `message`.
 
 ### Reddit

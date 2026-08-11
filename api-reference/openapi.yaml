@@ -1117,6 +1117,9 @@ components:
             link:
               type: string
               format: uri
+            alt_text:
+              type: string
+              description: Short image description for people who use screen readers.
         reddit:
           type: object
           properties:
@@ -1127,6 +1130,12 @@ components:
               type: string
               enum: [text, link, image]
               description: Defaults dynamically. Mallary uses `image` when the media list contains an image; otherwise it uses `text`.
+            subreddit:
+              type: string
+              description: Community that receives the post.
+            subredditName:
+              type: string
+              description: Alias for `subreddit`.
         snapchat:
           type: object
           properties:
