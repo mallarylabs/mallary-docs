@@ -20,6 +20,7 @@ The skill teaches your AI agent how to use the Mallary API. It covers endpoint s
 | "post this video to all my accounts"     | Sends the video and the publishing intent to the Mallary CLI. The CLI handles the upload, the queue, platform-specific posting, retries, status, and reporting. |
 | "Schedule these 2 video posts for tomorrow at 9am and 3pm."      | Resolves "tomorrow at 9am and 3pm" into exact timestamps. Uploads the two videos to the Mallary CDN. Creates two scheduled jobs through the Mallary API or MCP. A Mallary worker publishes them later, and tracks status, retries, and failures. |
 | "How did yesterday's post do?" | Resolves "yesterday" to the correct date range. Authenticates through the Mallary API or MCP. Finds the posts from that day. Reads the available performance data, such as views, likes, comments, shares, clicks, and platform-specific metrics. |
+| "How many followers do my accounts have?" | Reads the latest saved follower or subscriber count for every connected account in the selected Mallary profile. |
 | "Reply to everyone who commented on my launch post." | Calls the Mallary comment-list endpoint or tool for the published post. Writes each reply in the user's voice. Sends the exact reply text through the comment-reply endpoint or tool. |
 
 ## Authentication

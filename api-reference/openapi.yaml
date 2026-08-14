@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mallary API
-  version: "1.3.0"
+  version: "1.4.0"
   description: |
     Public API for multi-platform publishing, analytics, media upload, and webhooks.
 
@@ -11,7 +11,7 @@ info:
 
     Connection profiles:
     - Omit `profile_id` to use the authenticated user's default profile.
-    - Send the profile's random public `profile_id` when you want to publish, list posts, read analytics, list platforms, update settings, or disconnect a platform for a non-default profile.
+    - Send the profile's random public `profile_id` when you want to publish, list posts, read post analytics or audience counts, list platforms, update settings, or disconnect a platform for a non-default profile.
     - Use `GET /api/v1/profiles` to list profile IDs.
     - Per-platform account caps by plan: Free 1, Starter 4, Pro 10, Business 50.
 
@@ -430,6 +430,32 @@ paths:
           description: Analytics are not available for current plan, or supplied `user_id` does not match API key owner
         "404":
           description: Post not found
+
+  /api/v1/audience:
+    get:
+      operationId: listAudience
+      summary: Get current audience counts
+      description: Returns the latest follower or subscriber count for every connected account in one Mallary profile. Mallary refreshes supported counts once every 24 hours.
+      parameters:
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Connection profile to inspect. Omit to use the default profile.
+      responses:
+        "200":
+          description: Audience counts retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AudienceResponse"
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Audience analytics are not available for the current plan, or supplied `user_id` does not match the API key owner
+        "429":
+          description: Rate limit exceeded
 
   /api/v1/platforms:
     get:
@@ -1441,6 +1467,86 @@ components:
             platform:
               $ref: "#/components/schemas/Platform"
         - $ref: "#/components/schemas/AnalyticsMetrics"
+
+    AudienceStatus:
+      type: string
+      enum: [available, collecting, permission_required, reconnect_required, unsupported, error]
+
+    AudienceMetric:
+      type: string
+      enum: [followers, subscribers, page_likes]
+
+    AudienceAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          format: uri
+          nullable: true
+
+    AudienceItem:
+      type: object
+      required: [platform, label, account, metric, count, status]
+      properties:
+        platform:
+          $ref: "#/components/schemas/PublicPlatform"
+        label:
+          type: string
+        account:
+          $ref: "#/components/schemas/AudienceAccount"
+        metric:
+          $ref: "#/components/schemas/AudienceMetric"
+        count:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: true
+        status:
+          $ref: "#/components/schemas/AudienceStatus"
+        status_message:
+          type: string
+          nullable: true
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_attempt_at:
+          type: string
+          format: date-time
+          nullable: true
+        next_update_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AudienceResponse:
+      type: object
+      required: [status, data]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          required: [profile_id, generated_at, audience]
+          properties:
+            profile_id:
+              type: string
+              pattern: "^[A-Za-z0-9]{6,32}$"
+              nullable: true
+            generated_at:
+              type: string
+              format: date-time
+            audience:
+              type: array
+              items:
+                $ref: "#/components/schemas/AudienceItem"
 
     Post:
       type: object

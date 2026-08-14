@@ -54,6 +54,7 @@
               "api-reference/endpoint/comments-reply",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/analytics",
+              "api-reference/endpoint/audience",
               "api-reference/endpoint/platforms",
               "api-reference/endpoint/profiles",
               "api-reference/endpoint/profiles-create",

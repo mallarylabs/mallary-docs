@@ -29,6 +29,7 @@ Identity is always resolved from the API key owner.
 - `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_get_audience`
 - `mallary_list_profiles`
 - `mallary_create_profile`
 - `mallary_rename_profile`

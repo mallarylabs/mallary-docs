@@ -1,11 +1,11 @@
 ---
 title: "Social Media CLI"
-description: "Mallary CLI is a social media command line tool for developers, operators, CI pipelines, and AI agents. Use it to upload media, create and schedule posts, inspect jobs, fetch analytics, manage webhooks, update settings, list connected platforms, and disconnect platforms."
+description: "Mallary CLI is a social media command line tool for developers, operators, CI pipelines, and AI agents. Use it to publish, inspect jobs, read post analytics and audience counts, manage webhooks, and work with connected platforms."
 ---
 
 Mallary CLI is a social media command line interface for the Mallary publishing platform. It serves developers, operators, automation scripts, CI jobs, and AI agents.
 
-If you want a social media CLI, Mallary gives you a direct command-line client for the public Mallary platform. Use it to upload media, create posts, schedule content, and read job status. You can also read analytics, list connected platforms, manage webhooks, and update brand settings.
+If you want a social media CLI, Mallary gives you a direct command-line client for the public Mallary platform. Use it to upload media, create posts, schedule content, and read job status. You can also read post analytics and audience counts, list connected platforms, manage webhooks, and update brand settings.
 
 ## Start here
 
@@ -34,7 +34,7 @@ With the CLI you can:
 - list comments and post supplied replies on published posts
 - read publishing jobs, including platform post IDs and URLs when available
 - list grouped posts
-- read analytics
+- read post analytics and follower or subscriber counts
 - create, list, and delete webhooks
 - update settings for brand and auto-reply behavior
 - list connected platforms
@@ -101,6 +101,7 @@ mallary comments list --post-id 123
 mallary comments reply --post-id 123 --comment-id "1789..." --message "Thanks for checking this out."
 mallary jobs get 123
 mallary analytics list
+mallary audience list
 mallary profiles list
 mallary webhooks list
 mallary settings get
@@ -199,7 +200,7 @@ Current product rules are:
 - Free plans do not have CLI access
 - analytics access follows plan capabilities
 - use `mallary profiles list` to find the random public profile ID for non-default profiles
-- use `--profile-id` for non-default profiles when posting, listing posts, reading analytics/settings, listing platforms, or disconnecting a platform
+- use `--profile-id` for non-default profiles when posting, listing posts, reading post analytics, audience counts, or settings, listing platforms, or disconnecting a platform
 - AI auto-reply features follow plan capabilities
 
 ## Good fit for the Mallary CLI

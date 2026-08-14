@@ -1,6 +1,6 @@
 ---
 title: "Social Media API"
-description: "Mallary API is a social media posting and scheduling API for developers. Use it to upload media, publish posts, schedule content, list comments, post supplied replies, fetch analytics, list connected platforms, manage webhooks, and disconnect platforms across X, Facebook, Instagram, Threads, LinkedIn, YouTube, TikTok, Pinterest, Reddit, and Snapchat."
+description: "Mallary API is a social media API for developers. Use it to publish, reply, read post analytics and audience counts, list connected platforms, manage webhooks, and disconnect platforms across 10 social sites."
 ---
 
 Mallary API is a social media API for many platforms from one integration. Use it to upload media, create posts, schedule content, and track job status. It also lists comments, posts supplied replies, reads analytics, lists connected platforms, and manages webhooks.
@@ -49,6 +49,7 @@ With the Mallary API you can:
 - list grouped posts and retries
 - list comments and post supplied replies on published posts
 - read analytics snapshots for published content
+- read follower and subscriber counts for connected accounts
 - list which supported platforms are currently connected for the authenticated account
 - manage connection profiles for multiple accounts on the same platform
 - read and update profile-scoped brand and AI auto-reply settings
@@ -93,6 +94,7 @@ The current public API supports:
 - supplied comment replies through `POST /api/v1/comments/reply`
 - deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
 - analytics snapshots through `GET /api/v1/analytics`
+- current account audience counts through `GET /api/v1/audience`
 - connected platform listing through `GET /api/v1/platforms`
 - connection profile management through `GET /api/v1/profiles` and `POST /api/v1/profiles`
 - profile-scoped brand and auto-reply settings through `GET /api/v1/settings` and `POST /api/v1/settings`
@@ -173,6 +175,7 @@ Use `profile_id` when you want to:
 - publish from a non-default profile
 - list posts for a specific profile
 - read analytics for a specific profile
+- read audience counts for a specific profile
 - list connected platforms for a specific profile
 - update brand and AI auto-reply settings for a specific profile
 - disconnect a platform from a specific profile

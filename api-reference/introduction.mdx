@@ -1,6 +1,6 @@
 ---
 title: "API Overview"
-description: "Mallary API supports uploads, multi-platform publishing, grouped post retrieval, comment listing/replies, analytics, connected platform listing, webhooks, and platform disconnects."
+description: "Mallary API supports uploads, multi-platform publishing, comments, post analytics, audience counts, connected platforms, webhooks, and platform disconnects."
 ---
 
 Mallary API is the public API for multi-platform publishing, analytics, media upload, and webhooks.
@@ -137,6 +137,7 @@ The current OpenAPI spec documents:
 - comment listing and supplied replies
 - deletion of queued or scheduled posts
 - analytics snapshots
+- follower and subscriber counts for connected accounts
 - connected platform listing
 - connection profile management
 - profile-scoped brand and AI auto-reply settings
@@ -215,7 +216,7 @@ Mallary groups connections into named profiles. This supports multiple connected
 
 Use `GET /api/v1/profiles` to list each profile's random public ID, such as `AbC123xYz90`.
 
-Pass `profile_id` to publish, list posts, read analytics, list connected platforms, update settings, or disconnect a platform for a non-default profile.
+Pass `profile_id` to publish, list posts, read post analytics or audience counts, list connected platforms, update settings, or disconnect a platform for a non-default profile.
 
 Per-platform account caps by plan are:
 

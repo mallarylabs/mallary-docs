@@ -1,6 +1,6 @@
 ---
 title: "Commands"
-description: "The main Mallary CLI commands for authentication, health, uploads, posts, comments, jobs, analytics, webhooks, settings, and platforms."
+description: "The main Mallary CLI commands for authentication, health, uploads, posts, comments, jobs, analytics, audience counts, webhooks, settings, and platforms."
 ---
 
 ## Authentication
@@ -72,6 +72,18 @@ mallary analytics list
 mallary analytics list --profile-id AbC123xYz90
 mallary analytics list --post-id 123
 ```
+
+## Audience
+
+Get the latest follower or subscriber count for every connected account in a profile:
+
+```bash
+mallary audience list
+mallary audience list --profile-id AbC123xYz90
+mallary audience list --json
+```
+
+Mallary updates supported counts once every 24 hours. TikTok and LinkedIn show `permission_required` until Mallary adds the permissions those platforms need.
 
 ## Profiles
 

@@ -1,6 +1,6 @@
 ---
 title: "Social Media MCP Server"
-description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to create posts, upload media, get job status, list posts, list comments, post supplied replies, fetch analytics, manage profiles and settings, list connected platforms, manage webhooks, and disconnect platforms through Model Context Protocol."
+description: "Mallary MCP is a remote social media MCP server for AI agents and assistants. Use it to publish, reply, read post analytics and audience counts, manage profiles and settings, list connected platforms, and manage webhooks through Model Context Protocol."
 ---
 
 Mallary MCP is a remote social media MCP server for AI assistants, agent workflows, and developer tools that speak Model Context Protocol.
@@ -230,6 +230,7 @@ The current enabled tools are:
 - `mallary_reply_to_comment`
 - `mallary_delete_post`
 - `mallary_get_analytics`
+- `mallary_get_audience`
 - `mallary_list_profiles`
 - `mallary_create_profile`
 - `mallary_rename_profile`
@@ -241,7 +242,7 @@ The current enabled tools are:
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
 
-Use `mallary_list_profiles` to find random public profile IDs. Tools that publish, list posts, read comments, read analytics, list platforms, read settings, update settings, or disconnect platforms accept `profile_id` for non-default connection profiles. Omit it to use the default profile.
+Use `mallary_list_profiles` to find random public profile IDs. Tools that publish, list posts, read comments, read post analytics, read audience counts, list platforms, read settings, update settings, or disconnect platforms accept `profile_id` for non-default connection profiles. Omit it to use the default profile.
 
 ## What makes Mallary MCP useful
 
@@ -252,6 +253,7 @@ Mallary MCP is a strong fit when you want an AI workflow to:
 - read whether a post succeeded or failed
 - list previous posts and grouped outcomes
 - read analytics snapshots after publishing
+- read follower and subscriber counts for connected accounts
 - register or remove webhooks as part of automation
 
 It gives you one social media tool surface instead of separate per-platform agent integrations.
