@@ -19,7 +19,8 @@ Use Mallary inside Claude to work with your social media. You can use the accoun
 
 1. Click **Add to Claude** above.
 2. Sign in to Mallary and allow the connection.
-3. Ask Claude to use Mallary for your social media work.
+3. [Grant Claude network access to upload files to Mallary's CDN](/home/claude#photos-and-videos)
+4. Ask Claude to use Mallary for your social media work.
 
 ## What You Can Do
 
@@ -46,9 +47,15 @@ Before you ask Claude to post, check the profile, social sites, words, media, an
 
 ## Photos and Videos
 
-Mallary can make a link for a photo or video upload. Making the link does not upload the file by itself.
+If you upload photos and videos in the Claude user interface, and ask Claude to post them on your social media platforms, then you must grant Claude network access to upload files to Mallary's CDN.
 
-If your file is already on `https://files.mallary.ai`, Claude can use that file in a post.
+Simply add `*.r2.cloudflarestorage.com` to your Additional allowed domains as shown below, then start a new chat session with Claude:
+
+<img 
+  src="/images/claude-allowed-domains.png" 
+  alt="Claude additional allowed domains interface"
+  className="rounded-lg"
+/>
 
 ## Claude Connector and Claude Code
 
