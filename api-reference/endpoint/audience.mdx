@@ -11,8 +11,9 @@ Use `profile_id` for a non-default profile. Omit it to use the default profile.
 The response includes every connected account. `count` is the latest saved number when Mallary can collect it.
 
 - YouTube returns `subscribers`.
-- Facebook Pages, Instagram, Threads, X, and Pinterest return `followers`. Facebook may return `page_likes` when that is the only count the Page gives Mallary.
-- TikTok and LinkedIn return `permission_required` until Mallary adds the needed permissions.
+- Facebook Pages, Instagram, Threads, TikTok, X, Pinterest, and Bluesky return `followers`. Facebook may return `page_likes` when that is the only count the Page gives Mallary.
+- A TikTok connection made without audience stats access returns `permission_required` until it is reconnected with that access.
+- LinkedIn returns `permission_required` until Mallary adds the permission it needs.
 - Other platforms may return `unsupported` when they do not provide an account audience count.
 
 Mallary does not add the counts together. The same person may follow more than one account.

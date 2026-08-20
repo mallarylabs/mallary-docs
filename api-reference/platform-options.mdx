@@ -191,21 +191,25 @@ Set `platform_options.reddit.post_type` to `text`, `link`, or `image`. You can a
 
 Use `platform_options.reddit.message` to write text just for Reddit. Mallary uses this text for the Reddit title and post text where needed.
 
-## Snapchat
+## Bluesky
 
-Snapchat supports Stories, Saved Stories, and Spotlight posts.
+Bluesky supports text, image, and video posts.
 
-### Snapchat post type
+### Bluesky message
 
-Set `platform_options.snapchat.contentType` to `story`, `saved_story`, or `spotlight`.
+Use `platform_options.bluesky.message` to write a message just for Bluesky. A Bluesky post can have up to 300 characters.
 
-### Snapchat title or description
+### Bluesky post languages
 
-Use `platform_options.snapchat.message` for the text that goes with a Saved Story or Spotlight post.
+Use `platform_options.bluesky.languages` to add up to three language codes, such as `en` or `es`. You can also use `langs`.
 
-### Snapchat image or video
+### Bluesky image alt text
 
-Add one image or one MP4 video to `media`. Stories and Saved Stories can use an image or video. Spotlight uses a video.
+Add `alt_text` to each image in `media`. This tells people who use screen readers what the image shows.
+
+### Bluesky first replies
+
+Use `comments_under_post` to add up to three replies under your new Bluesky post.
 
 ## X
 

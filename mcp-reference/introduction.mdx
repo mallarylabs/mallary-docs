@@ -5,7 +5,7 @@ description: "Connect to the Mallary MCP server over Streamable HTTP."
 
 Mallary exposes a remote MCP server over Streamable HTTP for public API parity.
 
-The same endpoint powers the Mallary plugin for ChatGPT and Codex. The plugin adds focused workflow skills and connects each user through Mallary OAuth.
+ChatGPT uses a smaller OAuth-only MCP endpoint at `/mcp/openai`. It includes the tools needed to upload social images, publish posts, reply to comments, and read results. The main `/mcp` endpoint keeps the full Mallary tool set for other MCP clients.
 
 ## Base URL
 
@@ -26,6 +26,12 @@ Supported methods:
 - `POST /mcp`
 - `GET /mcp`
 - `DELETE /mcp`
+
+ChatGPT uses the same methods at:
+
+```text
+/mcp/openai
+```
 
 ## What You Can Do
 

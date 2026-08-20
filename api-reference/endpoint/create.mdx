@@ -145,16 +145,16 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - `subreddit` or `subredditName` is required in platform options.
 - `platform_options.reddit.message` sets a Reddit-specific title/text source. Omit it to use the top-level `message`.
 
-### Snapchat
+### Bluesky
 
-- Snapchat posting requires Snapchat Public Profile or Marketing API access plus Mallary server credentials before any post can succeed.
-- The validation target is:
-  `story` or `saved_story` = one image or one `mp4` video,
-  `spotlight` = one `mp4` video.
-- Snapchat supports only one media item per post.
-- Snapchat video must be 5 to 60 seconds.
-- The current publisher implementation fails fast until you enable Snapchat partner access and credentials.
-- `platform_options.snapchat.message` sets a Snapchat-specific message. Omit it to use the top-level `message`.
+- Bluesky supports a text-only post, up to four images, or one video.
+- Images can be `jpg`, `jpeg`, `png`, or `webp`, up to 2 MB each.
+- Video must be one `mp4` file, up to 300 MB. Bluesky may apply a daily video limit to an account.
+- A Bluesky post can have up to 300 characters.
+- `platform_options.bluesky.message` sets a Bluesky-specific message. Omit it to use the top-level `message`.
+- `platform_options.bluesky.languages` adds up to three language codes. `langs` is also accepted.
+- Add `alt_text` to a media item to describe an image or video for people who use screen readers.
+- Bluesky supports up to three `comments_under_post` replies.
 
 ### X
 

@@ -110,7 +110,7 @@ Mallary CLI README currently documents platform-specific payload examples for:
 - Pinterest
 - Reddit
 - Threads
-- Snapchat
+- Bluesky
 - X
 
 For the exact `platform_options` fields currently supported by the posting API, see:
@@ -149,7 +149,7 @@ Important current rules:
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`.
 - Reddit image posts require one image or GIF. The current public API path does not support Reddit video upload.
 - X allows up to 4 images, or 1 video, or 1 GIF.
-- Snapchat requires partner/API access before posting can succeed, even though validation rules also exist for its media shapes.
+- Bluesky supports text-only posts, up to four JPG, PNG, or WEBP images, or one MP4 video. Add `alt_text` to a media item when it needs an accessible description.
 
 For the full per-platform matrix and current runtime caveats, see:
 
@@ -160,7 +160,7 @@ For the full per-platform matrix and current runtime caveats, see:
 - use repeatable `--comment` flags in flag mode
 - in file mode, send `comments_under_post` as an array
 - the current limit is 3 items
-- TikTok and Snapchat do not currently support `comments_under_post`
+- TikTok does not currently support `comments_under_post`
 
 Example:
 

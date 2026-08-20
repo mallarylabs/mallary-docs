@@ -27,13 +27,19 @@ OAuth-ready clients discover Mallary's authorization server automatically from:
 https://mallary.ai/.well-known/oauth-protected-resource
 ```
 
+ChatGPT uses its own protected resource metadata:
+
+```text
+https://mallary.ai/.well-known/oauth-protected-resource/mcp/openai
+```
+
 Mallary uses the authorization code flow with PKCE. The authorization server is:
 
 ```text
 https://auth.mallary.ai
 ```
 
-Mallary asks the signed-in user to approve the app connection. First-party Mallary clients request all Mallary capabilities in one login, so the user does not choose scopes or sign in again for another capability. Mallary never gives the app the user's password or connected social account tokens.
+Mallary asks the signed-in user to approve the app connection. First-party Mallary clients request the capabilities they need in one login, so the user does not choose scopes or sign in again before posting. Mallary never gives the app the user's password or connected social account tokens.
 
 Claude can use a Client ID Metadata Document, while other clients can use Mallary's dynamic client registration endpoint. Mallary keeps both methods available. Access tokens are short lived. Refresh tokens rotate, and revoked grants stop working.
 
@@ -74,4 +80,10 @@ Use the MCP server at:
 
 ```text
 /mcp
+```
+
+Use this OAuth-only endpoint for ChatGPT:
+
+```text
+/mcp/openai
 ```

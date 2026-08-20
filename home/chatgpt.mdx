@@ -6,19 +6,19 @@ description: "Use Mallary inside ChatGPT and Codex to publish social posts, repl
 Mallary connects your social publishing workflow to ChatGPT and Codex. You can work with your connected social accounts without sharing an API key.
 
 <Note>
-  The Mallary plugin for ChatGPT and Codex is under review by OpenAI. It will appear in the shared plugin directory after approval. Approved testers can still connect it in ChatGPT Developer Mode.
+  The Mallary connector for ChatGPT is being prepared for a new OpenAI review. It will appear in the plugin directory after approval. Approved testers can still connect it in ChatGPT Developer Mode.
 </Note>
 
 ## What You Can Do
 
 - see connected social accounts
 - create or schedule social posts
+- use images you make or choose in ChatGPT
 - use a different message for each platform
 - check publishing status and open published posts
 - read comments and post approved replies
 - review post analytics
 - review follower and subscriber counts
-- manage Mallary profiles, settings, and webhooks
 
 ## How Sign-In Works
 
@@ -26,26 +26,28 @@ The Mallary plugin uses OAuth. ChatGPT or Codex opens Mallary in your browser an
 
 Mallary never gives the plugin your password, social account tokens, API keys, or payment details. You can review or revoke access from your Mallary account at any time.
 
-## Safe Actions
+## Your Requests Control What Happens
 
-The plugin checks read-only information first. Before it publishes, replies, deletes, disconnects an account, changes settings, or creates a webhook, it shows the exact action and asks for confirmation.
+Mallary only posts, uploads, or replies when you ask for that result. These actions are real. A post can go live on your social accounts.
 
-Do not approve an action until the profile, platforms, message, schedule, and other details are correct.
+Check the profile, platforms, message, image, and time before you ask ChatGPT to post.
 
-## Media In Version 1
+## Make an Image and Post It
 
-The first version supports text posts and media that is already hosted at `https://files.mallary.ai`.
+You can ask ChatGPT to make an image and post it with Mallary. You can also choose an image in ChatGPT.
 
-ChatGPT cannot upload bytes from a local file directly through the Mallary plugin in version 1. Creating an upload URL does not upload the file.
+ChatGPT sends Mallary a short-lived link to the image you approved. Mallary checks the image, copies it to `https://files.mallary.ai`, and uses that Mallary link in your post. Mallary accepts JPEG, PNG, WebP, and GIF images up to 25 MB through this flow.
+
+This image tool is only for social post images. Do not use it for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
 
 ## Availability
 
-The plugin is not publicly listed yet. OpenAI is reviewing it now.
+The connector is not publicly listed yet. Mallary will submit the updated version to OpenAI.
 
 Mallary MCP endpoint:
 
 ```text
-https://mallary.ai/mcp
+https://mallary.ai/mcp/openai
 ```
 
 <Card title="Mallary MCP authentication" href="/mcp-reference/authentication">

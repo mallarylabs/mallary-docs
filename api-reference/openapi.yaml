@@ -728,7 +728,7 @@ components:
         - pinterest
         - reddit
         - threads
-        - snapchat
+        - bluesky
 
     ProfileId:
       type: string
@@ -750,7 +750,7 @@ components:
         - pinterest
         - reddit
         - threads
-        - snapchat
+        - bluesky
 
     CommentPlatform:
       type: string
@@ -763,6 +763,7 @@ components:
         - x
         - twitter
         - youtube
+        - bluesky
 
     Comment:
       type: object
@@ -929,6 +930,10 @@ components:
           type: string
           format: uri
           description: Optional Mallary-hosted image URL to use as the custom thumbnail or cover for a video post when supported by the target platform.
+        alt_text:
+          type: string
+          maxLength: 2000
+          description: Optional media description for accessibility. Bluesky adds it to the matching image or video.
 
     CreateUploadRequest:
       type: object
@@ -1162,16 +1167,25 @@ components:
             subredditName:
               type: string
               description: Alias for `subreddit`.
-        snapchat:
+        bluesky:
           type: object
           properties:
             message:
               type: string
-              description: Snapchat-specific message. Defaults to the top-level `message`.
-            contentType:
-              type: string
-              enum: [story, saved_story, spotlight]
-              description: Defaults dynamically. Mallary uses `spotlight` when the media list contains a video; otherwise it uses `story`.
+              maxLength: 300
+              description: Bluesky-specific message. Defaults to the top-level `message`.
+            languages:
+              type: array
+              maxItems: 3
+              description: Optional BCP 47 language codes for the post.
+              items:
+                type: string
+            langs:
+              type: array
+              maxItems: 3
+              description: Alias for `languages`.
+              items:
+                type: string
 
     CreatePostRequest:
       type: object
