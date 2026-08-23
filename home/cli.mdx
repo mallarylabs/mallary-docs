@@ -167,7 +167,7 @@ Examples:
 - YouTube requires exactly one video.
 - Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
-- TikTok defaults to `MEDIA_UPLOAD`, which sends uploads to the creator inbox for final review inside TikTok. To publish directly instead, set `platform_options.tiktok.post_mode = DIRECT_POST`.
+- TikTok defaults to `DIRECT_POST`, which publishes through Mallary. Set `platform_options.tiktok.post_mode = MEDIA_UPLOAD` only when you want to finish the post in the TikTok app. Inbox uploads stay `action_required` until you add the final TikTok post URL.
 - Pinterest requires exactly one image or GIF, or exactly one video.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 

@@ -117,8 +117,8 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - TikTok photo posts support up to 35 images in `jpg`, `jpeg`, or `webp`.
 - `platform_options.tiktok.post_type` can be `video` or `photo`.
 - `platform_options.tiktok.post_mode` can be `DIRECT_POST` or `MEDIA_UPLOAD`.
-- TikTok defaults to `MEDIA_UPLOAD`, which sends the upload to the creator inbox for final review and publishing inside TikTok.
-- Use `DIRECT_POST` only when you want Mallary to publish directly to TikTok without that inbox review step.
+- TikTok defaults to `DIRECT_POST`, which publishes the post through Mallary.
+- Use `MEDIA_UPLOAD` only when you want Mallary to send the upload to the TikTok inbox. The job stays `action_required` until you finish the post in TikTok and attach its final TikTok URL.
 - For TikTok video posts, `platform_options.tiktok.source` can be `FILE_UPLOAD` or `PULL_FROM_URL`.
 - For TikTok photo posts, TikTok only allows `PULL_FROM_URL`.
 - For TikTok `PULL_FROM_URL`, Mallary only accepts media already hosted on the Mallary CDN (`https://files.mallary.ai/...`).

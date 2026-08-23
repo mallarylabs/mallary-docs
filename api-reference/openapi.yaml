@@ -1048,8 +1048,8 @@ components:
             post_mode:
               type: string
               enum: [DIRECT_POST, MEDIA_UPLOAD]
-              default: MEDIA_UPLOAD
-              description: Defaults to `MEDIA_UPLOAD`. Use `DIRECT_POST` only when you want Mallary to publish directly to TikTok instead of sending the upload to the creator inbox for final review in TikTok.
+              default: DIRECT_POST
+              description: Defaults to `DIRECT_POST`, which publishes through Mallary. Use `MEDIA_UPLOAD` only when you want to send the upload to the creator inbox and finish publishing it in TikTok.
             source:
               type: string
               enum: [FILE_UPLOAD, PULL_FROM_URL]
@@ -1302,6 +1302,7 @@ components:
               delayed,
               active,
               processing,
+              action_required,
               completed,
               failed,
               unknown,
@@ -1588,7 +1589,7 @@ components:
             $ref: "#/components/schemas/MediaItem"
         status:
           type: string
-          enum: [queued, scheduled, processing, partial, completed, failed, cancelled]
+          enum: [queued, scheduled, processing, action_required, partial, completed, failed, cancelled]
         source:
           type: string
           enum: [api, dashboard, cli, mcp, make]
