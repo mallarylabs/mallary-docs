@@ -5,7 +5,7 @@ description: "See which post types and settings Mallary supports for each social
 
 Use this page to make each post fit the social platform you choose.
 
-Most settings go inside `platform_options`. A few settings, such as `thumbnail_url` and `comments_under_post`, go in another part of the post request. See [Create Post](/api-reference/endpoint/create) for the full request.
+Most settings go inside `platform_options`. To use one cover on every platform, add `thumbnail_url` to the video in `media`. To use a different cover for each platform, add `thumbnail_url` to that platform's options. `comments_under_post` goes in the main post request. See [Create Post](/api-reference/endpoint/create) for the full request.
 
 ## Facebook
 
@@ -25,7 +25,7 @@ Use `platform_options.facebook.message` to write text just for Facebook. If you 
 
 ### Facebook custom video thumbnail
 
-Add `thumbnail_url` to a Facebook feed video in `media`. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB.
+Add `thumbnail_url` to a Facebook feed video in `media`, or use `platform_options.facebook.thumbnail_url` for a Facebook-only cover. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB. Facebook chooses the cover for Reels.
 
 ### Facebook first comments
 
@@ -50,7 +50,7 @@ Use `platform_options.instagram.message` to write a caption just for Instagram. 
 
 ### Instagram custom video cover
 
-Add `thumbnail_url` to a feed video or Reel in `media`. Use an image stored by Mallary. A tall cover works best for a Reel.
+Add `thumbnail_url` to a feed video or Reel in `media`, or use `platform_options.instagram.thumbnail_url` for an Instagram-only cover. Use an image stored by Mallary. A tall cover works best for a Reel.
 
 ### Instagram first comments
 
@@ -102,7 +102,7 @@ Set `platform_options.youtube.visibility` to `public`, `unlisted`, or `private`.
 
 ### YouTube custom thumbnail
 
-Add `thumbnail_url` to a long-form YouTube video in `media`. Use a JPG or PNG file stored by Mallary. A 1280 by 720 image works best.
+Add `thumbnail_url` to a YouTube video in `media`, or use `platform_options.youtube.thumbnail_url` for a YouTube-only cover. Use a JPG or PNG file stored by Mallary. Use 16:9 for a regular video and 9:16 for a Short. The image can be up to 2 MB.
 
 ### YouTube category and audience
 

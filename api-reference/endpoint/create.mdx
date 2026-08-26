@@ -40,9 +40,11 @@ Attach a custom thumbnail or cover to a video media item with `thumbnail_url`.
 
 `thumbnail_url` must be a Mallary-hosted image URL, usually created with `POST /api/v1/upload`. Mallary skips a thumbnail that is unsupported for the platform, wrong for the post type, or rejected by the provider. It then continues to publish the post where possible.
 
+To use a different cover for each platform, put `thumbnail_url` inside that platform's options. For example, use `platform_options.youtube.thumbnail_url` for YouTube and `platform_options.instagram.thumbnail_url` for Instagram. Mallary adds each cover only to that platform's video.
+
 Current thumbnail behavior:
 
-- YouTube regular videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 2 MB. When the dimensions are known, Mallary requires at least 640px width. Mallary skips images that are not close to 16:9. Recommended: `1280x720` 16:9. Mallary skips YouTube Shorts thumbnails.
+- YouTube regular videos and Shorts: supported. Use a `jpg`, `jpeg`, or `png` image up to 2 MB. For a regular video, use 16:9 and at least 640px wide. For a Short, use 9:16 and at least 640px tall.
 - Facebook feed videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
 - Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
 - TikTok video posts: TikTok currently exposes frame-based cover selection through `video_cover_timestamp_ms`, not arbitrary image thumbnails. If `thumbnail_url` is supplied, Mallary does not send `video_cover_timestamp_ms` and lets TikTok use its default cover behavior.
