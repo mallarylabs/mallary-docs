@@ -988,7 +988,7 @@ components:
               type: string
               enum: [feed, story, reel]
               default: feed
-              description: Defaults to `feed` when omitted. `story` publishes one image/video as a Facebook Story without caption/follow-up comments. `reel` publishes one 9:16 MP4/MOV video that is 4 to 60 seconds long.
+              description: Defaults to `feed` when omitted. `story` publishes one image/video as a Facebook Story without caption/follow-up comments. `reel` publishes one 9:16 MP4/MOV video that is 3 to 90 seconds long.
             link:
               type: string
               format: uri
