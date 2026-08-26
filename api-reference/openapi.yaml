@@ -986,9 +986,20 @@ components:
               description: Facebook-specific message/caption. Defaults to the top-level `message`.
             post_type:
               type: string
-              enum: [feed, story]
+              enum: [feed, story, reel]
               default: feed
-              description: Defaults to `feed` when omitted.
+              description: Defaults to `feed` when omitted. `story` publishes one image/video as a Facebook Story without caption/follow-up comments. `reel` publishes one 9:16 MP4/MOV video that is 4 to 60 seconds long.
+            link:
+              type: string
+              format: uri
+              description: Optional link for a feed post without media.
+            pageId:
+              type: string
+              description: Optional advanced override for a connected Facebook Page.
+            title:
+              type: string
+              maxLength: 255
+              description: Optional title for a Facebook Reel.
         instagram:
           type: object
           properties:
@@ -1134,7 +1145,7 @@ components:
           properties:
             message:
               type: string
-              description: Pinterest-specific description/default title source. Defaults to the top-level `message`.
+              description: Pinterest-specific description/default title source. Defaults to the top-level `message`. Mallary shortens descriptions longer than Pinterest's 800-character limit.
             post_type:
               type: string
               enum: [image, video]

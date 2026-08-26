@@ -43,7 +43,7 @@ Attach a custom thumbnail or cover to a video media item with `thumbnail_url`.
 Current thumbnail behavior:
 
 - YouTube regular videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 2 MB. When the dimensions are known, Mallary requires at least 640px width. Mallary skips images that are not close to 16:9. Recommended: `1280x720` 16:9. Mallary skips YouTube Shorts thumbnails.
-- Facebook videos: supported for video uploads. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
+- Facebook feed videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
 - Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
 - TikTok video posts: TikTok currently exposes frame-based cover selection through `video_cover_timestamp_ms`, not arbitrary image thumbnails. If `thumbnail_url` is supplied, Mallary does not send `video_cover_timestamp_ms` and lets TikTok use its default cover behavior.
 - TikTok photo posts: `thumbnail_url` can choose the photo cover only when it exactly matches one of the image URLs in `media[]`. Mallary then uses that image index as `photo_cover_index`. Mallary does not upload it as an extra photo.
@@ -60,6 +60,8 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - Facebook does not allow mixing images and video in the same post.
 - Feed images accept `jpg`, `jpeg`, `png`, `gif`, and `webp`. Feed video accepts `mp4` and `mov`.
 - Facebook stories support 1 image or 1 video.
+- Facebook Reels use 1 MP4 or MOV video. The video must be 9:16, at least 540 by 960 pixels, and 4 to 60 seconds long.
+- Choose `feed`, `story`, or `reel` with `platform_options.facebook.post_type`.
 - `platform_options.facebook.message` sets a Facebook-specific message. Omit it to use the top-level `message`.
 
 ### Instagram
@@ -135,7 +137,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - Image Pins accept one `jpg`, `jpeg`, `png`, `webp`, or `gif` file up to 32 MB.
 - Video Pins accept one `mp4` or `mov` file, 4 seconds to 15 minutes, up to 2 GB.
 - A Pinterest board is required. Send `boardId`, or use the board saved with the Pinterest connection.
-- `platform_options.pinterest.message` sets a Pinterest-specific description/default title source. Omit it to use the top-level `message`.
+- `platform_options.pinterest.message` sets a Pinterest-specific description/default title source. Omit it to use the top-level `message`. Pinterest allows 800 characters in a description. Mallary shortens longer descriptions to fit.
 
 ### Reddit
 

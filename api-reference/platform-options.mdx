@@ -9,14 +9,15 @@ Most settings go inside `platform_options`. A few settings, such as `thumbnail_u
 
 ## Facebook
 
-Facebook supports feed posts and Stories.
+Facebook supports feed posts, Stories, and Reels.
 
-### Facebook feed or Story
+### Facebook post type
 
-Set `platform_options.facebook.post_type` to `feed` or `story`.
+Set `platform_options.facebook.post_type` to `feed`, `story`, or `reel`.
 
 - A feed post can have text, a link, up to 10 images, or one video.
 - A Story can have one image or one video.
+- A Reel needs one 9:16 MP4 or MOV video. It must be 4 to 60 seconds long and at least 540 by 960 pixels.
 
 ### Facebook message
 
@@ -24,11 +25,11 @@ Use `platform_options.facebook.message` to write text just for Facebook. If you 
 
 ### Facebook custom video thumbnail
 
-Add `thumbnail_url` to the Facebook video in `media`. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB.
+Add `thumbnail_url` to a Facebook feed video in `media`. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB.
 
 ### Facebook first comments
 
-Use `comments_under_post` to add up to three comments under a feed post. Facebook Stories do not use first comments.
+Use `comments_under_post` to add up to three comments under a feed post or Reel. Facebook Stories do not use first comments.
 
 ## Instagram
 
@@ -165,7 +166,7 @@ Use `platform_options.pinterest.boardId` to choose the board that gets the Pin. 
 
 ### Pinterest title and description
 
-Use `platform_options.pinterest.title` for the Pin title. Use `platform_options.pinterest.message` for the description.
+Use `platform_options.pinterest.title` for the Pin title. Use `platform_options.pinterest.message` for the description. Pinterest allows 800 characters in a description. Mallary shortens longer descriptions to fit, so the Pin can still publish.
 
 ### Pinterest destination link
 
