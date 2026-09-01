@@ -18,10 +18,22 @@ Get your API key. Then start posting.
 
 ## 2. Choose your integration path
 
-Mallary has six integration layers, and all of them reach the same underlying system.
-Use the API for full control, or MCP for AI agents. Use the CLI for shell scripts, n8n or Make for workflow automation, or the dashboard for no-code publishing. You can switch between layers, or combine them, at any time.
+Mallary has several ways to connect, and all of them reach the same underlying system.
+Use the ChatGPT plugin or Claude connector for a simple chat. Use the API for full control, or MCP for AI agents. Use the CLI for shell scripts, n8n or Make for workflow automation, or the dashboard for no-code publishing. You can switch between them, or combine them, at any time.
 
 <Columns cols={1}>
+  <Card
+    title="ChatGPT Plugin"
+    icon="message-square"
+    href="https://chatgpt.com/plugins/plugin_asdk_app_6a712cb183048191994564060b91ef43"
+  >
+    Add Mallary to ChatGPT with OAuth. Then ask ChatGPT to post, reply, use images,
+    and show your results.
+  </Card>
+  <Card title="Claude Connector" icon="plug" href="https://claude.ai/directory/connectors/mallary">
+    Add Mallary to Claude with OAuth. Then ask Claude to post, reply, upload media,
+    and show your results.
+  </Card>
   <Card title="API" icon="terminal" href="/api-reference/introduction">
     Build your own integration. A REST API with endpoints for posting,
     scheduling, media uploads, and analytics. It works with any language or
