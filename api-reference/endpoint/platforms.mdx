@@ -5,3 +5,5 @@ openapi: "GET /api/v1/platforms"
 ---
 
 Use `profile_id` to read a non-default connection profile. The response also includes the profile list, default profile id, and the plan's per-platform account cap.
+
+Each platform row includes `post_types` and `post_type_selection`. For example, Facebook and Instagram include `story`. An empty `post_types` list with `post_type_selection: "automatic"` means Mallary chooses the format from the content and media.

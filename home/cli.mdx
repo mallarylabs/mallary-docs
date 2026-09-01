@@ -95,6 +95,7 @@ Examples:
 mallary health
 mallary upload ./launch.mp4
 mallary posts create --message "Hello from Mallary" --platform facebook
+mallary posts create --message "A new Story" --platform facebook --platform instagram --post-type story --media ./story.mp4
 mallary posts create --message "Hello from another profile" --platform facebook --profile-id AbC123xYz90
 mallary posts list
 mallary comments list --post-id 123
@@ -135,6 +136,7 @@ You can:
 - add follow-up comments on supported platform/format combinations
 - enable per-post AI auto reply
 - use platform-specific payloads in file mode
+- choose one shared format in flag mode with `--post-type`
 
 The CLI can test the same post payloads that you plan to send from automation or backend systems.
 
@@ -160,6 +162,8 @@ For the exact supported `platform_options` structure and field names by platform
 [Platform options reference](/api-reference/endpoint/create#body-platform-options)
 
 Mallary CLI also inherits the same per-platform media rules as the API.
+
+For read-only format discovery, `mallary platforms list` returns the exact selectable `post_types` for each destination. If every selected platform should use the same type, pass `--post-type`. Use file mode when different destinations need different types.
 
 Examples:
 

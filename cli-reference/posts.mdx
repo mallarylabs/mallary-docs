@@ -29,6 +29,19 @@ mallary posts create \
   --scheduled-timezone America/Los_Angeles
 ```
 
+Choose one post type for every compatible destination in flag mode:
+
+```bash
+mallary posts create \
+  --message "A new Story" \
+  --platform facebook \
+  --platform instagram \
+  --post-type story \
+  --media ./story.mp4
+```
+
+Mallary checks the type before it uploads media or sends the post. If one selected platform cannot use that type, the command stops and lists that platform's supported types. Use file mode when different platforms need different types.
+
 ## File Mode
 
 ```bash
@@ -62,6 +75,8 @@ Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `ma
 ## File Mode Rules
 
 - `--file` is mutually exclusive with payload-building flags
+- `--post-type` works in flag mode when every selected destination should use the same supported type
+- use `platform_options` in file mode when destinations need different post types
 - Mallary uploads local `media[].url` file paths to the Mallary CDN first
 - Mallary uploads local `media[].thumbnail_url` file paths to the Mallary CDN first
 - existing remote media URLs must already point to `https://files.mallary.ai/...`

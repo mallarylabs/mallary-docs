@@ -461,7 +461,7 @@ paths:
     get:
       operationId: listPlatforms
       summary: List connected platforms
-      description: Returns Mallary's supported public platform set and marks which platforms are currently connected for the selected connection profile.
+      description: Returns Mallary's supported public platform set, marks which platforms are currently connected for the selected connection profile, and lists exact selectable post types where the API supports an explicit type.
       parameters:
         - in: query
           name: profile_id
@@ -1895,6 +1895,15 @@ components:
           $ref: "#/components/schemas/PublicPlatform"
         connected:
           type: boolean
+        post_types:
+          type: array
+          description: Exact values accepted as `platform_options.<platform>.post_type`. Empty when Mallary selects the format from the content and media.
+          items:
+            type: string
+        post_type_selection:
+          type: string
+          enum: [explicit, automatic]
+          description: Whether callers may select a listed post type or Mallary determines the format from content and media.
 
     ConnectedPlatformsCounts:
       type: object

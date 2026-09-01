@@ -15,6 +15,8 @@ Or download <a href="https://github.com/mallarylabs/mallary-agent/blob/main/SKIL
 
 The skill teaches your AI agent how to use the Mallary API. It covers endpoint selection, parameter usage, pagination, uploads, and platform-specific rules. These rules cover all 10 supported platforms, including TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, and Facebook.
 
+The skill also teaches agents to preserve the format you ask for. If you ask for a Story, Reel, Short, carousel, photo, or video, the agent checks the destination's supported post types and does not silently replace it with a feed post.
+
 | When you say | What the skill does                           |
 | -------- | ------------------------------------- |
 | "post this video to all my accounts"     | Sends the video and the publishing intent to the Mallary CLI. The CLI handles the upload, the queue, platform-specific posting, retries, status, and reporting. |

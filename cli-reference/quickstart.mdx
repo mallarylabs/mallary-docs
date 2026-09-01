@@ -31,6 +31,7 @@ mallary posts create \
   --message "Check out my new product video!" \
   --platform facebook \
   --platform instagram \
+  --post-type story \
   --profile-id AbC123xYz90 \
   --media ./launch.mp4 \
   --thumbnail ./launch-cover.jpg
@@ -55,6 +56,8 @@ After publishing, job output includes `platform_post_id` and `platform_post_url`
 ```bash
 mallary platforms list
 ```
+
+This read-only command also returns each platform's selectable `post_types`, such as `story` for Facebook and Instagram.
 
 ## List Your Profiles within Mallary
 
