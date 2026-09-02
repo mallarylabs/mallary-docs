@@ -164,6 +164,56 @@ Mallary enqueues one job per platform and returns job IDs plus a `batch_id` so y
 
 For scheduling, you can either send an absolute timestamp like `2026-04-06T18:30:00Z`, or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`.
 
+## AI Auto Replies
+
+### What it does
+
+AI Auto Replies can answer useful questions on posts you publish through Mallary. Mallary uses the business details saved for that profile and the post itself to write a short reply. It skips comments that are not questions or are not about your business.
+
+AI Auto Replies work with Facebook, Instagram, Threads, LinkedIn, X, YouTube, and Bluesky. They are available on Pro and Business plans.
+
+### How it works
+
+1. Mallary checks for new comments on supported posts.
+2. It looks for questions about your business.
+3. It uses your saved business details and the post to write a reply.
+4. It posts the reply from your connected social account.
+5. It skips comments that it should not answer.
+
+### How to enable it
+
+First, save these details for the Mallary profile you want to use:
+
+- business name
+- website URL
+- business description
+- services
+- contact information
+
+Then send `POST /api/v1/settings` with `auto_reply_enabled` set to `true`. Add `profile_id` when you want to update a profile that is not your default profile.
+
+```bash
+curl --request POST \
+  --url https://mallary.ai/api/v1/settings \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "profile_id": "AbC123xYz90",
+    "business_name": "Acme Labs",
+    "website_url": "https://example.com",
+    "business_description": "We make simple tools for small teams.",
+    "services": "Project planning and team support",
+    "contact_info": "Email help@example.com",
+    "auto_reply_enabled": true
+  }'
+```
+
+Leave out `profile_id` to use your default Mallary profile.
+
+After you turn it on, new posts use AI Auto Replies by default. You can set `auto_reply_enabled` to `true` or `false` in one `POST /api/v1/post` request when you want that post to use a different setting.
+
+**Important:** Turning this on lets Mallary publish future replies. Only enable it after the social account owner says yes.
+
 ## Connection profiles
 
 Connection profiles group your social media accounts. Create one profile for each of your businesses. Then connect the social media accounts of that business inside its profile. If you do not send a `profile_id`, Mallary uses your default profile.
