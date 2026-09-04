@@ -44,7 +44,8 @@ To use a different cover for each platform, put `thumbnail_url` inside that plat
 
 Current thumbnail behavior:
 
-- YouTube regular videos and Shorts: supported. Use a `jpg`, `jpeg`, or `png` image up to 2 MB. For a regular video, use 16:9 and at least 640px wide. For a Short, use 9:16 and at least 640px tall.
+- YouTube regular videos: supported. Use a `jpg`, `jpeg`, or `png` image up to 2 MB. Use 16:9 and at least 640px wide.
+- YouTube Shorts: YouTube may accept and store the image but show a video frame instead. Mallary warns you because the YouTube API cannot confirm the cover viewers will see. Use YouTube Studio to add a custom image, or use the YouTube app to choose a frame.
 - Facebook feed videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
 - Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
 - TikTok video posts: TikTok currently exposes frame-based cover selection through `video_cover_timestamp_ms`, not arbitrary image thumbnails. If `thumbnail_url` is supplied, Mallary does not send `video_cover_timestamp_ms` and lets TikTok use its default cover behavior.
@@ -114,6 +115,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - YouTube posting does not support images.
 - `platform_options.youtube.message` sets a YouTube-specific description/default-title source. Omit it to use the top-level `message`.
 - `platform_options.youtube.title` sets the YouTube title and takes precedence over the first line of the effective message.
+- `platform_options.youtube.playlist_id` adds the new video to an existing playlist owned by the connected YouTube channel. Mallary checks the playlist before upload.
 
 ### TikTok
 

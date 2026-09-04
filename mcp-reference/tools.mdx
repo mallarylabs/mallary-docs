@@ -171,4 +171,6 @@ For the full per-platform matrix and current runtime caveats, see:
 }
 ```
 
-The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube regular videos and Shorts, Facebook feed videos, and Instagram videos/Reels can use custom thumbnails or covers. TikTok video posts use a frame from the video instead of a separate image. TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs, and that image becomes the photo cover.
+The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube regular videos, Facebook feed videos, and Instagram videos/Reels can use custom thumbnails or covers. For a YouTube Short, YouTube may store the image but show a video frame instead. Mallary returns a warning when this happens. TikTok video posts use a frame from the video instead of a separate image. TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs, and that image becomes the photo cover.
+
+For YouTube, set `platform_options.youtube.playlist_id` to add the new video to an existing playlist owned by the connected channel.

@@ -98,9 +98,12 @@ mallary posts create \
 
 In file mode, put `thumbnail_url` on the media item. Mallary uploads local thumbnail paths automatically. Existing remote thumbnail URLs must already point to `https://files.mallary.ai/...`.
 
+To add a YouTube video to an existing playlist, set `platform_options.youtube.playlist_id` in file mode. The playlist must belong to the connected channel.
+
 Current thumbnail support:
 
-- YouTube regular videos and Shorts: supported. Use `jpg`, `jpeg`, or `png` up to 2 MB. Use 16:9 for a regular video and 9:16 for a Short.
+- YouTube regular videos: use a `jpg`, `jpeg`, or `png` thumbnail up to 2 MB. Use 16:9.
+- YouTube Shorts: YouTube may store the image but show a video frame instead. Mallary returns a warning because the YouTube API cannot confirm the cover viewers will see.
 - Facebook feed videos: supported with `jpg`, `jpeg`, or `png` up to 10 MB.
 - Instagram videos/Reels: supported with a Mallary-hosted cover URL. Use an image that matches the video placement.
 - TikTok video posts: Mallary does not send arbitrary thumbnail images to TikTok. If you supply `thumbnail_url`, Mallary skips its `video_cover_timestamp_ms` behavior, and TikTok uses its default cover.

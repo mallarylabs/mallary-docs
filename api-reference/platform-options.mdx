@@ -102,7 +102,27 @@ Set `platform_options.youtube.visibility` to `public`, `unlisted`, or `private`.
 
 ### YouTube custom thumbnail
 
-Add `thumbnail_url` to a YouTube video in `media`, or use `platform_options.youtube.thumbnail_url` for a YouTube-only cover. Use a JPG or PNG file stored by Mallary. Use 16:9 for a regular video and 9:16 for a Short. The image can be up to 2 MB.
+Add `thumbnail_url` to a YouTube video in `media`, or use `platform_options.youtube.thumbnail_url` for a YouTube-only cover. Use a JPG or PNG file stored by Mallary. The image can be up to 2 MB.
+
+For a regular video, use a 16:9 image. YouTube can show it as the custom thumbnail.
+
+For a Short, YouTube may accept and store the image but still show a frame from the video. Mallary returns a warning because the YouTube API cannot tell us which cover viewers will see. Use YouTube Studio to add a custom image, or use the YouTube app to choose a frame.
+
+### YouTube playlist
+
+Set `platform_options.youtube.playlist_id` to add the new video to an existing playlist. The playlist must belong to the connected YouTube channel. Mallary checks the playlist before it uploads the video.
+
+```json
+{
+  "platform_options": {
+    "youtube": {
+      "playlist_id": "PL1234567890"
+    }
+  }
+}
+```
+
+Mallary can add to an existing playlist. It does not create a new playlist from a name.
 
 ### YouTube category and audience
 

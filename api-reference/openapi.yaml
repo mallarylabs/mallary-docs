@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mallary API
-  version: "1.4.0"
+  version: "1.5.0"
   description: |
     Public API for multi-platform publishing, analytics, media upload, and webhooks.
 
@@ -1140,6 +1140,10 @@ components:
               type: boolean
               default: false
               description: Defaults to `false`.
+            playlist_id:
+              type: string
+              pattern: "^[A-Za-z0-9_-]{2,150}$"
+              description: Existing playlist owned by the connected YouTube channel. Mallary checks access before upload, then adds the new video to this playlist.
         pinterest:
           type: object
           properties:
@@ -1270,6 +1274,21 @@ components:
                 type: string
                 nullable: true
                 description: Public platform post URL when available. `null` until the queued job publishes successfully or when the platform does not expose a URL.
+        warnings:
+          type: array
+          description: Non-blocking warnings about provider behavior. A queued post may still publish.
+          items:
+            type: object
+            properties:
+              platform:
+                $ref: "#/components/schemas/Platform"
+              code:
+                type: string
+              severity:
+                type: string
+                enum: [warning]
+              message:
+                type: string
 
     AutoReplyWarning:
       type: object
