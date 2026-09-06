@@ -169,8 +169,9 @@ Examples:
 
 - Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`.
 - YouTube requires exactly one video.
+- YouTube file mode supports tags, playlist placement, and realistic AI-content disclosure through `platform_options.youtube`.
 - Facebook supports `platform_options.facebook.post_type` with `feed`, `story`, or `reel`. Reels use one 9:16 MP4 or MOV video that is 3 to 90 seconds long.
-- Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`. For a Reel, `shareToFeed` controls profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel.
+- Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`. For a Reel, `shareToFeed` controls profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel. With a Facebook Login connection, file mode also supports `isPaidPartnership` and up to two `brandedContentSponsors` on feed posts, Reels, and carousels.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok defaults to `DIRECT_POST`, which publishes through Mallary. Set `platform_options.tiktok.post_mode = MEDIA_UPLOAD` only when you want to finish the post in the TikTok app. Inbox uploads stay `action_required` until you add the final TikTok post URL.
 - Pinterest requires exactly one image or GIF, or exactly one video. Mallary shortens Pin descriptions longer than 800 characters so they can publish.

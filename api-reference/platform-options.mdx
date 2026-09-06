@@ -76,6 +76,32 @@ Choose how the Trial Reel can become a regular Reel:
 - Use `MANUAL` when you want to make that choice later in the Instagram app.
 - Use `SS_PERFORMANCE` when you want Instagram to share it with followers if it performs well.
 
+### Instagram paid partnership label
+
+Set `platform_options.instagram.isPaidPartnership` to `true` to show Instagram's **Paid partnership** label. You can use it with a feed post, Reel, or carousel. It does not work with Stories.
+
+This feature needs an Instagram account connected through Facebook Login. If the account uses Instagram Login, Mallary stops the post before it is queued and tells you to reconnect.
+
+### Instagram branded content sponsors
+
+Use `platform_options.instagram.brandedContentSponsors` to tag up to two sponsors. Each item can be an Instagram username, with or without `@`, or a numeric Instagram user ID. Adding a sponsor also turns on the Paid partnership label.
+
+Mallary looks up each username when it publishes the post. The sponsor must be a public Business or Creator account. If Instagram cannot find the account, Mallary returns an error that names the sponsor.
+
+If the brand has already approved the partnership, Instagram can show **Paid partnership with @brand** right away. If not, Instagram shows the plain label and sends the brand an approval request.
+
+```json
+{
+  "platform_options": {
+    "instagram": {
+      "post_type": "reel",
+      "isPaidPartnership": true,
+      "brandedContentSponsors": ["@brandone", "17841400000000000"]
+    }
+  }
+}
+```
+
 ### Instagram custom video cover
 
 Add `thumbnail_url` to a feed video or Reel in `media`, or use `platform_options.instagram.thumbnail_url` for an Instagram-only cover. Use an image stored by Mallary. A tall cover works best for a Reel.
@@ -124,6 +150,22 @@ Set `platform_options.youtube.post_type` to `shorts` or `regular`. You can also 
 
 Use `platform_options.youtube.title` for the video title. Use `platform_options.youtube.message` for the description. If you leave the title out, Mallary uses the first line of the message.
 
+### YouTube tags
+
+Use `platform_options.youtube.tags` to add words that describe the video. Send the tags as a list of text values.
+
+```json
+{
+  "platform_options": {
+    "youtube": {
+      "tags": ["social media automation", "creator tips", "Mallary"]
+    }
+  }
+}
+```
+
+Each tag can use up to 100 characters. All tags together can use up to 500 characters. YouTube counts the commas between tags. It also counts two extra quote marks around a tag that has spaces. Mallary removes exact duplicate tags and checks these limits before posting.
+
 ### YouTube visibility
 
 Set `platform_options.youtube.visibility` to `public`, `unlisted`, or `private`. The default is `public`.
@@ -155,6 +197,22 @@ Mallary can add to an existing playlist. It does not create a new playlist from 
 ### YouTube category and audience
 
 Use `platform_options.youtube.categoryId` to choose a YouTube category. Use `platform_options.youtube.madeForKids` to say if the video is made for kids.
+
+### YouTube AI content disclosure
+
+Set `platform_options.youtube.containsSyntheticMedia` to `true` when a video contains realistic AI-generated or altered content that could look real. This includes making a real person appear to say or do something they did not, changing a real event or place, or creating a realistic scene that did not happen. YouTube may show a disclosure label on the video.
+
+```json
+{
+  "platform_options": {
+    "youtube": {
+      "containsSyntheticMedia": true
+    }
+  }
+}
+```
+
+This setting is optional and applies only to the YouTube video in that post. Mallary does not turn it on just because you use an AI assistant.
 
 ### YouTube first comments
 

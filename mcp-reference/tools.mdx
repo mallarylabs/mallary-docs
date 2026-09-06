@@ -145,6 +145,7 @@ Examples:
 - Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`. Its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
 - Instagram Reels support `platform_options.instagram.shareToFeed`. It defaults to `true`; set it to `false` to keep the Reel off the profile feed.
 - Instagram Trial Reels support `platform_options.instagram.trialParams.graduationStrategy`. Use `MANUAL` or `SS_PERFORMANCE`. Do not send `shareToFeed` with `trialParams`.
+- Instagram feed posts, Reels, and carousels support `platform_options.instagram.isPaidPartnership` and up to two `brandedContentSponsors`. This needs an Instagram account connected through Facebook Login. Sponsors can be usernames or numeric Instagram user IDs.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok uses `DIRECT_POST` by default. Use `MEDIA_UPLOAD` only when you want to finish the post in TikTok. Inbox uploads stay `action_required` until you add the final TikTok post URL.
@@ -177,4 +178,4 @@ The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube 
 
 All media URLs used with `mallary_create_post` must point to `https://files.mallary.ai/...`. For another file, call `mallary_create_upload_url`, upload the file with the returned PUT URL, and then use the returned Mallary media URL. Mallary rejects outside media URLs because they may be private or expire before a post is published.
 
-For YouTube, set `platform_options.youtube.playlist_id` to add the new video to an existing playlist owned by the connected channel.
+For YouTube, set `platform_options.youtube.playlist_id` to add the new video to an existing playlist owned by the connected channel. Set `platform_options.youtube.tags` to a list of video tags. Each tag can use up to 100 characters, and the full tag list can use up to 500 characters after YouTube counts separators. Set `platform_options.youtube.containsSyntheticMedia` to `true` when the video contains realistic AI-generated or altered content that could look real.

@@ -59,7 +59,8 @@ Example:
   "platform_options": {
     "youtube": {
       "message": "YouTube description for the launch video",
-      "title": "Launch update"
+      "title": "Launch update",
+      "tags": ["product launch", "creator tools"]
     },
     "facebook": {
       "message": "Facebook caption for this launch"
@@ -99,6 +100,10 @@ mallary posts create \
 In file mode, put `thumbnail_url` on the media item. Mallary uploads local thumbnail paths automatically. Existing remote thumbnail URLs must already point to `https://files.mallary.ai/...`.
 
 To add a YouTube video to an existing playlist, set `platform_options.youtube.playlist_id` in file mode. The playlist must belong to the connected channel.
+
+To add YouTube video tags, set `platform_options.youtube.tags` to a list of text values in file mode. Each tag can use up to 100 characters. The full list can use up to 500 characters after YouTube counts separators.
+
+To disclose realistic AI-generated or altered content, set `platform_options.youtube.containsSyntheticMedia` to `true` in file mode. YouTube may show a disclosure label on the video.
 
 Current thumbnail support:
 
@@ -161,7 +166,7 @@ Important current rules:
 - Threads supports text-only posts, one image, one video, or a 2 to 20 item carousel.
 - YouTube requires exactly one video.
 - Facebook supports `feed`, `story`, and `reel` through `platform_options.facebook.post_type`. Reels use one 9:16 MP4 or MOV video that is 3 to 90 seconds long.
-- Instagram supports `feed`, `story`, `reel`, and `carousel` through `platform_options.instagram.post_type`. Stories use one image or video, Reels use one video, and carousels use 2 to 10 mixed items. For a Reel, use `shareToFeed` for profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel.
+- Instagram supports `feed`, `story`, `reel`, and `carousel` through `platform_options.instagram.post_type`. Stories use one image or video, Reels use one video, and carousels use 2 to 10 mixed items. For a Reel, use `shareToFeed` for profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel. With a Facebook Login connection, file mode also supports `isPaidPartnership` and up to two `brandedContentSponsors` on feed posts, Reels, and carousels.
 - LinkedIn currently supports text-only posts or one image attachment only.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok defaults to `DIRECT_POST`, which publishes through Mallary. Set `platform_options.tiktok.post_mode = MEDIA_UPLOAD` only when you want to finish the post in the TikTok app. Inbox uploads stay `action_required` until you add the final TikTok post URL.

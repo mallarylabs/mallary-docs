@@ -1025,6 +1025,16 @@ components:
                   type: string
                   enum: [MANUAL, SS_PERFORMANCE]
                   description: Use `MANUAL` to decide later in Instagram, or `SS_PERFORMANCE` to let Instagram share the Reel with followers if it performs well.
+            isPaidPartnership:
+              type: boolean
+              description: Show Instagram's Paid partnership label. Available for feed posts, Reels, and carousels connected through Facebook Login. Sponsors also turn this on.
+            brandedContentSponsors:
+              type: array
+              maxItems: 2
+              description: Up to two sponsor Instagram usernames or numeric user IDs. Each sponsor must be a public Business or Creator account. Available only through Facebook Login and not for Stories.
+              items:
+                type: string
+                pattern: '^@?(?:[A-Za-z0-9._]{1,30}|\d{1,64})$'
         threads:
           type: object
           properties:
@@ -1141,6 +1151,14 @@ components:
               type: string
               maxLength: 100
               description: Defaults to the first non-empty value of `platform_options.youtube.title`, the first line of `message`, or `Untitled Video`.
+            tags:
+              type: array
+              description: Optional video tags. Each tag can use up to 100 characters. The complete tag list can use up to 500 characters after YouTube counts commas and quote characters around tags with spaces. Exact duplicates are removed before upload.
+              items:
+                type: string
+                minLength: 1
+                maxLength: 100
+                pattern: '^[^<>]*$'
             visibility:
               type: string
               enum: [public, unlisted, private]
@@ -1154,6 +1172,9 @@ components:
               type: boolean
               default: false
               description: Defaults to `false`.
+            containsSyntheticMedia:
+              type: boolean
+              description: Optional AI-content disclosure. Set to `true` when the video contains realistic AI-generated or altered content that could be mistaken for real people, places, or events. YouTube may show a disclosure label. Omitted unless supplied.
             playlist_id:
               type: string
               pattern: "^[A-Za-z0-9_-]{2,150}$"

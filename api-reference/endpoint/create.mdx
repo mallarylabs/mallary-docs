@@ -79,6 +79,9 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - `platform_options.instagram.message` sets an Instagram-specific caption. Omit it to use the top-level `message`.
 - For a Reel, `platform_options.instagram.shareToFeed` defaults to `true`. Set it to `false` to keep the Reel in the Reels tab and off the profile feed.
 - To publish a Trial Reel, add `platform_options.instagram.trialParams.graduationStrategy`. Use `MANUAL` to choose later in Instagram, or `SS_PERFORMANCE` to let Instagram share it with followers if it performs well. Do not add `shareToFeed` to a Trial Reel request.
+- Set `platform_options.instagram.isPaidPartnership` to `true` to show the Paid partnership label on a feed post, Reel, or carousel.
+- Add up to two sponsor usernames or numeric user IDs with `platform_options.instagram.brandedContentSponsors`. Sponsors turn on the Paid partnership label too.
+- Paid partnership options do not work with Stories. They require an Instagram account connected through Facebook Login.
 - Instagram's publishing API does not support story captions or follow-up comments. Include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 
@@ -117,6 +120,8 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - YouTube posting does not support images.
 - `platform_options.youtube.message` sets a YouTube-specific description/default-title source. Omit it to use the top-level `message`.
 - `platform_options.youtube.title` sets the YouTube title and takes precedence over the first line of the effective message.
+- `platform_options.youtube.tags` adds video tags. Each tag can use up to 100 characters, and YouTube allows 500 characters across the full tag list after counting separators.
+- `platform_options.youtube.containsSyntheticMedia` accepts `true` or `false`. Set it to `true` when the video contains realistic AI-generated or altered content that could look real. YouTube may show a disclosure label.
 - `platform_options.youtube.playlist_id` adds the new video to an existing playlist owned by the connected YouTube channel. Mallary checks the playlist before upload.
 
 ### TikTok
