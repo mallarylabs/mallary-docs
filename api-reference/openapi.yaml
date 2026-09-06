@@ -1011,6 +1011,20 @@ components:
               enum: [feed, story, reel, carousel]
               default: feed
               description: Defaults to `feed` when omitted. `story` publishes one image/video as an Instagram Story without caption/follow-up comments, `reel` requires one video, and `carousel` publishes 2 to 10 image/video items as one carousel post.
+            shareToFeed:
+              type: boolean
+              default: true
+              description: For Reels only. When true, the Reel appears in the profile feed and Reels tab. When false, it appears only in the Reels tab.
+            trialParams:
+              type: object
+              description: For Reels only. Add this object to publish the video as a Trial Reel that Instagram shows to non-followers first. Do not use `shareToFeed` with a Trial Reel.
+              required: [graduationStrategy]
+              additionalProperties: false
+              properties:
+                graduationStrategy:
+                  type: string
+                  enum: [MANUAL, SS_PERFORMANCE]
+                  description: Use `MANUAL` to decide later in Instagram, or `SS_PERFORMANCE` to let Instagram share the Reel with followers if it performs well.
         threads:
           type: object
           properties:

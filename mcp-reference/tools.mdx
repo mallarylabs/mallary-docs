@@ -143,6 +143,8 @@ For the exact supported `platform_options` fields and examples, use the API refe
 Examples:
 
 - Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`. Its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
+- Instagram Reels support `platform_options.instagram.shareToFeed`. It defaults to `true`; set it to `false` to keep the Reel off the profile feed.
+- Instagram Trial Reels support `platform_options.instagram.trialParams.graduationStrategy`. Use `MANUAL` or `SS_PERFORMANCE`. Do not send `shareToFeed` with `trialParams`.
 - YouTube requires exactly one video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok uses `DIRECT_POST` by default. Use `MEDIA_UPLOAD` only when you want to finish the post in TikTok. Inbox uploads stay `action_required` until you add the final TikTok post URL.
@@ -172,5 +174,7 @@ For the full per-platform matrix and current runtime caveats, see:
 ```
 
 The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube regular videos, Facebook feed videos, and Instagram videos/Reels can use custom thumbnails or covers. For a YouTube Short, YouTube may store the image but show a video frame instead. Mallary returns a warning when this happens. TikTok video posts use a frame from the video instead of a separate image. TikTok photo posts can use `thumbnail_url` only when it matches one of the supplied photo URLs, and that image becomes the photo cover.
+
+All media URLs used with `mallary_create_post` must point to `https://files.mallary.ai/...`. For another file, call `mallary_create_upload_url`, upload the file with the returned PUT URL, and then use the returned Mallary media URL. Mallary rejects outside media URLs because they may be private or expire before a post is published.
 
 For YouTube, set `platform_options.youtube.playlist_id` to add the new video to an existing playlist owned by the connected channel.

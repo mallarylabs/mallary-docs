@@ -77,6 +77,8 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
   carousel = 2 to 10 mixed image/video items.
 - The publisher uses the matching Instagram container flow for `feed`, `story`, `reel`, and `carousel` when selected through `platform_options.instagram.post_type`.
 - `platform_options.instagram.message` sets an Instagram-specific caption. Omit it to use the top-level `message`.
+- For a Reel, `platform_options.instagram.shareToFeed` defaults to `true`. Set it to `false` to keep the Reel in the Reels tab and off the profile feed.
+- To publish a Trial Reel, add `platform_options.instagram.trialParams.graduationStrategy`. Use `MANUAL` to choose later in Instagram, or `SS_PERFORMANCE` to let Instagram share it with followers if it performs well. Do not add `shareToFeed` to a Trial Reel request.
 - Instagram's publishing API does not support story captions or follow-up comments. Include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 

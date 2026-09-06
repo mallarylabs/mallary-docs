@@ -48,6 +48,34 @@ Set `platform_options.instagram.post_type` to `feed`, `story`, `reel`, or `carou
 
 Use `platform_options.instagram.message` to write a caption just for Instagram. If you leave it out, Mallary uses the main post message. Story text must be part of the image or video.
 
+### Instagram Reel profile feed
+
+Use `platform_options.instagram.shareToFeed` with a Reel. Leave it out or set it to `true` to show the Reel in both your profile feed and Reels tab. Set it to `false` to show the Reel only in the Reels tab. This option only works when `post_type` is `reel`.
+
+### Instagram Trial Reels
+
+Add `platform_options.instagram.trialParams` to publish a Trial Reel. Instagram shows a Trial Reel to people who do not follow you first. This option only works when `post_type` is `reel`. Do not add `shareToFeed` to the same request.
+
+```json
+{
+  "platform_options": {
+    "instagram": {
+      "post_type": "reel",
+      "trialParams": {
+        "graduationStrategy": "SS_PERFORMANCE"
+      }
+    }
+  }
+}
+```
+
+### Instagram Trial Reel graduation
+
+Choose how the Trial Reel can become a regular Reel:
+
+- Use `MANUAL` when you want to make that choice later in the Instagram app.
+- Use `SS_PERFORMANCE` when you want Instagram to share it with followers if it performs well.
+
 ### Instagram custom video cover
 
 Add `thumbnail_url` to a feed video or Reel in `media`, or use `platform_options.instagram.thumbnail_url` for an Instagram-only cover. Use an image stored by Mallary. A tall cover works best for a Reel.
