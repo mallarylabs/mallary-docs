@@ -175,5 +175,6 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - X does not allow mixing images and video in the same post.
 - GIFs cannot be combined with other attachments.
 - X images accept `jpg`, `jpeg`, `png`, `webp`, and `gif`. Video accepts `mp4` or `mov`.
-- X video supports up to 140 seconds and up to 512 MB.
+- X video limits depend on the connected X account. Standard accounts can use videos up to 20 minutes and 8 GB. Eligible Premium or verified accounts can use videos up to 125 minutes and 16 GB. Mallary checks the connected account before accepting a video above the standard limits.
+- Mallary's current upload endpoint accepts files up to 5 GB. This upload limit still applies even when X allows a larger file for the connected account.
 - `platform_options.x.message` or `platform_options.twitter.message` sets an X-specific message. Omit it to use the top-level `message`.
