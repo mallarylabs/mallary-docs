@@ -167,7 +167,7 @@ Important current rules:
 - YouTube requires exactly one video.
 - Facebook supports `feed`, `story`, and `reel` through `platform_options.facebook.post_type`. Reels use one 9:16 MP4 or MOV video that is 3 to 90 seconds long.
 - Instagram supports `feed`, `story`, `reel`, and `carousel` through `platform_options.instagram.post_type`. Stories use one image or video, Reels use one video, and carousels use 2 to 10 mixed items. For a Reel, use `shareToFeed` for profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel. With a Facebook Login connection, file mode also supports `isPaidPartnership` and up to two `brandedContentSponsors` on feed posts, Reels, and carousels.
-- LinkedIn currently supports text-only posts or one image attachment only.
+- LinkedIn supports text-only posts, one image or GIF, or one MP4 video. Videos can be up to 1 GB (1,073,741,824 bytes) and 3 seconds to 30 minutes long. Do not mix images and video.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok defaults to `DIRECT_POST`, which publishes through Mallary. Set `platform_options.tiktok.post_mode = MEDIA_UPLOAD` only when you want to finish the post in the TikTok app. Inbox uploads stay `action_required` until you add the final TikTok post URL.
 - Pinterest requires exactly one image or GIF, or exactly one video, plus `boardId`. Mallary shortens Pin descriptions longer than 800 characters so they can publish.

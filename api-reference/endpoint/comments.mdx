@@ -15,3 +15,5 @@ The response uses `platform: "multiple"`, and each comment includes its concrete
 If you want one platform from a grouped post, pass `platform`. Mallary then routes the request to the matching sibling job in that group.
 
 When the platform returns them, Mallary includes own/initial comments. When Mallary identifies the author as the connected account, these comments have `is_own: true` and `can_reply: false`.
+
+For a LinkedIn Page post, Mallary reads comments for the Page you selected when you connected LinkedIn. A comment can include the person's name and LinkedIn ID when LinkedIn sends them. LinkedIn may ask you to reconnect once so Mallary can read Page comments.

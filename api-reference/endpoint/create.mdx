@@ -87,8 +87,10 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 
 ### LinkedIn
 
-- LinkedIn supports text-only posts or one image attachment.
-- Mallary rejects LinkedIn video attachments before queueing.
+- LinkedIn supports text-only posts, one image or GIF, or one MP4 video.
+- Videos can be up to 1 GB (1,073,741,824 bytes) and 3 seconds to 30 minutes long. Do not mix images and video.
+- Upload media to Mallary first. Use the returned `files.mallary.ai` URL or `storageKey`.
+- Mallary uploads the video to LinkedIn and waits for processing before it publishes the post.
 - LinkedIn image attachments accept `jpg`, `jpeg`, `png`, or `gif`.
 - `platform_options.linkedin.message` sets a LinkedIn-specific message. Omit it to use the top-level `message`.
 

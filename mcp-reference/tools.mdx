@@ -140,6 +140,8 @@ For the exact supported `platform_options` fields and examples, use the API refe
 
 `mallary_create_post` also uses the same platform media validation rules as the Mallary API.
 
+LinkedIn accepts one MP4 video up to 1 GB (1,073,741,824 bytes), from 3 seconds to 30 minutes long. Use `mallary_create_upload_url` to upload the video to Mallary, then pass the returned media URL to `mallary_create_post` with `platforms: ["linkedin"]`. No video-specific platform option is needed. Do not mix images and video.
+
 Examples:
 
 - Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`. Its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
