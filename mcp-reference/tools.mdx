@@ -30,7 +30,7 @@ Mallary MCP currently exposes these tool names:
 
 ## ChatGPT Tool Set
 
-ChatGPT connects through `/mcp/openai`. This smaller endpoint does not expose profile changes, settings, webhooks, account disconnects, or pending-post deletion. It includes:
+The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile changes, settings, webhooks, account disconnects, or pending-post deletion. It includes:
 
 - `mallary_upload_image`
 - `mallary_create_post`
@@ -44,6 +44,10 @@ ChatGPT connects through `/mcp/openai`. This smaller endpoint does not expose pr
 - `mallary_list_platforms`
 
 `mallary_upload_image` accepts one image that the user chose or made in ChatGPT. Mallary checks the file bytes, accepts JPEG, PNG, WebP, or GIF images up to 25 MB, stores the image at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`.
+
+The next plugin version uses `/mcp/openai-v2` and adds `mallary_upload_video` for user-attached MP4 and MOV files up to 512 MB (536,870,912 bytes). It returns `media_url`, `content_type`, and `size`. Mallary downloads the attachment on its server, checks that it contains video, and stores it at `files.mallary.ai`. The user does not need to allow R2 domains. This version is being prepared for OpenAI review. It is not yet available in the public ChatGPT plugin.
+
+Pass the returned URL and content type to `mallary_create_post`. Each selected platform still applies its own rules. LinkedIn requires MP4; Reddit video uploads are not supported. Preflight reports blocked destinations before publishing.
 
 Do not use the ChatGPT image tool for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
 
