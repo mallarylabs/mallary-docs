@@ -1546,6 +1546,14 @@ components:
               type: integer
             platform:
               $ref: "#/components/schemas/Platform"
+            status:
+              type: string
+              enum: [available, reconnect_required]
+            status_message:
+              type: string
+              nullable: true
+            reconnect_required:
+              type: boolean
         - $ref: "#/components/schemas/AnalyticsMetrics"
 
     AudienceStatus:

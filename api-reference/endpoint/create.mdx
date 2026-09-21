@@ -44,7 +44,7 @@ To use a different cover for each platform, put `thumbnail_url` inside that plat
 
 Current thumbnail behavior:
 
-- YouTube regular videos: supported. Use a `jpg`, `jpeg`, or `png` image up to 2 MB. Use 16:9 and at least 640px wide.
+- YouTube regular videos: supported. Use a `jpg`, `jpeg`, or `png` image up to 50 MB. Use 16:9 and at least 640px wide.
 - YouTube Shorts: YouTube may accept and store the image but show a video frame instead. Mallary warns you because the YouTube API cannot confirm the cover viewers will see. Use YouTube Studio to add a custom image, or use the YouTube app to choose a frame.
 - Facebook feed videos: supported. Mallary accepts `jpg`, `jpeg`, or `png` thumbnail images up to 10 MB and retries without the thumbnail if Meta rejects it.
 - Instagram videos/Reels: supported with a Mallary-hosted `cover_url`. Use a cover image that matches the video placement, such as 9:16 for Reels/stories. If Meta rejects a cover variant, Mallary falls back to video creation without the cover.
@@ -84,6 +84,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - Paid partnership options do not work with Stories. They require an Instagram account connected through Facebook Login.
 - Instagram's publishing API does not support story captions or follow-up comments. Include story text in the media itself.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
+- Instagram Reels and single feed videos must be 3 seconds to 15 minutes long and no larger than 300 MB. Single feed videos publish as Reels shared to the feed.
 
 ### LinkedIn
 

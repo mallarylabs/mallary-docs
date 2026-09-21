@@ -7,3 +7,5 @@ openapi: "GET /api/v1/analytics"
 Use `profile_id` to read analytics for a non-default connection profile. Omit it to read analytics for the default profile.
 
 For LinkedIn Page posts, Mallary shows LinkedIn impressions as views. LinkedIn likes and comments use the same fields as your other platforms, so your results stay easy to compare.
+
+If an older LinkedIn connection needs the analytics permission, the response uses `status: "reconnect_required"` and says `Reconnect to get analytics`. Reconnect LinkedIn once from the Platforms page. Mallary will then start collecting those post results.
