@@ -5,3 +5,16 @@ openapi: "POST /api/v1/upload"
 ---
 
 Use this upload endpoint for your post media and custom video thumbnail images.
+
+Send the file's MIME type in `type` when you know it. For an MP4 video, use:
+
+```json
+{
+  "filename": "launch.mp4",
+  "type": "video/mp4"
+}
+```
+
+If you omit `type`, Mallary uses the filename extension to choose a supported MIME type. Files with unknown extensions need an explicit supported `type`.
+
+Upload the file bytes to the returned `uploadUrl` with HTTP PUT. Use the returned `headers`, including `Content-Type`, without changing them. Wait for the upload to finish before passing `mediaUrl` to `POST /api/v1/post`.

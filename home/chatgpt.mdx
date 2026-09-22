@@ -73,10 +73,12 @@ https://mallary.ai/mcp/openai
 
 ## Video attachments (next plugin version)
 
-Attach an MP4 or MOV video from your phone or computer, then ask Mallary to post it to your selected social accounts. This update needs OpenAI review and publication before it is available in the public plugin.
+Mallary's current ChatGPT plugin does not support video uploads yet. Video support is built for a future plugin update. It needs OpenAI review and publication before it can be used in the current plugin. We do not have a confirmed release date.
 
-The plugin accepts videos up to 512 MB. Mallary copies the file to its CDN on the server. You do not need to add `*.r2.cloudflarestorage.com` to an allowed-domain list.
+The next version will accept attached MP4 and MOV videos up to 512 MB. Mallary will copy the file to its CDN on the server. You will not need to add `*.r2.cloudflarestorage.com` to an allowed-domain list.
 
-ChatGPT attachment availability depends on your account and client. On mobile, try attaching through Files if the video is not shown in Photos. Browser, desktop, and mobile all use the same Mallary upload tool when ChatGPT makes the attachment available.
+ChatGPT must make the video attachment available to the plugin. File support may vary by ChatGPT account and client.
+
+For now, use ChatGPT to write the caption, then upload and post the video in the Mallary dashboard. A client that can read your video file and send HTTP PUT requests can also use [standard MCP's video upload flow](/mcp-reference/tools#upload-a-video-with-standard-mcp).
 
 Each social platform has its own video rules. LinkedIn requires MP4. Reddit does not support video uploads through Mallary. Mallary checks your selected destinations before posting and reports any problems.

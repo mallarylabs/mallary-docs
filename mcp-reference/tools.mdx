@@ -28,6 +28,16 @@ Mallary MCP currently exposes these tool names:
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
 
+## Upload a Video with Standard MCP
+
+The standard MCP endpoint at `https://mallary.ai/mcp` exposes `mallary_create_upload_url` for images and videos. It uses the same presigned upload flow as the REST API.
+
+1. Call `mallary_create_upload_url` with `{"filename":"launch.mp4","type":"video/mp4"}`.
+2. Send the video bytes to the returned `uploadUrl` with HTTP PUT. Use the returned `headers` without changing them.
+3. Wait for the upload to finish, then pass `mediaUrl` to `mallary_create_post` in `media[].url`.
+
+Your MCP client must be able to read the file and send the HTTP PUT request. The upload tool returns a URL; it does not copy a local file by itself. Mallary's current ChatGPT plugin uses a separate tool set and does not expose this flow.
+
 ## ChatGPT Tool Set
 
 The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile changes, settings, webhooks, account disconnects, or pending-post deletion. It includes:

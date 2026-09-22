@@ -948,8 +948,8 @@ components:
           description: Optional file size in bytes for early validation against the 5GB limit.
         type:
           type: string
-          default: application/octet-stream
-          description: MIME type. Defaults to `application/octet-stream` if omitted.
+          example: video/mp4
+          description: File MIME type. Send it when known, such as `video/mp4` for an MP4 video. If omitted, Mallary infers it from a supported filename extension. Files with unknown extensions need an explicit supported type.
 
     CreateUploadResponse:
       type: object

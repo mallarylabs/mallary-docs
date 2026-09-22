@@ -45,6 +45,7 @@ const uploadMetaRes = await fetch("https://mallary.ai/api/v1/upload", {
   },
   body: JSON.stringify({
     filename: file.name, // launch.mp4
+    type: "video/mp4",
   }),
 });
 
@@ -54,7 +55,7 @@ const uploadMeta = await uploadMetaRes.json();
 // {
 //   uploadUrl: "https://...",
 //   mediaUrl: "https://files.mallary.ai/uploads/launch.mp4",
-//   headers: { "Content-Type": "application/octet-stream" }
+//   headers: { "Content-Type": "video/mp4" }
 // }
 ```
 
