@@ -45,6 +45,43 @@ Claude can use a Client ID Metadata Document, while other clients can use Mallar
 
 Users can review and revoke OAuth access at `https://mallary.ai/oauth-connections`.
 
+## Keep an App Connected
+
+The app that runs the MCP client must renew its OAuth access tokens. Mallary cannot renew a token stored inside another app on that app's behalf.
+
+Read the current endpoints from this discovery document. Do not guess paths such as `/authorize`.
+
+```text
+https://auth.mallary.ai/.well-known/oauth-authorization-server
+```
+
+For a public client using dynamic registration, register both grant types and use PKCE with `S256`:
+
+```json
+{
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none"
+}
+```
+
+Also supply the client's name and exact callback URL. Use `https://mallary.ai/mcp` as the OAuth `resource` for the standard MCP endpoint. Request only the scopes the integration needs. Uploading, publishing, scheduling, and reading results need `mallary.publish` and `mallary.read`.
+
+Mallary issues refresh tokens to public PKCE clients registered for the refresh grant, even without `offline_access`. A registration that allows only `authorization_code` will not receive this capability. A client with a shared secret must also request `offline_access` to receive a refresh token.
+
+The connector host must:
+
+1. Keep tokens and expiry details in its secure credential store. Never put them in prompts or logs.
+2. Use the returned `expires_in` value to renew shortly before expiry.
+3. Allow only one refresh at a time for each connection. Other requests must wait for that refresh.
+4. Send `grant_type=refresh_token` to the discovered token endpoint with the registered client authentication and resource.
+5. Save the new access token, rotated refresh token, and expiry together before resuming requests. Do not reuse the old refresh token.
+6. On `invalid_grant`, stop and ask the user to reconnect. Do not keep retrying a revoked or expired grant.
+
+For endpoints that issue MCP sessions, a refreshed token from the same client and grant can use the existing session. A new consent grant needs a new session. A fresh credential reference from a host's vault does not, by itself, prove that the underlying OAuth token was renewed.
+
+Before releasing a connector, test two token renewals and a new conversation without asking the user to reconnect. If the host manages OAuth internally, the host must provide this behavior; a tool description or skill cannot add it.
+
 ## OAuth Scope Reference
 
 These scopes remain part of the OAuth protocol for client compatibility. They are not choices shown by the Mallary CLI.

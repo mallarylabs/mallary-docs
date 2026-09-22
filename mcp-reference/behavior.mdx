@@ -17,6 +17,8 @@ MCP tools route through the existing `/api/v1/*` handlers. Mallary does not dupl
 
 If you send `idempotency_key`, Mallary forwards it as an `Idempotency-Key` header to the underlying API handler.
 
+Do not treat that header as a guarantee that a repeated request will be deduplicated. If a publishing call times out or loses its response, use `mallary_list_posts` and `mallary_get_job` to check the saved result before taking any further action. Do not automatically repeat a publishing call.
+
 ## Error Shape
 
 Mallary returns non-2xx API results as structured MCP errors with:
@@ -28,4 +30,28 @@ Mallary returns non-2xx API results as structured MCP errors with:
 
 ## Transport Note
 
-Streamable HTTP can return event-stream payloads for tool responses.
+The standard `/mcp` endpoint returns one JSON result for each POST containing a JSON-RPC request. Other Mallary MCP endpoints can return an SSE stream. Clients must support both `application/json` and `text/event-stream` and include both in the `Accept` header.
+
+Keep the returned `Mcp-Session-Id` and negotiated `Mcp-Protocol-Version` for later requests. An accepted notification, including `notifications/initialized`, returns `202` with an empty body. Reuse the session for a workflow instead of initializing before every tool call.
+
+For SSE, read complete events until the response with the matching JSON-RPC ID arrives. Do not wait for a fixed-size buffer or stream closure. Close the response when finished and bound both blocked reads and total elapsed time.
+
+## Approval Waits and Timeouts
+
+A host may pause a request for user approval before Mallary receives it. Mallary cannot remove that prompt or tell the client how long the user will take.
+
+Use the host's supported background execution and process-status tools while an approval is pending. A short execution yield is a way to return control; it must not kill the network request. Keep one process active rather than starting another copy.
+
+Check every timeout layer. A shell or task timeout must allow enough time for all sequential network requests and cleanup. For example, a 150-second process timeout will kill a client that is allowed to wait 300 seconds for one request. Keep time limits bounded and show an honest timeout message; do not label every delay as a Mallary outage.
+
+## Recovering from Errors
+
+| Result | Client action |
+| --- | --- |
+| `401` / invalid token | Use the host's supported OAuth renewal path. Do not keep sending the rejected token. Reconnect if renewal is unavailable or returns `invalid_grant`. Report temporary network failures as temporary; do not force new consent for them. |
+| `403` / scope or session mismatch | Check the required scope and connection. A new grant must not reuse another grant's session. Do not widen access silently. |
+| `404` / JSON-RPC `-32004`, "Session not found" | Initialize a new MCP session. Read calls can then be resumed. Preserve the rule against automatically repeating writes. |
+| `429` | Respect `Retry-After` and use bounded backoff for safe reads. |
+| Timeout, disconnect, invalid response, or `5xx` | A write may already have succeeded. Check saved posts or jobs before taking any further action. |
+
+Keep credentials, signed upload URLs, and raw provider response bodies out of diagnostic logs.
