@@ -387,21 +387,21 @@ paths:
   /api/v1/analytics:
     get:
       operationId: listAnalytics
-      summary: Get latest analytics snapshots
-      description: Returns latest per-platform metrics for recent posts, or for one post via `post_id`.
+      summary: Get latest post metrics and audience counts
+      description: Returns the latest per-platform post metrics in `data.analytics` and the latest saved follower or subscriber counts in `data.audience`. Audience counts use the same fields and statuses as GET /api/v1/audience and cover every connected account in the selected profile. Mallary refreshes supported audience counts once every 24 hours. TikTok follower counts become available after a connection grants `user.info.stats` and Mallary saves its first count. Existing connections without that permission return `permission_required` for their audience count and keep working as before.
       parameters:
         - in: query
           name: post_id
           required: false
           schema:
             type: integer
-          description: Filter to a single post/job ID owned by the authenticated user.
+          description: Filter post metrics to a single post/job ID owned by the authenticated user. Audience counts still cover the whole selected profile.
         - in: query
           name: profile_id
           required: false
           schema:
             $ref: "#/components/schemas/ProfileId"
-          description: Filter analytics to one connection profile. Omit to use the default profile.
+          description: Select the connection profile for both post metrics and audience counts. Omit to use the default profile.
       responses:
         "200":
           description: Analytics retrieved
@@ -424,6 +424,11 @@ paths:
                         type: array
                         items:
                           $ref: "#/components/schemas/AnalyticsItem"
+                      audience:
+                        type: array
+                        description: Latest saved audience count and collection status for each connected account in the selected profile. This list is not filtered by `post_id`.
+                        items:
+                          $ref: "#/components/schemas/AudienceItem"
         "401":
           description: Missing or invalid API key
         "403":

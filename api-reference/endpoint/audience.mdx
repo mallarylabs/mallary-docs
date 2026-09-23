@@ -12,8 +12,10 @@ The response includes every connected account. `count` is the latest saved numbe
 
 - YouTube returns `subscribers`.
 - Facebook Pages, Instagram, Threads, TikTok, X, Pinterest, and Bluesky return `followers`. Facebook may return `page_likes` when that is the only count the Page gives Mallary.
-- A TikTok connection made without audience stats access returns `permission_required` until it is reconnected with that access.
+- TikTok follower counts become available after a connection grants `user.info.stats` and Mallary saves its first count. Existing connections without that permission return `permission_required` for their audience count. They keep working as before.
 - LinkedIn returns `permission_required` until Mallary adds the permission it needs.
 - Other platforms may return `unsupported` when they do not provide an account audience count.
 
 Mallary does not add the counts together. The same person may follow more than one account.
+
+[Get Analytics](/api-reference/endpoint/analytics) returns the same list in `data.audience`, alongside post metrics.

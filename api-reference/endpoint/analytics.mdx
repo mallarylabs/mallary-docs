@@ -1,10 +1,17 @@
 ---
 title: "Get Analytics"
-description: "Retrieve the latest per-platform analytics snapshots for recent posts or one post."
+description: "Get the latest post metrics and audience counts for one Mallary profile."
 openapi: "GET /api/v1/analytics"
 ---
 
 Use `profile_id` to read analytics for a non-default connection profile. Omit it to read analytics for the default profile.
+
+The response has two lists:
+
+- `data.analytics` has the latest metrics for recent posts. Use `post_id` to limit this list to one post.
+- `data.audience` has the latest saved follower or subscriber count for each connected account in the profile. It uses the same fields and statuses as [Get Audience Counts](/api-reference/endpoint/audience). The `post_id` filter does not change this list.
+
+Mallary updates supported audience counts once every 24 hours. TikTok follower counts become available after a connection grants `user.info.stats` and Mallary saves its first count. Existing connections without that permission return `permission_required` for their audience count. They keep working as before.
 
 For LinkedIn Page posts, Mallary shows LinkedIn impressions as views. LinkedIn likes and comments use the same fields as your other platforms, so your results stay easy to compare.
 
