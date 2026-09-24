@@ -79,6 +79,8 @@ The next version will accept attached MP4 and MOV videos up to 512 MB. Mallary w
 
 ChatGPT must make the video attachment available to the plugin. File support may vary by ChatGPT account and client.
 
-For now, use ChatGPT to write the caption, then upload and post the video in the Mallary dashboard. A client that can read your video file and send HTTP PUT requests can also use [standard MCP's video upload flow](/mcp-reference/tools#upload-a-video-with-standard-mcp).
+For now, keep your approved captions in ChatGPT. Open [Mallary Compose](https://mallary.ai/compose), upload an MP4 or MOV video in Attachments, and select **Copy video URL**. Return to the same ChatGPT chat, paste the Mallary URL, and ask Mallary to use it with your approved captions and schedule. Check the accounts, date, time zone, and platform choices before ChatGPT schedules the posts. Anyone with the URL can view the video.
+
+A client that can read your video file and send HTTP PUT requests can also use [standard MCP's video upload flow](/mcp-reference/tools#upload-a-video-with-standard-mcp).
 
 Each social platform has its own video rules. LinkedIn requires MP4. Reddit does not support video uploads through Mallary. Mallary checks your selected destinations before posting and reports any problems.
