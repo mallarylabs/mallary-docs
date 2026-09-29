@@ -32,12 +32,6 @@ Mallary connects your social publishing workflow to ChatGPT. You can work with y
 - review post analytics
 - review follower and subscriber counts
 
-## Scheduled Post Editing (Future Plugin Update)
-
-The current public plugin cannot edit a scheduled post. This change is staged for a separate plugin update after the video update's current OpenAI review is complete. With that later update, you will be able to ask ChatGPT to change a scheduled post's words, media, time, platforms, or connection profile before posting starts.
-
-ChatGPT will read the saved post first. If you change where it will go, choose one connection profile and every platform that should get it. Check the account names and time before you approve. Mallary will stop the edit if posting has started or the post changed since ChatGPT read it.
-
 ## How Sign-In Works
 
 The Mallary plugin uses OAuth. ChatGPT opens Mallary in your browser and asks you to approve access.
@@ -77,15 +71,11 @@ https://mallary.ai/mcp/openai
 </Card>
 
 
-## Video attachments (next plugin version)
+## Post a Video
 
-Mallary's current ChatGPT plugin does not support video uploads yet. Video support is built for a future plugin update. It needs OpenAI review and publication before it can be used in the current plugin. We do not have a confirmed release date.
+The current ChatGPT plugin does not accept a video attachment directly. You can use a Mallary video URL instead.
 
-The next version will accept attached MP4 and MOV videos up to 512 MB. Mallary will copy the file to its CDN on the server. You will not need to add `*.r2.cloudflarestorage.com` to an allowed-domain list.
-
-ChatGPT must make the video attachment available to the plugin. File support may vary by ChatGPT account and client.
-
-For now, keep your approved captions in ChatGPT. Open [Mallary Compose](https://mallary.ai/compose), upload an MP4 or MOV video in Attachments, and select **Copy video URL**. Return to the same ChatGPT chat, paste the Mallary URL, and ask Mallary to use it with your approved captions and schedule. Check the accounts, date, time zone, and platform choices before ChatGPT schedules the posts. Anyone with the URL can view the video.
+Keep your approved captions in ChatGPT. Open [Mallary Compose](https://mallary.ai/compose), upload an MP4 or MOV video in Attachments, and select **Copy video URL**. Return to the same ChatGPT chat, paste the Mallary URL, and ask Mallary to use it with your approved captions and schedule. Check the accounts, date, time zone, and platform choices before ChatGPT schedules the posts. Anyone with the URL can view the video.
 
 A client that can read your video file and send HTTP PUT requests can also use [standard MCP's video upload flow](/mcp-reference/tools#upload-a-video-with-standard-mcp).
 

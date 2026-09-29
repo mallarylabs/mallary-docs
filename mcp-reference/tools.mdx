@@ -42,7 +42,7 @@ Your MCP client must be able to read the file and send the HTTP PUT request. The
 
 ## ChatGPT Tool Set
 
-The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, or pending-post deletion. Its currently approved tool set includes:
+The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its currently approved tool set includes:
 
 - `mallary_upload_image`
 - `mallary_create_post`
@@ -55,13 +55,7 @@ The current public ChatGPT plugin connects through `/mcp/openai`. This smaller e
 - `mallary_list_profiles`
 - `mallary_list_platforms`
 
-Scheduled-post editing is staged on a separate `/mcp/openai-v3` endpoint. It adds `mallary_get_post` and `mallary_update_scheduled_post` to the ChatGPT tool set. The current public and v2 review versions keep their existing tools. The v3 version will be submitted after the current OpenAI review is complete.
-
 `mallary_upload_image` accepts one image that the user chose or made in ChatGPT. Mallary checks the file bytes, accepts JPEG, PNG, WebP, or GIF images up to 25 MB, stores the image at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`.
-
-The video plugin version uses `/mcp/openai-v2` and adds `mallary_upload_video` for user-attached MP4 and MOV files up to 512 MB (536,870,912 bytes). It returns `media_url`, `content_type`, and `size`. Mallary downloads the attachment on its server, checks that it contains video, and stores it at `files.mallary.ai`. The user does not need to allow R2 domains. This version is under OpenAI review. It is not yet available in the public ChatGPT plugin.
-
-Pass the returned URL and content type to `mallary_create_post`. Each selected platform still applies its own rules. LinkedIn requires MP4; Reddit video uploads are not supported. Preflight reports blocked destinations before publishing.
 
 Do not use the ChatGPT image tool for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
 

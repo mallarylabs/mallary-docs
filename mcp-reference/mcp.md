@@ -25,6 +25,8 @@ Identity is always resolved from the API key owner.
 - `mallary_get_job`
 - `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
+- `mallary_get_post`
+- `mallary_update_scheduled_post`
 - `mallary_list_comments`
 - `mallary_reply_to_comment`
 - `mallary_delete_post`
@@ -48,6 +50,7 @@ Identity is always resolved from the API key owner.
 - `Idempotency-Key` is forwarded when `idempotency_key` is provided.
 - Use `mallary_list_profiles` to list random public profile IDs.
 - Publishing, post listing, comment listing, analytics, platform listing, settings, and disconnect tools accept `profile_id` for non-default connection profiles.
+- To edit a scheduled post, use `mallary_get_post` to read its `revision`, then pass that value as `expected_revision` to `mallary_update_scheduled_post`. To change the connection profile or platforms, send the target `destinations.profile_id` and the complete final `destinations.platforms` list. One connection profile applies to the whole post group.
 - `mallary_create_profile` and `mallary_rename_profile` manage Mallary connection profiles.
 - `mallary_list_comments` and `mallary_reply_to_comment` are available on all Mallary plans.
 - Non-2xx API results are returned as structured MCP errors with:

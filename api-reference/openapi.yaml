@@ -378,7 +378,7 @@ paths:
         "402":
           description: Posting allowance reached when adding destinations
         "403":
-          description: Scheduling or auto-reply not available on the current plan
+          description: Scheduling or auto-reply not available on the current plan, posting paused, or content policy blocked
         "404":
           description: Post or target connection profile not found
         "409":

@@ -90,6 +90,8 @@ The current public API supports:
 - post creation and scheduling through `POST /api/v1/post`
 - job status lookup through `GET /api/v1/jobs/{id}`
 - grouped post listing through `GET /api/v1/posts`
+- scheduled post details through `GET /api/v1/posts/{id}`
+- scheduled post edits through `PATCH /api/v1/posts/{id}`
 - comment listing through `GET /api/v1/comments`
 - supplied comment replies through `POST /api/v1/comments/reply`
 - deletion of queued or scheduled posts through `DELETE /api/v1/posts/{id}`
@@ -124,9 +126,10 @@ Most integrations follow this path:
 
 1. Upload media and get a public Mallary file URL.
 2. Create a post with one or more target platforms.
-3. Poll the job endpoint for per-platform status.
-4. Use grouped post listing and analytics endpoints for downstream reporting.
-5. Optionally subscribe to webhooks instead of polling everything yourself.
+3. If plans change before publishing starts, [get the saved post](/api-reference/endpoint/get-scheduled-post) and [edit it](/api-reference/endpoint/update-scheduled-post).
+4. Poll the job endpoint for per-platform status.
+5. Use grouped post listing and analytics endpoints for downstream reporting.
+6. Optionally subscribe to webhooks instead of polling everything yourself.
 
 ## Media upload and publishing model
 
