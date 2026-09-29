@@ -50,6 +50,8 @@
               "api-reference/endpoint/get",
               "api-reference/endpoint/attach-tiktok-post-url",
               "api-reference/endpoint/posts",
+              "api-reference/endpoint/get-scheduled-post",
+              "api-reference/endpoint/update-scheduled-post",
               "api-reference/endpoint/comments",
               "api-reference/endpoint/comments-reply",
               "api-reference/endpoint/delete",

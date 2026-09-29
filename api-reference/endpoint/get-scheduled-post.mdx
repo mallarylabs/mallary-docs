@@ -1,0 +1,16 @@
+---
+title: "Get Post for Editing"
+description: "Read a grouped post, its current revision, and whether it can still be edited."
+openapi: "GET /api/v1/posts/{id}"
+---
+
+Use a Mallary job ID from the post. If the post has several platforms, any job ID from that group works.
+
+The response includes `data.revision` and `data.editable`. Read both before you [edit the scheduled post](/api-reference/endpoint/update-scheduled-post). It also shows the saved profile, platforms, media, and schedule.
+
+If you send `profile_id` in the query, use the post's **current** profile ID. This query does not move the post to another profile.
+
+```bash
+curl 'https://mallary.ai/api/v1/posts/12345' \
+  -H "Authorization: Bearer $MALLARY_API_KEY"
+```

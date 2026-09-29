@@ -7,3 +7,5 @@ openapi: "GET /api/v1/posts"
 Use `profile_id` to list grouped posts for a non-default connection profile. Omit it to list the default profile.
 
 Each post includes per-platform `results`. When the platform returns or exposes those values, completed platform results include `platform_post_id` and `platform_post_url`.
+
+To change a scheduled post, [get its current revision](/api-reference/endpoint/get-scheduled-post), then [edit the post](/api-reference/endpoint/update-scheduled-post).

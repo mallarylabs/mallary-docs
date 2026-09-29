@@ -313,6 +313,78 @@ paths:
           description: Post not found
 
   /api/v1/posts/{id}:
+    get:
+      operationId: getScheduledPost
+      summary: Get a post and its edit details
+      description: Returns the full grouped post, including its saved destinations, connection profile, editable fields, and revision. The ID may be any Mallary job ID from the group, including one retired by an earlier edit.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Optional current connection profile for the post. This does not change its destination profile.
+      responses:
+        "200":
+          description: Post retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetScheduledPostResponse"
+        "400":
+          description: Invalid post id
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Post not found for this user or current profile
+    patch:
+      operationId: updateScheduledPost
+      summary: Edit a scheduled post before publishing starts
+      description: Updates the entire grouped post. Omitted fields keep their current values. To change platforms or the connection profile, send `destinations` with both the target public `profile_id` and the complete final `platforms` list. The scheduled time must be in the future, and no platform in the group may have started publishing. A stale revision returns HTTP 409.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Optional current profile of the post. The target profile belongs in `destinations.profile_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateScheduledPostRequest"
+      responses:
+        "200":
+          description: Scheduled post updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetScheduledPostResponse"
+        "400":
+          description: Invalid content, time, media, platform options, destination list, or target connection
+        "401":
+          description: Missing or invalid API key
+        "402":
+          description: Posting allowance reached when adding destinations
+        "403":
+          description: Scheduling or auto-reply not available on the current plan
+        "404":
+          description: Post or target connection profile not found
+        "409":
+          description: Revision changed, post no longer editable, or upload not complete
+        "429":
+          description: Rate limit or post safety limit exceeded
     delete:
       operationId: deletePendingPost
       summary: Delete pending/scheduled post
@@ -1649,6 +1721,13 @@ components:
         batch_id:
           type: string
           nullable: true
+        revision:
+          type: integer
+          minimum: 0
+          description: Current edit revision when available.
+        editable:
+          type: boolean
+          description: Whether the grouped post can still be edited.
         profile_id:
           type: string
           pattern: "^[A-Za-z0-9]{6,32}$"
@@ -1733,6 +1812,155 @@ components:
                   type: integer
                 total:
                   type: integer
+
+    ScheduledPostDestination:
+      type: object
+      properties:
+        job_id:
+          type: integer
+        platform:
+          $ref: "#/components/schemas/Platform"
+        profile_id:
+          type: string
+          nullable: true
+          description: Public connection profile ID, or null if that profile no longer exists.
+        account_name:
+          type: string
+          nullable: true
+        account_handle:
+          type: string
+          nullable: true
+
+    ScheduledPostDetail:
+      type: object
+      required: [id, revision, editable, profile_id, platforms, message, media, scheduled_at]
+      properties:
+        id:
+          type: integer
+          description: Stable numeric ID for this grouped post, including after destinations change.
+        batch_id:
+          type: string
+          nullable: true
+        job_ids:
+          type: array
+          description: Active Mallary job IDs for the current destinations.
+          items:
+            type: integer
+        revision:
+          type: integer
+          minimum: 0
+        editable:
+          type: boolean
+        edit_block_reason:
+          type: string
+          nullable: true
+        profile_id:
+          type: string
+          nullable: true
+          description: Public connection profile ID, or null if that profile no longer exists.
+        platforms:
+          type: array
+          items:
+            $ref: "#/components/schemas/Platform"
+        destinations:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScheduledPostDestination"
+        message:
+          type: string
+        media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaItem"
+        comments_under_post:
+          type: array
+          maxItems: 3
+          items:
+            type: object
+            properties:
+              content:
+                type: string
+        scheduled_at:
+          type: string
+          nullable: true
+          description: Saved scheduled publish time.
+        scheduled_timezone:
+          type: string
+          nullable: true
+        auto_reply_enabled:
+          type: boolean
+        platform_options:
+          $ref: "#/components/schemas/PlatformOptions"
+
+    GetScheduledPostResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          $ref: "#/components/schemas/ScheduledPostDetail"
+
+    UpdateScheduledPostDestinations:
+      type: object
+      required: [profile_id, platforms]
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileId"
+          description: The target connection profile for the whole grouped post.
+        platforms:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          description: Complete final platform list. Platforms omitted from this list are removed from the scheduled post.
+          items:
+            $ref: "#/components/schemas/Platform"
+
+    UpdateScheduledPostRequest:
+      type: object
+      required: [expected_revision]
+      properties:
+        expected_revision:
+          type: integer
+          minimum: 1
+          description: Revision returned by `GET /api/v1/posts/{id}`. A stale value returns HTTP 409.
+        message:
+          type: string
+          minLength: 1
+        media:
+          type: array
+          description: Replaces all saved media. Send an empty array to remove media.
+          items:
+            $ref: "#/components/schemas/MediaItem"
+        comments_under_post:
+          type: array
+          maxItems: 3
+          description: Replaces all saved comments. Send an empty array to remove comments.
+          items:
+            oneOf:
+              - type: string
+              - type: object
+                required: [content]
+                properties:
+                  content:
+                    type: string
+        scheduled_at:
+          type: string
+          description: New future publish time. Send an absolute time or a local time with `scheduled_timezone`.
+        scheduled_timezone:
+          type: string
+          nullable: true
+          description: IANA timezone. Send null to clear it when `scheduled_at` is absolute.
+        auto_reply_enabled:
+          type: boolean
+        platform_options:
+          type: object
+          nullable: true
+          description: Complete replacement map of per-platform options. Send an empty object or null to clear all overrides.
+          additionalProperties:
+            type: object
+        destinations:
+          $ref: "#/components/schemas/UpdateScheduledPostDestinations"
 
     DeletePostResponse:
       type: object

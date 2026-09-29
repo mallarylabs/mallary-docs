@@ -1,0 +1,42 @@
+---
+title: "Edit Scheduled Post"
+description: "Change a scheduled post before any platform starts publishing it."
+openapi: "PATCH /api/v1/posts/{id}"
+---
+
+First, [get the post](/api-reference/endpoint/get-scheduled-post). Check that `data.editable` is `true`, and copy `data.revision`. Then send that number as `expected_revision` with at least one field to change. Fields you leave out stay the same.
+
+You can change the text, media, first comments, publish time and time zone, auto-reply setting, platform options, and destinations. One edit changes the whole post group. The scheduled time must still be in the future, and no platform in the group may have started publishing.
+
+## Change the text
+
+```bash
+curl -X PATCH 'https://mallary.ai/api/v1/posts/12345' \
+  -H "Authorization: Bearer $MALLARY_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"expected_revision":1,"message":"Updated launch reminder"}'
+```
+
+Replace `1` with the revision from the GET response. A successful edit returns the updated post and its new revision.
+
+## Change the profile or platforms
+
+Send `destinations` with **both** the target profile's public `profile_id` and the **complete final** platform list. Every platform in the group uses that one profile. A platform left out of the list is removed from the scheduled post.
+
+```json
+{
+  "expected_revision": 1,
+  "destinations": {
+    "profile_id": "AbC123xYz90",
+    "platforms": ["instagram", "linkedin"]
+  }
+}
+```
+
+Use [List Connection Profiles](/api-reference/endpoint/profiles) to find profile IDs and the platforms connected to each profile. If you send `profile_id` in the URL query, it identifies the post's **current** profile. Put the new profile in `destinations.profile_id`.
+
+If you change only the platforms, send the current profile ID in `destinations.profile_id`. When you move to another profile, Mallary clears saved account choices from the old profile, such as a LinkedIn author or Pinterest board. Send new `platform_options` if you need those choices.
+
+When sent, `media`, `comments_under_post`, and `platform_options` replace their saved values. Send an empty array to clear media or first comments, or an empty object to clear platform options.
+
+If the API returns `409`, get the post again before making another edit. The post may have changed or started publishing.
