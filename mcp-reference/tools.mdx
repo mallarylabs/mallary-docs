@@ -12,6 +12,8 @@ Mallary MCP currently exposes these tool names:
 - `mallary_get_job`
 - `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
+- `mallary_get_post`
+- `mallary_update_scheduled_post`
 - `mallary_list_comments`
 - `mallary_reply_to_comment`
 - `mallary_delete_post`
@@ -40,7 +42,7 @@ Your MCP client must be able to read the file and send the HTTP PUT request. The
 
 ## ChatGPT Tool Set
 
-The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile changes, settings, webhooks, account disconnects, or pending-post deletion. It includes:
+The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, or pending-post deletion. Its currently approved tool set includes:
 
 - `mallary_upload_image`
 - `mallary_create_post`
@@ -53,9 +55,11 @@ The current public ChatGPT plugin connects through `/mcp/openai`. This smaller e
 - `mallary_list_profiles`
 - `mallary_list_platforms`
 
+Scheduled-post editing is staged on a separate `/mcp/openai-v3` endpoint. It adds `mallary_get_post` and `mallary_update_scheduled_post` to the ChatGPT tool set. The current public and v2 review versions keep their existing tools. The v3 version will be submitted after the current OpenAI review is complete.
+
 `mallary_upload_image` accepts one image that the user chose or made in ChatGPT. Mallary checks the file bytes, accepts JPEG, PNG, WebP, or GIF images up to 25 MB, stores the image at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`.
 
-The next plugin version uses `/mcp/openai-v2` and adds `mallary_upload_video` for user-attached MP4 and MOV files up to 512 MB (536,870,912 bytes). It returns `media_url`, `content_type`, and `size`. Mallary downloads the attachment on its server, checks that it contains video, and stores it at `files.mallary.ai`. The user does not need to allow R2 domains. This version is being prepared for OpenAI review. It is not yet available in the public ChatGPT plugin.
+The video plugin version uses `/mcp/openai-v2` and adds `mallary_upload_video` for user-attached MP4 and MOV files up to 512 MB (536,870,912 bytes). It returns `media_url`, `content_type`, and `size`. Mallary downloads the attachment on its server, checks that it contains video, and stores it at `files.mallary.ai`. The user does not need to allow R2 domains. This version is under OpenAI review. It is not yet available in the public ChatGPT plugin.
 
 Pass the returned URL and content type to `mallary_create_post`. Each selected platform still applies its own rules. LinkedIn requires MP4; Reddit video uploads are not supported. Preflight reports blocked destinations before publishing.
 
@@ -70,6 +74,7 @@ These tools cover:
 - job lookup
 - TikTok final URL attachment
 - post listing
+- scheduled-post detail and editing
 - comment listing and supplied comment replies
 - post deletion
 - post analytics and account audience retrieval
@@ -108,6 +113,7 @@ The following tools accept `profile_id`:
 
 - `mallary_create_post`
 - `mallary_list_posts`
+- `mallary_update_scheduled_post` (inside `destinations` when moving a post group)
 - `mallary_list_comments`
 - `mallary_get_analytics`
 - `mallary_get_audience`
@@ -137,6 +143,31 @@ Supported platforms are Facebook, Instagram, Threads, LinkedIn, X, YouTube, and 
 - send an absolute `scheduled_at` like `2026-04-06T18:30:00Z`
 - or send a local `scheduled_at` like `2026-04-06T14:30` together with `scheduled_timezone: "America/New_York"`
 - `scheduled_timezone` must be a valid IANA timezone
+
+## Edit a Scheduled Post
+
+Use `mallary_get_post` with the stable numeric Mallary post ID from `mallary_list_posts`. It returns the saved content, schedule, destination accounts, `editable` status, and `revision`. Only a post group whose destinations have not started publishing can be edited.
+
+Use `mallary_update_scheduled_post` with that ID, `expected_revision`, and only the fields to change. You can edit the message, media, comments under the post, platform options, auto-reply setting, date, time, time zone, destination platforms, and connection profile. `media`, `comments_under_post`, and `platform_options` replace their saved values when supplied, so send the complete final value or leave the field out. If another edit or publishing starts first, the update returns a conflict. Read the post again before deciding what to do; do not repeat the old update automatically.
+
+One connection profile applies to the whole post group. To change its profile or platforms, send **both** `destinations.profile_id` and the complete final `destinations.platforms` list. Get the target profile ID from `mallary_list_profiles`, then check its accounts with `mallary_list_platforms`. Mallary validates every selected destination. A platform omitted from the final list is removed, so list every platform the user wants to keep. Leaving `destinations` out keeps the existing profile and platforms.
+
+```json
+{
+  "id": 123,
+  "expected_revision": 4,
+  "message": "Updated launch note",
+  "scheduled_at": "2026-10-15T14:30:00Z",
+  "destinations": {
+    "profile_id": "ProfileTarget1",
+    "platforms": ["linkedin", "bluesky"]
+  }
+}
+```
+
+Use an empty `media` or `comments_under_post` array to clear those fields. Use `platform_options: null` to clear all platform overrides, or `scheduled_timezone: null` to clear the saved time zone when changing to an absolute scheduled time. Mallary checks account-specific options, such as a Pinterest board, against the final destination accounts.
+
+The ChatGPT tool accepts a strict set of platform option fields. If the saved post has an option that ChatGPT cannot send back, leave `platform_options` out to keep it. Use the dashboard or API if that option itself must change.
 
 ## Publish Results
 

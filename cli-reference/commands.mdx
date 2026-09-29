@@ -41,6 +41,9 @@ Use the returned URL as `media[].url` for media, or as `media[].thumbnail_url` f
 mallary posts list
 mallary posts list --profile-id AbC123xYz90
 mallary posts list --page 2 --per-page 25 --json
+mallary posts get 123 --profile-id AbC123xYz90 --json
+mallary posts edit 123 --message "Updated text" --scheduled-at 2026-10-15T15:00:00Z
+mallary posts edit 123 --target-profile-id NewProfile123 --platform instagram --platform linkedin
 mallary posts delete 123
 ```
 

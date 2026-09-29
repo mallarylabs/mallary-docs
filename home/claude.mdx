@@ -26,6 +26,7 @@ Use Mallary inside Claude to work with your social media. You can use the accoun
 
 - see your Mallary profiles and social accounts
 - create or schedule posts
+- edit a scheduled post's words, media, time, platforms, or connection profile before it starts posting
 - write a different message for each platform
 - check if a post went live
 - read comments and send replies
@@ -44,6 +45,12 @@ Claude does not see your Mallary password, API keys, social account tokens, or p
 Adding the connector does not post anything. Claude uses Mallary when you ask it to.
 
 Before you ask Claude to post, check the profile, social sites, words, media, and time.
+
+## Edit a Scheduled Post
+
+Ask Claude to find the scheduled post and show its saved words, time, profile, and accounts. Then say exactly what you want to change. One Mallary connection profile applies to the whole post. You can move it to another profile and change the platform list in the same edit.
+
+Claude will use `mallary_get_post` to read the saved post, then `mallary_update_scheduled_post` to save your changes. If you change the profile or platforms, Claude must send the target profile ID and every platform that should get the post. Check the account names before you approve. Mallary stops the edit if posting has started or the post changed since Claude read it.
 
 ## Photos and Videos
 

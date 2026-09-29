@@ -73,6 +73,47 @@ Omit `--profile-id` or `profile_id` to use your default Mallary profile. Run `ma
 
 `posts create` returns Mallary job IDs immediately. Once each job finishes publishing, `mallary jobs get <id>` and `mallary posts list --json` include `platform_post_id` and `platform_post_url` when the platform returns or exposes them.
 
+## Edit a Scheduled Post
+
+Read the saved post and its revision:
+
+```bash
+mallary posts get 123 --profile-id AbC123xYz90 --json
+```
+
+Change its text or time:
+
+```bash
+mallary posts edit 123 --message "Updated launch text" --scheduled-at 2026-10-15T15:00:00Z
+```
+
+Move the whole post group to another connection profile and replace its platform list:
+
+```bash
+mallary posts edit 123 --target-profile-id NewProfile123 --platform instagram --platform linkedin
+```
+
+Each `--platform` names part of the **complete final destination list**. If you change only the profile, Mallary keeps the current platforms. If you change only the platforms, it keeps the current profile. Use `--profile-id` when reading a post in a non-default current profile. The CLI checks that the target profile has ready connections, and the API stops the edit if any destination has started publishing.
+
+For automation, use `--expected-revision <n>` with the revision from `posts get --json`. A stale revision stops the edit. `--media` and `--comment` replace the complete saved lists. Use `--file` for platform options, multiple fields, or an empty list to clear media or comments:
+
+```json
+{
+  "expected_revision": 2,
+  "destinations": {
+    "profile_id": "NewProfile123",
+    "platforms": ["instagram", "linkedin"]
+  },
+  "media": [{ "url": "./new-photo.jpg" }],
+  "platform_options": {
+    "instagram": { "post_type": "feed" },
+    "linkedin": { "message": "Updated LinkedIn caption" }
+  }
+}
+```
+
+Run `mallary posts edit 123 --file ./post-changes.json`. When `destinations` is present, include both fields and the complete final platform list. Omit it to keep current destinations. `platform_options` replaces the complete saved options map when present. The CLI uploads local replacement media before the edit request; if the post changes during upload, the API returns a conflict and leaves the post unchanged.
+
 ## File Mode Rules
 
 - `--file` is mutually exclusive with payload-building flags

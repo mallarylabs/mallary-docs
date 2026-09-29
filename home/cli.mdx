@@ -98,6 +98,8 @@ mallary posts create --message "Hello from Mallary" --platform facebook
 mallary posts create --message "A new Story" --platform facebook --platform instagram --post-type story --media ./story.mp4
 mallary posts create --message "Hello from another profile" --platform facebook --profile-id AbC123xYz90
 mallary posts list
+mallary posts get 123 --json
+mallary posts edit 123 --message "Updated text" --target-profile-id AbC123xYz90
 mallary comments list --post-id 123
 mallary comments reply --post-id 123 --comment-id "1789..." --message "Thanks for checking this out."
 mallary jobs get 123
