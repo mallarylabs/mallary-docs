@@ -30,7 +30,7 @@ https://mallary.ai/.well-known/oauth-protected-resource
 ChatGPT uses its own protected resource metadata:
 
 ```text
-https://mallary.ai/.well-known/oauth-protected-resource/mcp/openai
+https://mallary.ai/api/v1/oauth/openai-v2-protected-resource
 ```
 
 Mallary uses the authorization code flow with PKCE. The authorization server is:
@@ -122,5 +122,5 @@ Use the MCP server at:
 Use this OAuth-only endpoint for ChatGPT:
 
 ```text
-/mcp/openai
+/mcp/openai-v2
 ```

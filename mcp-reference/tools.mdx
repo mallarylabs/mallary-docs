@@ -38,13 +38,14 @@ The standard MCP endpoint at `https://mallary.ai/mcp` exposes `mallary_create_up
 2. Send the video bytes to the returned `uploadUrl` with HTTP PUT. Use the returned `headers` without changing them.
 3. Wait for the upload to finish, then pass `mediaUrl` to `mallary_create_post` in `media[].url`.
 
-Your MCP client must be able to read the file and send the HTTP PUT request. The upload tool returns a URL; it does not copy a local file by itself. Mallary's current ChatGPT plugin uses a separate tool set and does not expose this flow.
+Your MCP client must be able to read the file and send the HTTP PUT request. The upload tool returns a URL; it does not copy a local file by itself. For attachments in ChatGPT, use the [ChatGPT tool set](#chatgpt-tool-set).
 
 ## ChatGPT Tool Set
 
-The current public ChatGPT plugin connects through `/mcp/openai`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its currently approved tool set includes:
+The public ChatGPT plugin connects through `/mcp/openai-v2`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its approved tool set includes:
 
 - `mallary_upload_image`
+- `mallary_upload_video`
 - `mallary_create_post`
 - `mallary_get_job`
 - `mallary_list_posts`
@@ -57,7 +58,9 @@ The current public ChatGPT plugin connects through `/mcp/openai`. This smaller e
 
 `mallary_upload_image` accepts one image that the user chose or made in ChatGPT. Mallary checks the file bytes, accepts JPEG, PNG, WebP, or GIF images up to 25 MB, stores the image at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`.
 
-Do not use the ChatGPT image tool for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
+`mallary_upload_video` accepts one MP4 or MOV video attached by the user in ChatGPT, up to 512 MB. Mallary checks the file, stores it at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`. Uploading alone does not publish a post. Each destination's video rules still apply.
+
+Do not use the ChatGPT upload tools for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
 
 ## Tool Surface
 
