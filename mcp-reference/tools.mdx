@@ -84,6 +84,8 @@ These tools cover:
 - webhook creation
 - webhook deletion
 
+To browse analytics for all saved posts, call `mallary_get_analytics` with `view: "posts"`. You can also pass `profile_id`, `start_date`, `end_date`, `platform`, `status`, `media_type`, `search`, `sort`, `limit`, and the `cursor` returned by the previous page. Use `sort: "display_views"` to rank posts by the dashboard's Views count: reported views when available, otherwise impressions, once per platform post. The result includes `data.items`, `data.total`, and `data.next_cursor`. Omit `view` to keep the recent per-platform snapshot response, or pass `post_id` to inspect one Mallary job.
+
 ## Connected Platforms
 
 `mallary_list_platforms` returns Mallary's supported public platform set and marks which of those platforms are currently connected for the authenticated account.

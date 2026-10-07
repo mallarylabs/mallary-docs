@@ -76,6 +76,16 @@ mallary analytics list --profile-id AbC123xYz90
 mallary analytics list --post-id 123
 ```
 
+Browse all saved post analytics with filters and page through the results:
+
+```bash
+mallary analytics posts
+mallary analytics posts --profile-id AbC123xYz90 --platform instagram --sort views --limit 25
+mallary analytics posts --start-date 2026-09-01 --end-date 2026-09-29 --cursor <next_cursor>
+```
+
+You can also use `--status`, `--media-type`, `--search`, and `--json`. The JSON result includes each post's platform metrics, `total`, and `next_cursor`.
+
 ## Audience
 
 Get the latest follower or subscriber count for every connected account in a profile:

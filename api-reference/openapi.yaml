@@ -508,6 +508,101 @@ paths:
         "404":
           description: Post not found
 
+  /api/v1/analytics/posts:
+    get:
+      operationId: listAnalyticsPosts
+      summary: Browse analytics for all posts
+      description: Returns paginated post groups across the selected profile's full history. Metric values are the latest saved totals for each post, not activity earned inside the selected date range. Date filters use the post group's creation date (UTC). Unavailable metrics are null; a reported zero remains zero. Use `page` for numbered navigation and pass the returned `snapshot_at` with later pages to keep metric ranking at the same saved point in time. Alternatively, pass `next_cursor` as `cursor` with the same filters and sort. Do not combine `page` and `cursor`. Post status can still change while browsing. Requires a paid plan with analytics access.
+      parameters:
+        - in: query
+          name: profile_id
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Connection profile to inspect. Omit to use the default profile.
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Include post groups created on or after this UTC date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: Include post groups created on or before this UTC date.
+        - in: query
+          name: platform
+          schema:
+            $ref: "#/components/schemas/Platform"
+          description: Include groups with a post on this platform.
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [successful, scheduled, failed, processing, partial]
+          description: Filter by the post group's status.
+        - in: query
+          name: media_type
+          schema:
+            type: string
+            enum: [video, photo, mixed_media, text_or_link]
+          description: Include groups with this media type.
+        - in: query
+          name: search
+          schema:
+            type: string
+            maxLength: 200
+          description: Search post text and batch IDs.
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [newest, oldest, views, display_views, display_views_asc, likes, likes_asc, comments, comments_asc, engagement, engagement_rate, engagement_rate_asc, clicks, impressions]
+            default: newest
+          description: Sort post groups. Metric sorts are highest first unless the value ends in `_asc`. `display_views` uses a platform's views when available, otherwise its impressions. Posts without the selected metric appear last in either direction.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+          description: Maximum number of post groups in one page.
+        - in: query
+          name: cursor
+          schema:
+            type: string
+          description: Opaque `next_cursor` from the previous page. Keep filters and sort the same. Cannot be combined with `page`.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+          description: One-based page number for numbered navigation. Cannot be combined with `cursor`. Omit for cursor navigation.
+        - in: query
+          name: snapshot_at
+          schema:
+            type: string
+            format: date-time
+          description: UTC server timestamp in `YYYY-MM-DDTHH:mm:ssZ` form returned with the first numbered page. Use it only with `page`; pass it with later page numbers and the same filters, sort, and limit so metric ranking stays fixed while browsing.
+      responses:
+        "200":
+          description: Post analytics page retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsPostsResponse"
+        "400":
+          description: Invalid filter, page, snapshot timestamp, or cursor
+        "401":
+          description: Missing or invalid API key
+        "403":
+          description: Analytics are not available for the current plan
+        "429":
+          description: Rate limit exceeded
+
   /api/v1/audience:
     get:
       operationId: listAudience
@@ -1589,6 +1684,7 @@ components:
       properties:
         captured_at:
           type: string
+          format: date-time
           nullable: true
         impressions:
           type: integer
@@ -1611,9 +1707,299 @@ components:
         views:
           type: integer
           nullable: true
+        saves:
+          type: integer
+          nullable: true
+        bookmarks:
+          type: integer
+          nullable: true
+        outbound_clicks:
+          type: integer
+          nullable: true
+        pin_clicks:
+          type: integer
+          nullable: true
+        url_clicks:
+          type: integer
+          nullable: true
+        profile_clicks:
+          type: integer
+          nullable: true
+        engaged_users:
+          type: integer
+          nullable: true
         engagementRate:
           type: number
           nullable: true
+          description: Interaction rate as a ratio, retained for API compatibility. Use the denominator field to interpret it.
+        engagementRatePercent:
+          type: number
+          nullable: true
+          description: The same interaction rate as a percentage.
+        engagementRateDenominator:
+          type: string
+          nullable: true
+          enum: [views, impressions, reach]
+        metric_window:
+          type: string
+          nullable: true
+          enum: [lifetime, rolling_30d, rolling_90d]
+        metric_semantics_version:
+          type: integer
+          nullable: true
+
+    AnalyticsPostsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            profile_id:
+              $ref: "#/components/schemas/ProfileId"
+              nullable: true
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/AnalyticsPostGroup"
+            next_cursor:
+              type: string
+              nullable: true
+              description: Cursor for the next page, or null on the last cursor page and in numbered page mode.
+            page:
+              type: integer
+              minimum: 1
+              description: One-based page number; present only when the request includes `page`.
+            total_pages:
+              type: integer
+              minimum: 0
+              description: Number of pages for the matching post groups at the requested limit; present only in numbered page mode.
+            limit:
+              type: integer
+              minimum: 1
+              maximum: 100
+              description: Maximum number of post groups requested for this page; present only in numbered page mode.
+            snapshot_at:
+              type: string
+              format: date-time
+              description: Server timestamp used to keep metric ranking fixed across numbered pages; present only in numbered page mode.
+            total:
+              type: integer
+              description: Count of matching post groups, independent of the current page.
+            generated_at:
+              type: string
+              format: date-time
+
+    AnalyticsPostGroup:
+      type: object
+      description: A post group and its latest saved per-platform metrics. Flat totals may cover only some platforms; check each `*_available` and `*_partial` flag. A null metric means unavailable, not zero. `display_views` uses one count per platform, preferring views and otherwise using impressions.
+      properties:
+        id:
+          type: string
+        batch_id:
+          type: string
+          nullable: true
+        post_id:
+          type: integer
+          nullable: true
+        job_ids:
+          type: array
+          items:
+            type: integer
+        title:
+          type: string
+        message:
+          type: string
+        thumbnail_url:
+          type: string
+          nullable: true
+        media_type:
+          type: string
+        status:
+          type: string
+          enum: [successful, scheduled, failed, processing, partial]
+        created_at:
+          type: string
+          nullable: true
+        posted_at:
+          type: string
+          nullable: true
+        platforms:
+          type: array
+          items:
+            type: string
+        platform_count:
+          type: integer
+        platform_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnalyticsPostPlatformMetrics"
+        views:
+          type: integer
+          nullable: true
+        display_views:
+          type: integer
+          nullable: true
+          description: Dashboard Views count. Uses views when reported, otherwise impressions, once per platform post.
+        display_views_available:
+          type: boolean
+        display_views_partial:
+          type: boolean
+        display_view_sample_count:
+          type: integer
+          description: Number of platform posts with a reported view or impression count.
+        average_display_views:
+          type: number
+          nullable: true
+        impressions:
+          type: integer
+          nullable: true
+        reach:
+          type: integer
+          nullable: true
+        likes:
+          type: integer
+          nullable: true
+        comments:
+          type: integer
+          nullable: true
+        shares:
+          type: integer
+          nullable: true
+        clicks:
+          type: integer
+          nullable: true
+        saves:
+          type: integer
+          nullable: true
+        bookmarks:
+          type: integer
+          nullable: true
+        outbound_clicks:
+          type: integer
+          nullable: true
+        pin_clicks:
+          type: integer
+          nullable: true
+        url_clicks:
+          type: integer
+          nullable: true
+        profile_clicks:
+          type: integer
+          nullable: true
+        engaged_users:
+          type: integer
+          nullable: true
+        engagement:
+          type: integer
+          nullable: true
+        engagement_rate:
+          type: number
+          nullable: true
+          description: Denominator-weighted average percentage of platform-post rates with a usable rate and positive base. Missing rates are excluded, not treated as zero. Check the sample count and partial flag for coverage.
+        engagement_rate_denominator:
+          type: string
+          nullable: true
+          enum: [views, impressions, reach, mixed]
+          description: Base shared by contributing rates, or mixed when their bases differ.
+        engagement_rate_partial:
+          type: boolean
+          description: True when a combined rate is available but some platform posts did not contribute.
+        engagement_rate_sample_count:
+          type: integer
+          description: Number of platform posts with a usable rate and positive base that contributed to the combined rate.
+        outbound_click_rate:
+          type: number
+          nullable: true
+          description: Pinterest outbound clicks divided by impressions, as a percentage, when available for one platform.
+        outbound_click_rate_denominator:
+          type: string
+          nullable: true
+          enum: [impressions]
+        url_click_rate:
+          type: number
+          nullable: true
+          description: X URL clicks divided by impressions, as a percentage, when available for one platform.
+        url_click_rate_denominator:
+          type: string
+          nullable: true
+          enum: [impressions]
+        metric_window:
+          type: string
+          nullable: true
+          enum: [lifetime, rolling_30d, rolling_90d, mixed]
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        analytics_available:
+          type: boolean
+        analytics_partial:
+          type: boolean
+        analytics_collecting:
+          type: boolean
+        analytics_reconnect_required:
+          type: boolean
+      additionalProperties: true
+
+    AnalyticsPostPlatformMetrics:
+      type: object
+      description: One platform's latest saved metric snapshot. Each numeric metric has a matching `*_available` flag; unsupported or uncollected values are null. `display_views` uses views when reported, otherwise impressions, without adding the two.
+      properties:
+        job_id:
+          type: integer
+        platform:
+          $ref: "#/components/schemas/Platform"
+        label:
+          type: string
+        platform_post_url:
+          type: string
+          nullable: true
+        status:
+          type: string
+        analytics_status:
+          type: string
+          enum: [available, collecting, reconnect_required, unavailable]
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        metric_window:
+          type: string
+          nullable: true
+        metric_semantics_version:
+          type: integer
+          nullable: true
+        display_views:
+          type: integer
+          nullable: true
+        display_views_available:
+          type: boolean
+        engagement_rate:
+          type: number
+          nullable: true
+          description: Percentage reported or derived for this platform post. Check the denominator field for its base.
+        engagement_rate_denominator:
+          type: string
+          nullable: true
+          enum: [views, impressions, reach]
+        outbound_click_rate:
+          type: number
+          nullable: true
+        outbound_click_rate_denominator:
+          type: string
+          nullable: true
+          enum: [impressions]
+        url_click_rate:
+          type: number
+          nullable: true
+        url_click_rate_denominator:
+          type: string
+          nullable: true
+          enum: [impressions]
+      additionalProperties: true
 
     AnalyticsItem:
       allOf:

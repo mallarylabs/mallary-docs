@@ -11,8 +11,12 @@ The response has two lists:
 - `data.analytics` has the latest metrics for recent posts. Use `post_id` to limit this list to one post.
 - `data.audience` has the latest saved follower or subscriber count for each connected account in the profile. It uses the same fields and statuses as [Get Audience Counts](/api-reference/endpoint/audience). The `post_id` filter does not change this list.
 
+To search, filter, sort, and page through every post group, use [Browse Post Analytics](/api-reference/endpoint/analytics-posts).
+
 Mallary updates supported audience counts once every 24 hours. TikTok follower counts become available after a connection grants `user.info.stats` and Mallary saves its first count. Existing connections without that permission return `permission_required` for their audience count. They keep working as before.
 
-For LinkedIn Page posts, Mallary shows LinkedIn impressions as views. LinkedIn likes and comments use the same fields as your other platforms, so your results stay easy to compare.
+Metrics keep the meaning supplied by each platform. Impressions, reach, and views are separate measurements. A metric the platform did not supply is `null`, while a reported zero remains `0`. Check `captured_at` and `metric_window` to see when Mallary saved a metric and whether it covers a lifetime or rolling period.
+
+`engagementRate` remains a ratio for existing API clients. `engagementRatePercent` is the same value shown as a percentage. `engagementRateDenominator` names the base used for the calculation when a rate is available.
 
 If an older LinkedIn connection needs the analytics permission, the response uses `status: "reconnect_required"` and says `Reconnect to get analytics`. Reconnect LinkedIn once from the Platforms page. Mallary will then start collecting those post results.

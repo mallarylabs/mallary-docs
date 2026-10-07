@@ -43,6 +43,8 @@ Identity is always resolved from the API key owner.
 - `mallary_create_webhook`
 - `mallary_delete_webhook`
 
+`mallary_get_analytics` accepts `view: "posts"` to page through all saved post analytics. Pass optional filters and use the returned `next_cursor` for the next page. Without `view`, it keeps the recent per-platform snapshot response.
+
 ## Tool Behavior
 
 - MCP tools route through existing `/api/v1/*` handlers (no duplicated posting logic).

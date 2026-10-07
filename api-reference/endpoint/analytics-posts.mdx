@@ -1,0 +1,21 @@
+---
+title: "Browse Post Analytics"
+description: "Search, filter, sort, and page through analytics for all posts in a Mallary profile."
+openapi: "GET /api/v1/analytics/posts"
+---
+
+This endpoint lists post groups across the full history of one connection profile. Omit `profile_id` to use the default profile. It requires Starter, Pro, or Business.
+
+Use `start_date` and `end_date` to select posts **created** on those UTC dates. Each metric is the latest saved total for that post. The date filter does not turn lifetime totals into activity earned during the selected dates. `metric_window` tells you when a provider supplied a rolling 30-day or 90-day total instead.
+
+The response returns up to 25 groups by default. Set `limit` to 1–100. For numbered pages, set `page` to 1–10000. The response includes `data.page`, `data.total_pages`, `data.limit`, and `data.total`, the count of matching groups across all pages. If no groups match, `data.total_pages` is `0`. Pass the returned `data.snapshot_at` with later page requests, keeping the same filters, sort, and limit. The timestamp is in UTC `YYYY-MM-DDTHH:mm:ssZ` form and can be used only with `page`. It keeps metric ranking at the same saved point in time. A post's status can still change while you browse.
+
+You can also page forward with a cursor: pass `data.next_cursor` back as `cursor`, keeping the same filters and sort. A null cursor means the last page. Do not send `page` and `cursor` together. In numbered page mode, `data.next_cursor` is null.
+
+Use `platform`, `status`, `media_type`, `search`, and `sort` to narrow the list. Sort by `display_views`, `likes`, `comments`, or `engagement_rate` for the highest values first. Add `_asc` to any of those values for the lowest first. `display_views` uses views when a platform supplies them, otherwise impressions. Posts without the selected metric appear last in either direction. Other existing sort values remain available. A cross-platform group matches a platform filter when any of its posts use that platform. Its `platform_metrics` still show each platform separately.
+
+Metrics that the provider did not supply are `null`. A reported zero is `0`. For each group total, check `*_available` and `*_partial` before comparing posts: a partial value covers only some platforms in that group. `captured_at` tells you when the latest snapshot was saved.
+
+The group `engagement_rate` combines the available platform-post rates into one percentage. Mallary weights each rate by its positive base count, such as views, impressions, or reach. A platform post without a usable rate or base is left out, not counted as zero. `engagement_rate_sample_count` tells you how many platform posts contributed; `engagement_rate_partial` is `true` when a rate is available but some platform posts did not contribute. `engagement_rate_denominator` is `mixed` when the contributing rates use different bases. Check each `platform_metrics` row for its own rate and base. If the platform posts cover different reporting periods, `metric_window` is `mixed`.
+
+For a compact recent snapshot or a single post by Mallary job ID, use [Get Analytics](/api-reference/endpoint/analytics). For follower and subscriber history, use [Get Audience Counts](/api-reference/endpoint/audience).
