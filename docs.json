@@ -31,7 +31,19 @@
         "groups": [
           {
             "group": "Developer docs",
-            "pages": ["index", "home/api", "home/mcp", "home/cli", "home/n8n", "home/make", "home/agent-skill", "home/claude", "home/chatgpt", "home/cursor"]
+            "pages": [
+              "index",
+              "home/api",
+              "home/mcp",
+              "home/cli",
+              "home/n8n",
+              "home/make",
+              "home/agent-skill",
+              "home/claude",
+              "home/chatgpt",
+              "home/cursor",
+              "home/drafts"
+            ]
           }
         ]
       },
@@ -40,13 +52,22 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["api-reference/introduction", "api-reference/platform-options"]
+            "pages": [
+              "api-reference/introduction",
+              "api-reference/platform-options"
+            ]
           },
           {
             "group": "Endpoints",
             "pages": [
               "api-reference/endpoint/upload",
               "api-reference/endpoint/create",
+              "api-reference/endpoint/drafts-create",
+              "api-reference/endpoint/drafts-list",
+              "api-reference/endpoint/drafts-get",
+              "api-reference/endpoint/drafts-update",
+              "api-reference/endpoint/drafts-delete",
+              "api-reference/endpoint/drafts-submit",
               "api-reference/endpoint/get",
               "api-reference/endpoint/attach-tiktok-post-url",
               "api-reference/endpoint/posts",
@@ -109,6 +130,7 @@
             "pages": [
               "cli-reference/commands",
               "cli-reference/posts",
+              "cli-reference/drafts",
               "cli-reference/comments",
               "cli-reference/settings",
               "cli-reference/automation"

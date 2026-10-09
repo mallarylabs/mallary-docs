@@ -10,6 +10,12 @@ Mallary MCP currently exposes these tool names:
 - `mallary_create_upload_url`
 - `mallary_create_post`
 - `mallary_get_job`
+- `mallary_create_draft`
+- `mallary_list_drafts`
+- `mallary_get_draft`
+- `mallary_update_draft`
+- `mallary_delete_draft`
+- `mallary_submit_draft`
 - `mallary_attach_tiktok_post_url`
 - `mallary_list_posts`
 - `mallary_get_post`
@@ -42,12 +48,18 @@ Your MCP client must be able to read the file and send the HTTP PUT request. The
 
 ## ChatGPT Tool Set
 
-The public ChatGPT plugin connects through `/mcp/openai-v2`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its approved tool set includes:
+The public ChatGPT plugin connects through `/mcp/openai-v2`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its tool set includes the tools below. New draft tools appear in ChatGPT after OpenAI checks them:
 
 - `mallary_upload_image`
 - `mallary_upload_video`
 - `mallary_create_post`
 - `mallary_get_job`
+- `mallary_create_draft`
+- `mallary_list_drafts`
+- `mallary_get_draft`
+- `mallary_update_draft`
+- `mallary_delete_draft`
+- `mallary_submit_draft`
 - `mallary_list_posts`
 - `mallary_list_comments`
 - `mallary_reply_to_comment`
@@ -225,3 +237,13 @@ The thumbnail URL must already point to `https://files.mallary.ai/...`. YouTube 
 All media URLs used with `mallary_create_post` must point to `https://files.mallary.ai/...`. For another file, call `mallary_create_upload_url`, upload the file with the returned PUT URL, and then use the returned Mallary media URL. Mallary rejects outside media URLs because they may be private or expire before a post is published.
 
 For YouTube, set `platform_options.youtube.playlist_id` to add the new video to an existing playlist owned by the connected channel. Set `platform_options.youtube.tags` to a list of video tags. Each tag can use up to 100 characters, and the full tag list can use up to 500 characters after YouTube counts separators. Set `platform_options.youtube.containsSyntheticMedia` to `true` when the video contains realistic AI-generated or altered content that could look real.
+
+## Saved Draft Tools
+
+Call `mallary_create_draft` to save unfinished content without a date. It returns a UUID and revision. `mallary_list_drafts` reads unpublished drafts in the selected or default profile. `mallary_get_draft` reads complete saved content and the current revision.
+
+Call `mallary_update_draft` with that UUID, `expected_revision`, and changed fields. Omitted fields stay unchanged; supplied lists and platform options replace their complete saved values. Use `mallary_delete_draft` with the current revision only when asked to delete.
+
+Only `mallary_submit_draft` publishes. It needs `id`, `expected_revision`, and an explicit publishing request. Add `scheduled_at` and optional `scheduled_timezone` to schedule. Normal publishing checks apply. Repeating the same revision and schedule returns the same publishing jobs. A failed validation leaves the draft saved.
+
+Draft reads need `mallary.read`; writes need `mallary.publish`. ChatGPT submission also needs `mallary.read` to check the saved content before sending it. Draft tools are available to all users through MCP. Each draft has one `profile_id`. Read saved content before submission; never silently drop saved media, platforms, or unsupported options. See [Saved Drafts](/home/drafts).

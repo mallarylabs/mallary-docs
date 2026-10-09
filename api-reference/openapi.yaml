@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mallary API
-  version: "1.5.0"
+  version: "1.6.0"
   description: |
     Public API for multi-platform publishing, analytics, media upload, and webhooks.
 
@@ -879,6 +879,255 @@ paths:
         "401":
           description: Missing or invalid API key
 
+  "/api/v1/drafts":
+    "post":
+      "tags":
+        - "Drafts"
+      "operationId": "createDraft"
+      "summary": "Save an unpublished draft"
+      "description": "Save incomplete content without publishing, scheduling or using posting quota. Empty content is allowed. No schedule fields are accepted. Available to all users. Requires mallary.publish for OAuth."
+      "responses":
+        "201":
+          "description": "Draft saved"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DraftResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/DraftContent"
+    "get":
+      "tags":
+        - "Drafts"
+      "operationId": "listDrafts"
+      "summary": "List unpublished drafts"
+      "description": "Lists only unpublished drafts in the selected or default profile, most recently edited first. Available to all users. Requires mallary.read for OAuth."
+      "responses":
+        "200":
+          "description": "Success"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/ListDraftsResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "parameters":
+        -
+          "name": "profile_id"
+          "in": "query"
+          "required": false
+          "schema":
+            "$ref": "#/components/schemas/ProfileId"
+          "description": "Omit to use the default profile on lists. On reads, deletes and submissions, optionally verify the draft belongs to this profile."
+        -
+          "name": "page"
+          "in": "query"
+          "schema":
+            "type": "integer"
+            "minimum": 1
+            "maximum": 100000
+            "default": 1
+        -
+          "name": "per_page"
+          "in": "query"
+          "schema":
+            "type": "integer"
+            "minimum": 1
+            "maximum": 100
+            "default": 20
+  "/api/v1/drafts/{id}":
+    "get":
+      "tags":
+        - "Drafts"
+      "operationId": "getDraft"
+      "summary": "Read a saved draft"
+      "description": "Returns complete content and the revision. Submitted drafts include their original publishing result for recovery after a lost response. Available to all users. Requires mallary.read for OAuth."
+      "responses":
+        "200":
+          "description": "Success"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DraftResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "schema":
+            "type": "string"
+            "format": "uuid"
+        -
+          "name": "profile_id"
+          "in": "query"
+          "required": false
+          "schema":
+            "$ref": "#/components/schemas/ProfileId"
+          "description": "Omit to use the default profile on lists. On reads, deletes and submissions, optionally verify the draft belongs to this profile."
+    "patch":
+      "tags":
+        - "Drafts"
+      "operationId": "updateDraft"
+      "summary": "Edit an unpublished draft"
+      "description": "Requires the current revision and at least one changed field. Omitted fields are kept. Supplied lists and platform_options replace their complete saved values. One connection profile per draft. No schedule fields accepted. Available to all users. Requires mallary.publish for OAuth."
+      "responses":
+        "200":
+          "description": "Success"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DraftResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/UpdateDraftRequest"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "schema":
+            "type": "string"
+            "format": "uuid"
+        -
+          "name": "profile_id"
+          "in": "query"
+          "required": false
+          "schema":
+            "$ref": "#/components/schemas/ProfileId"
+          "description": "Omit to use the default profile on lists. On reads, deletes and submissions, optionally verify the draft belongs to this profile."
+    "delete":
+      "tags":
+        - "Drafts"
+      "operationId": "deleteDraft"
+      "summary": "Delete an unpublished draft"
+      "description": "Requires its current revision. Submitted drafts cannot be deleted here. Does not delete uploaded media or any social post. Available to all users. Requires mallary.publish for OAuth."
+      "responses":
+        "200":
+          "description": "Success"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DeleteDraftResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/DraftRevisionRequest"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "schema":
+            "type": "string"
+            "format": "uuid"
+        -
+          "name": "profile_id"
+          "in": "query"
+          "required": false
+          "schema":
+            "$ref": "#/components/schemas/ProfileId"
+          "description": "Omit to use the default profile on lists. On reads, deletes and submissions, optionally verify the draft belongs to this profile."
+  "/api/v1/drafts/{id}/submit":
+    "post":
+      "tags":
+        - "Drafts"
+      "operationId": "submitDraft"
+      "summary": "Publish or schedule a saved draft"
+      "description": "Requires an explicit publishing or scheduling action and its current revision. Uses the normal publishing checks and quotas. Omit scheduled_at to publish now. The saved draft and all jobs commit together. Repeating the exact revision and schedule returns the same jobs; a different revision or schedule conflicts. Validation failures leave the draft unpublished. Available to all users. Requires mallary.publish for OAuth."
+      "responses":
+        "200":
+          "description": "Success"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/CreatePostResponse"
+        "400":
+          "description": "Invalid fields or publishing validation failed. The draft stays saved."
+        "401":
+          "description": "Authentication required"
+        "404":
+          "description": "Draft or profile not found for this user"
+        "409":
+          "description": "Draft changed or was submitted. Read it again before editing, deleting or submitting."
+        "403":
+          "description": "Required OAuth scope missing, or submission blocked by normal publishing or scheduling rules. Draft management is available to all users."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/SubmitDraftRequest"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "schema":
+            "type": "string"
+            "format": "uuid"
+        -
+          "name": "profile_id"
+          "in": "query"
+          "required": false
+          "schema":
+            "$ref": "#/components/schemas/ProfileId"
+          "description": "Omit to use the default profile on lists. On reads, deletes and submissions, optionally verify the draft belongs to this profile."
 components:
   securitySchemes:
     bearerAuth:
@@ -887,6 +1136,312 @@ components:
       description: "Use `Authorization: Bearer {api_key}`"
 
   schemas:
+    "DraftContent":
+      "type": "object"
+      "additionalProperties": false
+      "description": "Unpublished content. All fields are optional; no scheduled date or connected destination is needed to save. Supplied arrays and platform_options replace the saved value when editing. Media must already be uploaded to files.mallary.ai."
+      "properties":
+        "profile_id":
+          "$ref": "#/components/schemas/ProfileId"
+        "message":
+          "type": "string"
+          "maxLength": 10000
+        "platforms":
+          "type": "array"
+          "maxItems": 10
+          "items":
+            "type": "string"
+            "enum":
+              - "facebook"
+              - "meta"
+              - "instagram"
+              - "threads"
+              - "twitter"
+              - "x"
+              - "linkedin"
+              - "tiktok"
+              - "youtube"
+              - "pinterest"
+              - "reddit"
+              - "bluesky"
+        "media":
+          "type": "array"
+          "maxItems": 20
+          "items":
+            "type": "object"
+            "required":
+              - "url"
+            "properties":
+              "url":
+                "type": "string"
+                "format": "uri"
+                "pattern": "^https://files\\.mallary\\.ai/"
+            "additionalProperties": true
+        "comments_under_post":
+          "type": "array"
+          "maxItems": 3
+          "items":
+            "oneOf":
+              -
+                "type": "string"
+                "maxLength": 10000
+              -
+                "type": "object"
+                "required":
+                  - "content"
+                "additionalProperties": false
+                "properties":
+                  "content":
+                    "type": "string"
+                    "maxLength": 10000
+        "platform_options":
+          "type": "object"
+          "nullable": true
+          "additionalProperties":
+            "type": "object"
+            "additionalProperties": true
+        "auto_reply_enabled":
+          "type": "boolean"
+    "Draft":
+      "type": "object"
+      "required":
+        - "id"
+        - "revision"
+        - "status"
+        - "profile_id"
+      "properties":
+        "profile_id":
+          "$ref": "#/components/schemas/ProfileId"
+        "message":
+          "type": "string"
+          "maxLength": 10000
+        "platforms":
+          "type": "array"
+          "maxItems": 10
+          "items":
+            "type": "string"
+            "enum":
+              - "facebook"
+              - "meta"
+              - "instagram"
+              - "threads"
+              - "twitter"
+              - "x"
+              - "linkedin"
+              - "tiktok"
+              - "youtube"
+              - "pinterest"
+              - "reddit"
+              - "bluesky"
+        "media":
+          "type": "array"
+          "maxItems": 20
+          "items":
+            "type": "object"
+            "required":
+              - "url"
+            "properties":
+              "url":
+                "type": "string"
+                "format": "uri"
+                "pattern": "^https://files\\.mallary\\.ai/"
+            "additionalProperties": true
+        "comments_under_post":
+          "type": "array"
+          "maxItems": 3
+          "items":
+            "oneOf":
+              -
+                "type": "string"
+                "maxLength": 10000
+              -
+                "type": "object"
+                "required":
+                  - "content"
+                "additionalProperties": false
+                "properties":
+                  "content":
+                    "type": "string"
+                    "maxLength": 10000
+        "platform_options":
+          "type": "object"
+          "nullable": true
+          "additionalProperties":
+            "type": "object"
+            "additionalProperties": true
+        "auto_reply_enabled":
+          "type": "boolean"
+        "id":
+          "type": "string"
+          "format": "uuid"
+        "revision":
+          "type": "integer"
+          "minimum": 1
+        "status":
+          "type": "string"
+          "enum":
+            - "draft"
+            - "submitted"
+        "created_at":
+          "type": "string"
+          "format": "date-time"
+        "updated_at":
+          "type": "string"
+          "format": "date-time"
+        "submission":
+          "$ref": "#/components/schemas/CreatePostResponse"
+    "DraftResponse":
+      "type": "object"
+      "required":
+        - "status"
+        - "data"
+      "properties":
+        "status":
+          "type": "string"
+          "enum":
+            - "ok"
+        "data":
+          "$ref": "#/components/schemas/Draft"
+    "ListDraftsResponse":
+      "type": "object"
+      "properties":
+        "status":
+          "type": "string"
+          "enum":
+            - "ok"
+        "data":
+          "type": "object"
+          "properties":
+            "drafts":
+              "type": "array"
+              "items":
+                "$ref": "#/components/schemas/Draft"
+            "meta":
+              "type": "object"
+              "properties":
+                "page":
+                  "type": "integer"
+                "per_page":
+                  "type": "integer"
+                "total":
+                  "type": "integer"
+    "UpdateDraftRequest":
+      "type": "object"
+      "additionalProperties": false
+      "description": "Unpublished content. All fields are optional; no scheduled date or connected destination is needed to save. Supplied arrays and platform_options replace the saved value when editing. Media must already be uploaded to files.mallary.ai."
+      "properties":
+        "profile_id":
+          "$ref": "#/components/schemas/ProfileId"
+        "message":
+          "type": "string"
+          "maxLength": 10000
+        "platforms":
+          "type": "array"
+          "maxItems": 10
+          "items":
+            "type": "string"
+            "enum":
+              - "facebook"
+              - "meta"
+              - "instagram"
+              - "threads"
+              - "twitter"
+              - "x"
+              - "linkedin"
+              - "tiktok"
+              - "youtube"
+              - "pinterest"
+              - "reddit"
+              - "bluesky"
+        "media":
+          "type": "array"
+          "maxItems": 20
+          "items":
+            "type": "object"
+            "required":
+              - "url"
+            "properties":
+              "url":
+                "type": "string"
+                "format": "uri"
+                "pattern": "^https://files\\.mallary\\.ai/"
+            "additionalProperties": true
+        "comments_under_post":
+          "type": "array"
+          "maxItems": 3
+          "items":
+            "oneOf":
+              -
+                "type": "string"
+                "maxLength": 10000
+              -
+                "type": "object"
+                "required":
+                  - "content"
+                "additionalProperties": false
+                "properties":
+                  "content":
+                    "type": "string"
+                    "maxLength": 10000
+        "platform_options":
+          "type": "object"
+          "nullable": true
+          "additionalProperties":
+            "type": "object"
+            "additionalProperties": true
+        "auto_reply_enabled":
+          "type": "boolean"
+        "expected_revision":
+          "type": "integer"
+          "minimum": 1
+          "description": "Current revision from a draft read or save."
+      "required":
+        - "expected_revision"
+    "DraftRevisionRequest":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "expected_revision"
+      "properties":
+        "expected_revision":
+          "type": "integer"
+          "minimum": 1
+          "description": "Current revision from a draft read or save."
+    "SubmitDraftRequest":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "expected_revision"
+      "properties":
+        "expected_revision":
+          "type": "integer"
+          "minimum": 1
+          "description": "Current revision from a draft read or save."
+        "scheduled_at":
+          "type": "string"
+          "minLength": 1
+          "maxLength": 80
+          "description": "Omit to publish now. Absolute time or local time paired with scheduled_timezone."
+        "scheduled_timezone":
+          "type": "string"
+          "minLength": 1
+          "maxLength": 100
+          "description": "IANA time zone for a local scheduled_at; paid scheduling rules apply."
+    "DeleteDraftResponse":
+      "type": "object"
+      "properties":
+        "status":
+          "type": "string"
+          "enum":
+            - "ok"
+        "data":
+          "type": "object"
+          "properties":
+            "id":
+              "type": "string"
+              "format": "uuid"
+            "deleted":
+              "type": "boolean"
     PublicPlatform:
       type: string
       description: Canonical public platform identifier used in connected-platform listings.

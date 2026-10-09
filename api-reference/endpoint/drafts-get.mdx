@@ -1,0 +1,17 @@
+---
+title: "Get Draft"
+description: "Manage saved unpublished posts without choosing a publish date."
+openapi: "GET /api/v1/drafts/{id}"
+---
+
+Saved drafts are available to all users. Normal publishing and scheduling rules apply when submitting.
+
+Drafts stay separate from scheduled and published posts. Saving does not publish or use your posting allowance. Text, media, destinations, and platform settings can be unfinished.
+
+Use the draft UUID from the save response. Read the draft's current `revision` before editing, deleting, or submitting, then send it as `expected_revision`. A `409` means the draft changed or was submitted; read it again before continuing.
+
+Only the submit endpoint publishes or schedules. It runs the same account, plan, content, and platform checks as [Create Post](/api-reference/endpoint/create). If validation fails, the draft stays saved. After a successful submission, the draft read includes `submission` with the original jobs. Repeating the same submission revision and schedule returns those same jobs.
+
+Use `profile_id` for a non-default connection profile. A draft uses one profile. Lists include only unpublished drafts in that profile.
+
+See the [draft workflow](/home/drafts) for dashboard, API, MCP, and CLI examples.
