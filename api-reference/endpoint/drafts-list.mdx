@@ -13,5 +13,3 @@ Use the draft UUID from the save response. Read the draft's current `revision` b
 Only the submit endpoint publishes or schedules. It runs the same account, plan, content, and platform checks as [Create Post](/api-reference/endpoint/create). If validation fails, the draft stays saved. After a successful submission, the draft read includes `submission` with the original jobs. Repeating the same submission revision and schedule returns those same jobs.
 
 Use `profile_id` for a non-default connection profile. A draft uses one profile. Lists include only unpublished drafts in that profile.
-
-See the [draft workflow](/home/drafts) for dashboard, API, MCP, and CLI examples.

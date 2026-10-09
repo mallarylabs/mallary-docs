@@ -44,35 +44,7 @@ The standard MCP endpoint at `https://mallary.ai/mcp` exposes `mallary_create_up
 2. Send the video bytes to the returned `uploadUrl` with HTTP PUT. Use the returned `headers` without changing them.
 3. Wait for the upload to finish, then pass `mediaUrl` to `mallary_create_post` in `media[].url`.
 
-Your MCP client must be able to read the file and send the HTTP PUT request. The upload tool returns a URL; it does not copy a local file by itself. For attachments in ChatGPT, use the [ChatGPT tool set](#chatgpt-tool-set).
-
-## ChatGPT Tool Set
-
-The public ChatGPT plugin connects through `/mcp/openai-v2`. This smaller endpoint does not expose profile management, settings, webhooks, account disconnects, pending-post deletion, or scheduled-post editing. Its tool set includes the tools below. New draft tools appear in ChatGPT after OpenAI checks them:
-
-- `mallary_upload_image`
-- `mallary_upload_video`
-- `mallary_create_post`
-- `mallary_get_job`
-- `mallary_create_draft`
-- `mallary_list_drafts`
-- `mallary_get_draft`
-- `mallary_update_draft`
-- `mallary_delete_draft`
-- `mallary_submit_draft`
-- `mallary_list_posts`
-- `mallary_list_comments`
-- `mallary_reply_to_comment`
-- `mallary_get_analytics`
-- `mallary_get_audience`
-- `mallary_list_profiles`
-- `mallary_list_platforms`
-
-`mallary_upload_image` accepts one image that the user chose or made in ChatGPT. Mallary checks the file bytes, accepts JPEG, PNG, WebP, or GIF images up to 25 MB, stores the image at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`.
-
-`mallary_upload_video` accepts one MP4 or MOV video attached by the user in ChatGPT, up to 512 MB. Mallary checks the file, stores it at `files.mallary.ai`, and returns the `media_url` used by `mallary_create_post`. Uploading alone does not publish a post. Each destination's video rules still apply.
-
-Do not use the ChatGPT upload tools for private customer files, health records, ID records, card details, passwords, API keys, or access tokens.
+Your MCP client must be able to read the file and send the HTTP PUT request. The upload tool returns a URL; it does not copy a local file by itself.
 
 ## Tool Surface
 
@@ -246,4 +218,4 @@ Call `mallary_update_draft` with that UUID, `expected_revision`, and changed fie
 
 Only `mallary_submit_draft` publishes. It needs `id`, `expected_revision`, and an explicit publishing request. Add `scheduled_at` and optional `scheduled_timezone` to schedule. Normal publishing checks apply. Repeating the same revision and schedule returns the same publishing jobs. A failed validation leaves the draft saved.
 
-Draft reads need `mallary.read`; writes need `mallary.publish`. ChatGPT submission also needs `mallary.read` to check the saved content before sending it. Draft tools are available to all users through MCP. Each draft has one `profile_id`. Read saved content before submission; never silently drop saved media, platforms, or unsupported options. See [Saved Drafts](/home/drafts).
+Draft reads need `mallary.read`; writes need `mallary.publish`. ChatGPT submission also needs `mallary.read` to check the saved content before sending it. Draft tools are available to all users through MCP. Each draft has one `profile_id`. Read saved content before submission; never silently drop saved media, platforms, or unsupported options. 
