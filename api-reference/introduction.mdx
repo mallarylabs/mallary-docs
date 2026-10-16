@@ -177,6 +177,8 @@ The current public platform enum includes:
 - optional `webhook_url`
 - optional `Idempotency-Key`
 
+Use a new random `Idempotency-Key` for each approved post. After a lost reply, send the exact same request with the same key to get the original batch and job IDs. Read those jobs to check their current status. The key belongs to your Mallary account, across all profiles. Changed content, media, platforms, profile, or schedule with the same key returns `409 idempotency_key_conflict`. A request still committing can return `409 post_submission_in_progress`; check status, then retry the same request and key. Keys stay reserved while publishing history is kept. A new approved post needs a new key, even if its content is the same. Requests without a key do not have this retry protection.
+
 ## Platform Options
 
 The OpenAPI spec currently documents platform-specific payload areas for:
