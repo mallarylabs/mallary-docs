@@ -68,6 +68,7 @@
               "api-reference/endpoint/drafts-delete",
               "api-reference/endpoint/drafts-submit",
               "api-reference/endpoint/get",
+              "api-reference/endpoint/cancel-job",
               "api-reference/endpoint/attach-tiktok-post-url",
               "api-reference/endpoint/posts",
               "api-reference/endpoint/get-scheduled-post",

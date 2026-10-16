@@ -1,0 +1,13 @@
+---
+title: "Cancel One Platform Job"
+description: "Stop one queued or retrying platform job without removing completed posts from the same batch."
+openapi: "POST /api/v1/jobs/{id}/cancel"
+---
+
+Use this endpoint when one destination in a multi-platform post is still queued or retrying but other destinations have already published.
+
+For example, if Instagram and TikTok completed but YouTube is waiting to retry, cancel the YouTube job ID to stop only that upload. The completed Instagram and TikTok posts stay unchanged.
+
+<Note>
+  A failed job is already terminal and cannot be cancelled. Use `GET /api/v1/jobs/{id}` to read its saved failure. To delete an entire grouped post before any destination starts publishing, use `DELETE /api/v1/posts/{id}`.
+</Note>

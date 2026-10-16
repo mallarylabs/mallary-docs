@@ -115,6 +115,34 @@ paths:
         "404":
           description: Job not found
 
+  /api/v1/jobs/{id}/cancel:
+    post:
+      operationId: cancelJob
+      summary: Cancel one queued platform job
+      description: Cancels only the selected queued or retrying platform job. Other jobs in the same multi-platform batch, including completed posts, are preserved. Failed jobs are already terminal and remain failed for accurate history.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Job ID returned by `POST /api/v1/post`.
+      responses:
+        "200":
+          description: The selected job is cancelled and remains available through `GET /api/v1/jobs/{id}`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancelJobResponse"
+        "400":
+          description: Invalid job ID
+        "401":
+          description: Missing or invalid API key
+        "404":
+          description: Job not found
+        "409":
+          description: The selected platform job is processing, completed, failed, or otherwise no longer cancelable
+
   /api/v1/jobs/{id}/tiktok/post-url:
     post:
       operationId: attachTikTokPostUrl
@@ -2097,10 +2125,27 @@ components:
               action_required,
               completed,
               failed,
+              cancelled,
               unknown,
             ]
         attemptsMade:
           type: integer
+          nullable: true
+        attemptsAllowed:
+          type: integer
+          nullable: true
+        next_retry_at:
+          type: string
+          nullable: true
+        error_code:
+          type: string
+          nullable: true
+        quota_reset_at:
+          type: string
+          nullable: true
+          description: Expected YouTube project upload-quota reset time in ISO 8601 format when `error_code` is `youtube_project_upload_quota_exhausted`.
+        retryable:
+          type: boolean
           nullable: true
         failedReason:
           type: string
@@ -2153,6 +2198,32 @@ components:
               items:
                 $ref: "#/components/schemas/AutoReplyWarning"
 
+    CancelJobResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        data:
+          type: object
+          properties:
+            job_id:
+              type: integer
+            batch_id:
+              type: string
+              nullable: true
+            platform:
+              $ref: "#/components/schemas/Platform"
+            previous_status:
+              type: string
+            status:
+              type: string
+              enum: [cancelled]
+            completed_job_ids_preserved:
+              type: array
+              items:
+                type: integer
+
     AttachTikTokPostUrlResponse:
       type: object
       properties:
@@ -2203,6 +2274,16 @@ components:
           nullable: true
         error_message:
           type: string
+          nullable: true
+        error_code:
+          type: string
+          nullable: true
+        quota_reset_at:
+          type: string
+          nullable: true
+          description: Expected YouTube project upload-quota reset time in ISO 8601 format when `error_code` is `youtube_project_upload_quota_exhausted`.
+        retryable:
+          type: boolean
           nullable: true
         action_required:
           type: object
