@@ -881,6 +881,36 @@ paths:
         "401":
           description: Missing or invalid API key
 
+  /api/v1/webhooks/{id}/deliveries:
+    get:
+      operationId: listWebhookDeliveries
+      summary: List webhook delivery history
+      description: Returns up to 50 saved deliveries for this account's webhook, newest first. Includes attempt history without event bodies or signing secrets.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: before
+          description: Use next_before from the last page to read older deliveries.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Delivery and attempt history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookDeliveryHistory"
+        "400":
+          description: Invalid id or cursor
+        "401":
+          description: Missing or invalid API key
+
   /api/v1/webhooks/{id}:
     delete:
       operationId: deleteWebhook
@@ -3299,6 +3329,63 @@ components:
           type: string
           nullable: true
 
+    WebhookDeliveryHistory:
+      type: object
+      properties:
+        deliveries:
+          type: array
+          items:
+            $ref: "#/components/schemas/WebhookDelivery"
+        next_before:
+          type: integer
+          nullable: true
+    WebhookDelivery:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: string
+        event:
+          $ref: "#/components/schemas/WebhookEvent"
+        status:
+          type: string
+          enum: [pending, delivering, retrying, delivered, failed, cancelled]
+        attempts:
+          type: integer
+        next_attempt_at:
+          type: string
+          nullable: true
+        last_status_code:
+          type: integer
+          nullable: true
+        last_error_code:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        delivered_at:
+          type: string
+          nullable: true
+        attempt_history:
+          type: array
+          items:
+            type: object
+            properties:
+              attempt_number:
+                type: integer
+              started_at:
+                type: string
+              finished_at:
+                type: string
+                nullable: true
+              status_code:
+                type: integer
+                nullable: true
+              error_code:
+                type: string
+                nullable: true
+
     WebhookEvent:
       type: string
       description: "Use '*' to receive all events."
@@ -3308,6 +3395,8 @@ components:
         - post.published
         - post.failed
         - post.partial
+        - post.delayed
+        - post.job_failed
         - auto_reply.posted
 
 externalDocs:

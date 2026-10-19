@@ -1,0 +1,15 @@
+---
+title: "Webhook Delivery History"
+description: "Check webhook attempts, failures, and the next delivery time."
+openapi: "GET /api/v1/webhooks/{id}/deliveries"
+---
+
+Use the webhook ID returned when you create or list webhooks. The response includes up to 50 deliveries, newest first. It only returns deliveries owned by the signed-in account, including saved history for a deleted webhook.
+
+Each delivery has a stable `event_id`, its event name, status, attempt count, next attempt time, last HTTP status or error code, and `attempt_history`. Event bodies, endpoint URLs, and signing secrets are not included.
+
+Statuses are `pending`, `delivering`, `retrying`, `delivered`, `failed`, and `cancelled`. `failed` means the notification ran out of delivery attempts. Check the event name to distinguish that from a failed social post.
+
+Error codes include `http_error`, `network_error`, `timeout`, `worker_interrupted`, and `endpoint_removed`. Raw endpoint responses are not saved.
+
+If `next_before` is set, pass it as `?before=<next_before>` to read older deliveries. All times use UTC.

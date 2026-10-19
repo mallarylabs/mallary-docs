@@ -23,3 +23,21 @@ Mallary sends a JSON body like this:
 ```
 
 If you set a webhook secret, Mallary sends `X-Mallary-Payload-Signature` as `sha256=<hex digest>`. It is the HMAC-SHA256 signature of the exact `signed_payload` string. Verify it before parsing or using the event.
+
+## Final failures
+
+Subscribe to `post.job_failed` for a job's final failure. This event is saved as soon as the job fails, even if other jobs in its batch are still waiting. It also works for jobs without a batch. A final failure has `retries_remaining: 0` and `retry_at: null`.
+
+`post.failed`, `post.partial`, and `post.published` keep their existing batch behavior. For prompt failure alerts, use `post.job_failed`. Use `*` to receive all events, including the job events.
+
+## Delivery retries
+
+Mallary saves each delivery before sending it. A failed delivery gets up to five more attempts, with waits of 1 minute, 5 minutes, 30 minutes, 2 hours, and 8 hours. A valid `Retry-After` header can extend a wait, up to 24 hours. Each HTTP attempt has a 10-second timeout. Redirects count as failed deliveries.
+
+The body, `event_id`, and `sent_at` stay the same across retries. `X-Mallary-Event-Id` also contains the event ID. Your endpoint should return a 2xx response and handle each event ID once: a lost response can cause the same event to arrive again. Keep the event ID for at least seven days.
+
+Events can arrive out of order while a delivery is being retried. Read the job's current status before taking action on an older event.
+
+Delivery retries send the notification again. They do not retry the social post. Deleting or disabling a webhook cancels its pending deliveries; a request already in flight may still finish.
+
+Use [delivery history](/api-reference/endpoint/webhooks-deliveries) to inspect each attempt and find deliveries that ran out of retries. These records start when durable delivery is enabled; earlier deliveries are not backfilled.
