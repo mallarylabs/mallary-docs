@@ -127,6 +127,23 @@ paths:
           schema:
             type: integer
           description: Job ID returned by `POST /api/v1/post`.
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Optional current profile. A different or unavailable profile returns 404.
+      requestBody:
+        required: false
+        description: Optional concurrency guard. Read the current group revision from GET /api/v1/posts/{id}; stale revisions return 409. Omit to retain the existing unguarded behavior.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expected_revision:
+                  type: integer
+                  minimum: 1
       responses:
         "200":
           description: The selected job is cancelled and remains available through `GET /api/v1/jobs/{id}`.
@@ -141,7 +158,7 @@ paths:
         "404":
           description: Job not found
         "409":
-          description: The selected platform job is processing, completed, failed, or otherwise no longer cancelable
+          description: Revision changed, or the selected platform job is processing, completed, failed, or otherwise no longer cancelable
 
   /api/v1/jobs/{id}/tiktok/post-url:
     post:
@@ -416,13 +433,30 @@ paths:
     delete:
       operationId: deletePendingPost
       summary: Delete pending/scheduled post
-      description: Deletes queued/scheduled jobs for a grouped post that has not started publishing.
+      description: Deletes queued/scheduled jobs for a grouped post that has not started publishing. With expected_revision, the group must still be a future, unattempted schedule.
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
+        - in: query
+          name: profile_id
+          required: false
+          schema:
+            $ref: "#/components/schemas/ProfileId"
+          description: Optional current profile. A different or unavailable profile returns 404.
+      requestBody:
+        required: false
+        description: Optional concurrency guard. Read the current group revision from GET /api/v1/posts/{id}; stale revisions return 409. Omit to retain the existing unguarded behavior.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expected_revision:
+                  type: integer
+                  minimum: 1
       responses:
         "200":
           description: Deleted
@@ -437,7 +471,7 @@ paths:
         "404":
           description: Post not found
         "409":
-          description: Post already started publishing and can no longer be deleted
+          description: Revision changed, or post started publishing or is no longer a future schedule
 
   /api/v1/posts/{id}/comments/{comment_id}/reply:
     post:
