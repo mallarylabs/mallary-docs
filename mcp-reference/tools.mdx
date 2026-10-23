@@ -170,9 +170,14 @@ For the exact supported `platform_options` fields and examples, use the API refe
 
 LinkedIn accepts one MP4 video up to 1 GB (1,073,741,824 bytes), from 3 seconds to 30 minutes long. Use `mallary_create_upload_url` to upload the video to Mallary, then pass the returned media URL to `mallary_create_post` with `platforms: ["linkedin"]`. No video-specific platform option is needed. Do not mix images and video.
 
+For AI label fields, send a JSON boolean (`true` or `false`). Set `true` to disclose AI-made content. Leave the field out to send no AI label choice. The fields stay with drafts and scheduled posts. They do not change posts that are already live.
+
 Examples:
 
 - Threads supports `platform_options.threads.post_type` with `text`, `image`, `video`, or `carousel`. Its media shapes are text-only, one image, one video, or a 2 to 20 item carousel.
+- Instagram supports `platform_options.instagram.is_ai_generated` to disclose AI-made media, including Reels. It works with Instagram Login and Facebook Login.
+- Facebook Reels support `platform_options.facebook.is_ai_generated`. Set `platform_options.facebook.post_type` to `reel`; the field does not work with feed posts or Stories.
+- X supports `platform_options.x.made_with_ai` or `platform_options.twitter.made_with_ai` for the main post. First replies do not inherit the label.
 - Instagram Reels support `platform_options.instagram.shareToFeed`. It defaults to `true`; set it to `false` to keep the Reel off the profile feed.
 - Instagram Trial Reels support `platform_options.instagram.trialParams.graduationStrategy`. Use `MANUAL` or `SS_PERFORMANCE`. Do not send `shareToFeed` with `trialParams`.
 - Instagram feed posts, Reels, and carousels support `platform_options.instagram.isPaidPartnership` and up to two `brandedContentSponsors`. This needs an Instagram account connected through Facebook Login. Sponsors can be usernames or numeric Instagram user IDs.

@@ -180,6 +180,14 @@ Examples:
 - Pinterest requires exactly one image or GIF, or exactly one video. Mallary shortens Pin descriptions longer than 800 characters so they can publish.
 - X allows up to 4 images, or 1 video, or 1 GIF.
 
+To add an AI label in file mode, send a JSON boolean (`true` or `false`) in the matching platform options:
+
+- Instagram, including Reels: `platform_options.instagram.is_ai_generated`
+- Facebook Reels: `platform_options.facebook.is_ai_generated`, with `platform_options.facebook.post_type` set to `reel`
+- X: `platform_options.x.made_with_ai`; `platform_options.twitter.made_with_ai` also works
+
+Set a field to `true` to disclose AI-made content. Leave it out to send no AI label choice. The fields stay with drafts and scheduled posts. They do not change posts that are already live. X first replies do not inherit the label.
+
 For the full matrix, see:
 
 [Platform-specific media rules](/api-reference/endpoint/create#platform-specific-media-rules)
