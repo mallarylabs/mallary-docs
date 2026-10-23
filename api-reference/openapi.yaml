@@ -1203,7 +1203,7 @@ components:
           "$ref": "#/components/schemas/ProfileId"
         "message":
           "type": "string"
-          "maxLength": 10000
+          "maxLength": 63206
         "platforms":
           "type": "array"
           "maxItems": 10
@@ -1272,7 +1272,7 @@ components:
           "$ref": "#/components/schemas/ProfileId"
         "message":
           "type": "string"
-          "maxLength": 10000
+          "maxLength": 63206
         "platforms":
           "type": "array"
           "maxItems": 10
@@ -1392,7 +1392,7 @@ components:
           "$ref": "#/components/schemas/ProfileId"
         "message":
           "type": "string"
-          "maxLength": 10000
+          "maxLength": 63206
         "platforms":
           "type": "array"
           "maxItems": 10
@@ -1766,6 +1766,9 @@ components:
         facebook:
           type: object
           properties:
+            is_ai_generated:
+              type: boolean
+              description: For Facebook Reels only. Set true to disclose AI-generated media at publish time. Accepts true or false; omitted by default.
             message:
               type: string
               description: Facebook-specific message/caption. Defaults to the top-level `message`.
@@ -1788,6 +1791,9 @@ components:
         instagram:
           type: object
           properties:
+            is_ai_generated:
+              type: boolean
+              description: Set true to disclose AI-generated media when creating the Instagram post. Accepts true or false; omitted by default.
             message:
               type: string
               description: Instagram-specific caption. Defaults to the top-level `message`.
@@ -1833,12 +1839,18 @@ components:
         twitter:
           type: object
           properties:
+            made_with_ai:
+              type: boolean
+              description: Alias for platform_options.x.made_with_ai. Applies to the main X post only. Accepts true or false; omitted by default.
             message:
               type: string
               description: X-specific message. Defaults to the top-level `message`.
         x:
           type: object
           properties:
+            made_with_ai:
+              type: boolean
+              description: Set true to mark the main X post as made with AI. Does not label follow-up replies. Accepts true or false; omitted by default.
             message:
               type: string
               description: X-specific message. Defaults to the top-level `message`.

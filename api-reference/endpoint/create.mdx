@@ -65,6 +65,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - Facebook stories support 1 image or 1 video.
 - Facebook Reels use 1 MP4 or MOV video. The video must be 9:16, at least 540 by 960 pixels, and 3 to 90 seconds long.
 - Choose `feed`, `story`, or `reel` with `platform_options.facebook.post_type`.
+- For a Reel, set `platform_options.facebook.is_ai_generated` to `true` to disclose AI-generated media. This field accepts only a JSON boolean and requires `post_type: "reel"`.
 - `platform_options.facebook.message` sets a Facebook-specific message. Omit it to use the top-level `message`.
 
 ### Instagram
@@ -75,6 +76,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
   story = 1 image or 1 video,
   reel = 1 video,
   carousel = 2 to 10 mixed image/video items.
+- Set `platform_options.instagram.is_ai_generated` to `true` to disclose AI-generated media, including Reels. This field accepts only a JSON boolean and works with both Instagram Login and Facebook Login.
 - The publisher uses the matching Instagram container flow for `feed`, `story`, `reel`, and `carousel` when selected through `platform_options.instagram.post_type`.
 - `platform_options.instagram.message` sets an Instagram-specific caption. Omit it to use the top-level `message`.
 - For a Reel, `platform_options.instagram.shareToFeed` defaults to `true`. Set it to `false` to keep the Reel in the Reels tab and off the profile feed.
@@ -181,3 +183,4 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - X video limits depend on the connected X account. Standard accounts can use videos up to 20 minutes and 8 GB. Eligible Premium or verified accounts can use videos up to 125 minutes and 16 GB. Mallary checks the connected account before accepting a video above the standard limits.
 - Mallary's current upload endpoint accepts files up to 5 GB. This upload limit still applies even when X allows a larger file for the connected account.
 - `platform_options.x.message` or `platform_options.twitter.message` sets an X-specific message. Omit it to use the top-level `message`.
+- Set `platform_options.x.made_with_ai` to `true` to disclose that the main post was made with AI. `platform_options.twitter.made_with_ai` also works. This field accepts only a JSON boolean and does not label first replies.

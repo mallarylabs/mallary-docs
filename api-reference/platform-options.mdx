@@ -27,6 +27,12 @@ Use `platform_options.facebook.message` to write text just for Facebook. If you 
 
 Add `thumbnail_url` to a Facebook feed video in `media`, or use `platform_options.facebook.thumbnail_url` for a Facebook-only cover. Use a JPG or PNG file stored by Mallary. The thumbnail can be up to 10 MB. Facebook chooses the cover for Reels.
 
+### Facebook AI label
+
+Set `platform_options.facebook.is_ai_generated` to `true` to disclose an AI-generated Reel. Set `post_type` to `reel`. This field does not work with Facebook feed posts or Stories.
+
+Send a JSON boolean (`true` or `false`), not text. Leave the field out to send no AI disclosure flag. The choice stays with scheduled posts. It does not change a post that is already published.
+
 ### Facebook first comments
 
 Use `comments_under_post` to add up to three comments under a feed post or Reel. Facebook Stories do not use first comments.
@@ -75,6 +81,23 @@ Choose how the Trial Reel can become a regular Reel:
 
 - Use `MANUAL` when you want to make that choice later in the Instagram app.
 - Use `SS_PERFORMANCE` when you want Instagram to share it with followers if it performs well.
+
+### Instagram AI label
+
+Set `platform_options.instagram.is_ai_generated` to `true` to disclose AI-generated media, including Reels. Mallary sends the flag when it creates the post's media container. This works with Instagram Login and Facebook Login connections.
+
+Send a JSON boolean (`true` or `false`), not text. Leave the field out to send no AI disclosure flag. The choice stays with scheduled posts. It does not change a post that is already published. Setting `false` does not prevent Instagram from adding a label based on its own checks.
+
+For example, this options block discloses an AI-generated Reel on both Meta platforms:
+
+```json
+{
+  "platform_options": {
+    "instagram": { "post_type": "reel", "is_ai_generated": true },
+    "facebook": { "post_type": "reel", "is_ai_generated": true }
+  }
+}
+```
 
 ### Instagram paid partnership label
 
@@ -333,6 +356,12 @@ Use `platform_options.x.message` to write text just for X. `platform_options.twi
 Add up to four images, one video, or one GIF to `media`. Mallary picks the post type from the media. Do not mix images and video.
 
 X video limits depend on the connected X account. Standard accounts can use videos up to 20 minutes and 8 GB. Eligible Premium or verified accounts can use videos up to 125 minutes and 16 GB. Mallary checks the account when a video is above the standard limits. Mallary's current upload endpoint accepts files up to 5 GB.
+
+### X AI label
+
+Set `platform_options.x.made_with_ai` to `true` to disclose that the main post was made with AI. `platform_options.twitter.made_with_ai` also works for older requests. Mallary does not copy this label to first replies.
+
+Send a JSON boolean (`true` or `false`), not text. Leave the field out to send no AI disclosure flag. The choice stays with scheduled posts. It does not change a post that is already published.
 
 ### X first replies
 
