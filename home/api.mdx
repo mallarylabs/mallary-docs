@@ -174,7 +174,7 @@ For scheduling, you can either send an absolute timestamp like `2026-04-06T18:30
 
 AI Auto Replies can answer useful questions on posts you publish through Mallary. Mallary uses the business details saved for that profile and the post itself to write a short reply. It skips comments that are not questions or are not about your business.
 
-AI Auto Replies work with Facebook, Instagram, Threads, LinkedIn, X, YouTube, and Bluesky. They are available on Pro and Business plans.
+AI Auto Replies work with Facebook, Instagram, Threads, LinkedIn, X, YouTube, and Bluesky. AI auto-replies are included in your Mallary plan.
 
 ### How it works
 
@@ -234,7 +234,7 @@ Use `profile_id` when you want to:
 - update brand and AI auto-reply settings for a specific profile
 - disconnect a platform from a specific profile
 
-Profile caps per platform are Free: 1, Starter: 4, Pro: 10, and Business: 50.
+Starter includes 5 total social media accounts, Pro includes 15, and Business includes 100. Use any mix of supported platforms across your profiles. A profile groups accounts; it does not add account spots.
 
 ## Platform-specific options
 
@@ -301,21 +301,21 @@ The current documented webhook events include:
 
 Each delivery includes `event`, `event_id`, `data`, and `sent_at`. If you set a webhook secret, Mallary sends `X-Mallary-Signature` for the full request body. It also sends `X-Mallary-Payload-Signature` for the exact JSON string in `signed_payload`. Verify a signature before you trust or process the event.
 
-## Plans and feature gating
+## Plans and accounts
 
-Some features are gated by plan.
+Choose the number of social media accounts you manage:
 
-Current platform behavior and product rules include:
+| Plan | Monthly price | Total accounts |
+| --- | ---: | ---: |
+| Starter | $15 | 5 |
+| Pro | $29 | 15 |
+| Business | $99 | 100 |
 
-- Free plans do not have scheduling
-- Free plans do not have analytics access
-- Free plans do not have AI auto replies
-- Free plans do not have MCP access
-- Free plans do not have CLI access
-- Starter plans include scheduling, analytics, MCP, and CLI
-- Pro and Business plans include AI auto replies in addition to scheduling and analytics
+Posts are unlimited. Scheduling, analytics, AI comment replies, API, MCP, and CLI are included. Pay yearly and get 2 months free.
 
-If the authenticated account does not have access to a capability, the API returns a plan-related error.
+X publishing and comments use prepaid credits at cost. Links stay in your posts. Analytics refreshes and account lookups do not use credits.
+
+Existing customers keep their current terms. The API's capability and limit fields describe the authenticated workspace.
 
 ## Rate limits
 

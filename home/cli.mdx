@@ -7,6 +7,8 @@ Mallary CLI is a social media command line interface for the Mallary publishing 
 
 If you want a social media CLI, Mallary gives you a direct command-line client for the public Mallary platform. Use it to upload media, create posts, schedule content, and read job status. You can also read post analytics and audience counts, list connected platforms, manage webhooks, and update brand settings.
 
+Plans start at $15/month for 5 total social media accounts. Pro includes 15 for $29, and Business includes 100 for $99. Posts are unlimited. Scheduling, analytics, and AI auto-replies are included. X publishing and comments use credits at cost; analytics and account lookups do not use credits. See [pricing](/home/pricing). Existing customers keep their current terms.
+
 ## Start here
 
 <CardGroup cols={2}>
@@ -174,7 +176,7 @@ Examples:
 - YouTube requires exactly one video.
 - YouTube file mode supports tags, playlist placement, and realistic AI-content disclosure through `platform_options.youtube`.
 - Facebook supports `platform_options.facebook.post_type` with `feed`, `story`, or `reel`. Reels use one 9:16 MP4 or MOV video that is 3 to 90 seconds long.
-- Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`. For a Reel, `shareToFeed` controls profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel. With a Facebook Login connection, file mode also supports `isPaidPartnership` and up to two `brandedContentSponsors` on feed posts, Reels, and carousels.
+- Instagram supports `platform_options.instagram.post_type` with `feed`, `story`, `reel`, or `carousel`. For a Reel, `shareToFeed` controls profile feed placement. Add `trialParams.graduationStrategy` in file mode to publish a Trial Reel. With a Facebook Login connection, file mode also supports `isPaidPartnership` and up to two `brandedContentSponsors` on feed posts, Reels, and carousels. Stories support captions through `--message` or `platform_options.instagram.message` in file mode. To place styled text on the image or video, add it to the media before upload. Stories do not support follow-up comments.
 - TikTok video posts require one video, and TikTok photo posts support up to 35 JPEG/WebP images.
 - TikTok defaults to `DIRECT_POST`, which publishes through Mallary. Set `platform_options.tiktok.post_mode = MEDIA_UPLOAD` only when you want to finish the post in the TikTok app. Inbox uploads stay `action_required` until you add the final TikTok post URL.
 - Pinterest requires exactly one image or GIF, or exactly one video. Mallary shortens Pin descriptions longer than 800 characters so they can publish.
@@ -204,21 +206,11 @@ This output format is a good fit for:
 - agent toolchains
 - local testing before integrating with the raw API
 
-## Plans and access
+## Accounts and access
 
-Most CLI commands require a paid plan:
+Use `mallary profiles list` to find the random public profile ID for a non-default profile. Pass `--profile-id` when posting, listing posts, reading analytics or settings, listing platforms, or disconnecting an account in that profile.
 
-- Starter
-- Pro
-- Business
-
-Current product rules are:
-
-- Saved draft commands, comment listing, and supplied comment replies are available on all plans. Publishing and scheduling saved drafts still follow normal plan rules.
-- analytics access follows plan capabilities
-- use `mallary profiles list` to find the random public profile ID for non-default profiles
-- use `--profile-id` for non-default profiles when posting, listing posts, reading post analytics, audience counts, or settings, listing platforms, or disconnecting a platform
-- AI auto-reply features follow plan capabilities
+Your account allowance is shared across platforms and profiles. See [pricing](/home/pricing) for total account counts and X credits. Existing customers keep their current terms.
 
 ## Good fit for the Mallary CLI
 

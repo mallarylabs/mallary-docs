@@ -13,7 +13,7 @@ info:
     - Omit `profile_id` to use the authenticated user's default profile.
     - Send the profile's random public `profile_id` when you want to publish, list posts, read post analytics or audience counts, list platforms, update settings, or disconnect a platform for a non-default profile.
     - Use `GET /api/v1/profiles` to list profile IDs.
-    - Per-platform account caps by plan: Free 1, Starter 4, Pro 10, Business 50.
+    - Total social media accounts: Starter 5 ($15/month), Pro 15 ($29/month), Business 100 ($99/month). Posts are unlimited. Scheduling, analytics, and AI auto-replies are included. X publishing and comments use credits at cost; analytics and account lookups use no credits. Existing customers keep their current terms; use the authenticated workspace limits.
 
     Rate limits (per user, per minute) depend on subscription plan:
     - plan_id 1: 75 req/min
@@ -719,7 +719,7 @@ paths:
     get:
       operationId: listConnectionProfiles
       summary: List connection profiles
-      description: Returns the authenticated user's connection profiles, connected platforms per profile, and per-platform account caps for the user's plan.
+      description: Returns the authenticated user's connection profiles, connected platforms per profile, and current account limits. For account-based plans, max_accounts_total is shared across platforms and profiles; account_limit_scope is total. Existing contracts can return platform-based limits.
       responses:
         "200":
           description: Connection profiles retrieved
@@ -1835,7 +1835,7 @@ components:
               type: string
               enum: [feed, story, reel, carousel]
               default: feed
-              description: Defaults to `feed` when omitted. `story` publishes one image/video as an Instagram Story without caption/follow-up comments, `reel` requires one video, and `carousel` publishes 2 to 10 image/video items as one carousel post.
+              description: Defaults to `feed` when omitted. `story` publishes one image/video as an Instagram Story with an optional caption and no follow-up comments, `reel` requires one video, and `carousel` publishes 2 to 10 image/video items as one carousel post.
             shareToFeed:
               type: boolean
               default: true
@@ -3140,6 +3140,15 @@ components:
       properties:
         max_accounts_per_platform:
           type: integer
+          description: Compatibility field for per-platform limits. Use max_accounts_total when account_limit_scope is total.
+        max_accounts_total:
+          type: integer
+          nullable: true
+          description: Total connected social accounts allowed across platforms and profiles. Null for a platform-based contract.
+        account_limit_scope:
+          type: string
+          enum: [total, platform]
+          description: Whether the account allowance is pooled or counted separately per platform.
 
     ProfileListResponse:
       type: object

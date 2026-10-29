@@ -33,6 +33,7 @@
             "group": "Developer docs",
             "pages": [
               "index",
+              "home/pricing",
               "home/api",
               "home/mcp",
               "home/cli",

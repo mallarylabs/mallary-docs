@@ -8,7 +8,7 @@ openapi: "POST /api/v1/post"
 
 Use `profile_id` to publish from a non-default connection profile. Omit it to use the default profile.
 
-Connection profiles let one Mallary user connect multiple accounts on the same platform. Plan caps per platform are: Free 1, Starter 4, Pro 10, Business 50.
+Connection profiles let one Mallary user connect multiple accounts on the same platform. Starter includes 5 total social media accounts, Pro includes 15, and Business includes 100. Use any mix of supported platforms across your profiles. Existing customers keep their current account limits.
 
 ## Scheduling
 
@@ -84,7 +84,7 @@ For a simple guide to each setting, see [Platform Posting Options](/api-referenc
 - Set `platform_options.instagram.isPaidPartnership` to `true` to show the Paid partnership label on a feed post, Reel, or carousel.
 - Add up to two sponsor usernames or numeric user IDs with `platform_options.instagram.brandedContentSponsors`. Sponsors turn on the Paid partnership label too.
 - Paid partnership options do not work with Stories. They require an Instagram account connected through Facebook Login.
-- Instagram's publishing API does not support story captions or follow-up comments. Include story text in the media itself.
+- Stories support captions through the main `message` or `platform_options.instagram.message`. To place styled text on the image or video, add it to the media before upload. Stories do not support follow-up comments.
 - Instagram image uploads use `jpg`, `jpeg`, or `png`. Video uploads use `mp4` or `mov`.
 - Instagram Reels and single feed videos must be 3 seconds to 15 minutes long and no larger than 300 MB. Single feed videos publish as Reels shared to the feed.
 

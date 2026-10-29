@@ -1,0 +1,49 @@
+---
+title: "Pricing"
+description: "Choose your total social media accounts. Unlimited posts, simple plan prices, and X credits at cost."
+---
+
+Choose how many social media accounts you manage.
+
+| Plan | Monthly price | Yearly price | Total social media accounts |
+| --- | ---: | ---: | ---: |
+| Starter | $15 | $150 | 5 |
+| Pro | $29 | $290 | 15 |
+| Business | $99 | $990 | 100 |
+
+Prices are in US dollars. Yearly prices are paid once a year and give you 2 months free.
+
+Posts are unlimited under our [fair use policy](https://mallary.ai/acceptable-use). Use any mix of our 10 supported social media platforms. Scheduling, analytics, AI comment replies, dashboard, API, MCP, and CLI are included.
+
+## Count accounts, not profiles
+
+Each connected account, Page, or channel counts once. For example, 3 Instagram accounts and 2 Facebook Pages use 5 account spots. Multiple accounts on one platform are allowed.
+
+Profiles group accounts for a brand or client. A profile holds one account per platform and does not add account spots. The total allowance is shared across your profiles.
+
+Use `GET /api/v1/profiles` to read the authenticated workspace's limits. When `account_limit_scope` is `total`, use `max_accounts_total`. Existing customers keep their current terms and can have platform-based limits.
+
+## X credits
+
+X publishing and comments use prepaid credits at cost. Your links stay in your posts. Analytics refreshes and account lookups do not use credits.
+
+1,000 credits = $1. Add $10, $25, or $50. Credits roll over and do not expire. There are no automatic top-ups.
+
+| X activity | Credits | Cost |
+| --- | ---: | ---: |
+| Post or reply without links | 15 | $0.015 |
+| Post or reply with links | 200 | $0.20 |
+| Billable comment resource fetched | 5 | $0.005 |
+| Analytics or account lookup | 0 | Included |
+
+Each post in a thread counts separately. A link post has one publishing charge, no matter how many links it contains. Repeat-read savings are applied before charging.
+
+Your balance is your spending cap. If there is not enough credit, add funds in [Billing](https://mallary.ai/billing) and retry the X request. Other social platforms continue as usual. A failed request can return `insufficient_x_credits`; do not retry it in a loop without adding funds.
+
+## Trial and billing
+
+Start with a 14-day free subscription trial. A card is required. Cancel before it ends to avoid a subscription charge. X publishing and comments still use paid credits during the trial. Mallary has a 30-day money-back guarantee.
+
+Existing customers keep their current prices, account limits, post allowances, and X terms. Read the workspace's returned limits and capabilities when building integrations.
+
+See the [pricing page](https://mallary.ai/pricing) for current offers.
