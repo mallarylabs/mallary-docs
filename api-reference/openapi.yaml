@@ -13,7 +13,7 @@ info:
     - Omit `profile_id` to use the authenticated user's default profile.
     - Send the profile's random public `profile_id` when you want to publish, list posts, read post analytics or audience counts, list platforms, update settings, or disconnect a platform for a non-default profile.
     - Use `GET /api/v1/profiles` to list profile IDs.
-    - Total social media accounts: Starter 5 ($15/month), Pro 15 ($29/month), Business 100 ($99/month). Posts are unlimited. Scheduling, analytics, and AI auto-replies are included. X publishing and comments use credits at cost; analytics and account lookups use no credits. Existing customers keep their current terms; use the authenticated workspace limits.
+    - Total social media accounts: Starter 5 ($15/month), Pro 15 ($29/month), Business 100 ($95/month). Posts are unlimited. Scheduling, analytics, and AI auto-replies are included. X publishing and comments use credits at cost; analytics and account lookups use no credits. Existing customers keep their current terms; use the authenticated workspace limits.
 
     Rate limits (per user, per minute) depend on subscription plan:
     - plan_id 1: 75 req/min
